@@ -21,13 +21,8 @@ This Python algorithm was developed to recover the accumulated phase across the 
 ## Installation
 
 The Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of some packages:
-NumPy,
-Scipy,
-Matplotlib,
-PySimpleGui,
-Pillow,
-[PyAbel](https://pyabel.readthedocs.io/en/latest/readme_link.html),
-
+* [NumPy](https://numpy.org/), [Scipy](https://scipy.org/) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) for data processing, [Pillow](https://pypi.org/project/Pillow/) to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) to plot results, and
+[PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the users template.
 
 ## Reference
 ## License
