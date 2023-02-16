@@ -13,6 +13,7 @@ This Python algorithm was developed to recover the accumulated phase across the 
 * [Badges](#badges)
 * [Summary](#summary)
 * [Installation](#installation)
+* [How to use](#how-to-use)
 * [Authors](#pessoas-desenvolvedoras)
 * [License](#license)
 * [Citation](#citation)
@@ -24,6 +25,8 @@ The Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and 
 The second way to use this software is through the executable file. The users can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
 
 <code>   pyinstaller --onefile -w intAnalysis_GasJetProfile.py                </code>
+
+## How to use
 
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7) 
