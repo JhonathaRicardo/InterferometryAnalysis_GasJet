@@ -1,10 +1,8 @@
-# Interferometry Analysis - Gas-Jet
+# Interferometry Analysis - Gas-Jet Profile
 
 ## Abstract
-<p align="justify">
-The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the target gas is crucial to understand the phenomena involved in the particle acceleration process.
+The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the target gas is crucial to understand the phenomena involved in the particle acceleration process [[1]](#reference).
 This Python algorithm was developed to recover the accumulated phase across the neutral gas target as well as estimate the target density distribution.
-</p>
 
 #### Badges
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -26,6 +24,7 @@ The Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and 
 The second way to use this software is through the executable file. This single file was created by the pyinstaller package applied to the algorithm.
 
 ## Reference
+[1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7) 
 ## License
 ## Citation
 
