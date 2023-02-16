@@ -29,5 +29,6 @@ The second way to use this software is through the executable file. The users ca
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7) 
 ## License
+Copyright (c) 2023 Jhonatha Ricardo dos Santos
 ## Citation
 
