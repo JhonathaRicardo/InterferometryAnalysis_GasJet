@@ -292,9 +292,9 @@ layout_area_selection = [
 ]
 # LAYOUT INPUT GAS AND RADIATION PARAMETERS
 layout_input_parameters = [
-    [sg.Text('Laser \nWavelength (nm):'),
+    [sg.Text('Laser \nWavelength (nm): '),
      sg.Input(lambda0, size=(5, 1), key='-lambda0-', enable_events=True)],
-    [sg.Text('Unc. laser\nWavelength (nm):'),
+    [sg.Text('Unc. laser\nWavelength (nm): '),
      sg.Input(unc_lambda0, size=(5, 1), key='-unclambda0-', enable_events=True)],
     [sg.Text('Gas Type:           '),
      sg.Combo(['H2', 'N2', 'He', 'Ar', '--'], default_value='N2', key='-combogas-', enable_events=True)],
@@ -305,15 +305,15 @@ layout_input_parameters = [
 ]
 # LAYOUT INPUT MEASUREMENT PARAMETERS
 layout_analysis_parameters = [
-    [sg.Text('Scaling Factor (µm/pixel):         '),
+    [sg.Text('Scaling Factor (µm/pixel):           '),
      sg.Input(factor, size=(5, 1), key='-factor-', enable_events=True)],
-    [sg.Text('Sigma - Gaussian Blur (pixel):   '),
+    [sg.Text('Sigma - Gaussian Blur (pixel):     '),
      sg.Input(sigma_gfilter, size=(5, 1), key='-sigma_gfilter-', enable_events=True)],
-    [sg.Text('Gaussian Filter position (pixel): '),
+    [sg.Text('Gaussian Filter position (pixel):   '),
      sg.Input(centerfilter, size=(5, 1), key='-centerfilter-', enable_events=True)],
-    [sg.Text('Fringes Orientation:     '),
+    [sg.Text('Fringes Orientation:       '),
      sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-combofringe-')],
-    [sg.Text('Axisymmetric:            '),
+    [sg.Text('Axisymmetric:              '),
      sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-comboaxisymm-')]
 ]
 # LAYOUT FRAME OF ALL INPUT OPTIONS
@@ -677,7 +677,7 @@ while True:
                 if len(filterpoints) == 0:
                     sg.popup(f"WARNING: Unable to apply the Fast Fourier Transform to the selected image!")
                     continue
-                if values['-combofringe-'] == 'vertical':
+                if values['-combofringe-'] == 'horizontal':
                     # filter range is equal to FWHM of signal of summaps
                     if filterpoints[0] <= 5:
                         centerfilter = filterpoints[1]
@@ -685,7 +685,7 @@ while True:
                     else:
                         centerfilter = filterpoints[0]
                         f_range = int(filterspoints_widths[0])
-                elif values['-combofringe-'] == 'horizontal':
+                elif values['-combofringe-'] == 'vertical':
 
                     if filterpoints[len(filterpoints) - 1] >= nrmap - 5:
                         centerfilter = filterpoints[len(filterpoints) - 2]
