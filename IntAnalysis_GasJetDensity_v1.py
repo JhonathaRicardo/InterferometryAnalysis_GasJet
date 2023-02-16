@@ -1,14 +1,13 @@
-# Software: Gas-Jet Density Profile(Version 1.0)
+# Software: Plasma Density Profile(Version 1.0)
 # Authors: Jhonatha Ricardo dos Santos, Armando Zuffi, Ricardo Edgul Samad, Nilson Dias Vieira Junior
 # Python 3.11
 
 # LYBRARIES
-# The Python Standard Library
+# Numpy from https://numpy.org/
 # PyAbel/PyAbel:v0.9.0rc1 from https://doi.org/10.5281/zenodo.7401589.svg
 # PySimpleGUI from pysimplegui.org
 # Matplotlib from matplotlib.org
 # Scipy from scipy.org
-# Scikit-image from  https://doi.org/10.7717/peerj.453
 # Pillow (PIL Fork) 9.3.0 from pypi.org/project/Pillow
 import abel
 import PySimpleGUI as sg
@@ -28,7 +27,6 @@ from matplotlib import cm
 from matplotlib.colors import ListedColormap
 from scipy.ndimage import gaussian_filter
 from scipy.signal import peak_widths, find_peaks
-from skimage.restoration import unwrap_phase
 from PIL import Image, ImageDraw, UnidentifiedImageError
 
 # Matplotlib Tk style
@@ -51,23 +49,21 @@ path2 = ''
 # Physics Parametres
 lambda0 = '395'  # nm
 unc_lambda0 = '0'
-polargas = '1.710'  #
-sigma_gfilter = '10'  # sigma of gauss function
-centerfilter = '0'  # Center of the gaussian filter application
-specificheat = '1.47'  # specific heat of gas in A³ (Angstrom)
 factor = '1.000'  # factor um/pixel
+sigma_gfilter = '2'  # sigma of gauss function
+centerfilter = '0'  # Center of the gaussian filter application
 # Image parameters
 h_prof = -1.0  # heigth null
 rotate_degree = 0.0  # angle to image rotation
 # Initial values to cut image
-begin_x = '100'
-begin_y = '100'
-end_x = '300'
-end_y = '300'
+begin_x = '196'
+begin_y = '91'
+end_x = '261'
+end_y = '134'
 # Initial values of heigths for 1D analysis
-pos1 = '50'
-pos2 = '75'
-pos3 = '100'
+pos1 = '10'
+pos2 = '20'
+pos3 = '30'
 
 # Images Dimensions
 width, height = size = 428, 342  # Scale image - interferogram
@@ -85,7 +81,7 @@ visible_f1d=False
 def getBinaryData(filename):
     '''
     path file name to binary value
-    :param filename:
+    :param filename: path of file
     :return: binary value
     '''
     binary_values = []
@@ -154,17 +150,28 @@ def apply_drawing(values, window):
 # NEW COLORMAPS
 def func_colormap(n):
     '''
+    Colormap type
     :param n: n_order for colormap (linear,quadratic, cubic)
     :return:
     '''
     return ListedColormap(cm.get_cmap('rainbow_r', 512)(np.power(np.linspace(1, 0, 512), n)))
 # CREATING MEAN MAPS/ARRAY AND STD ARRAY
 def mean_maps(data):
+    '''
+    2D Array mean
+    :param n: group of 2D arrays
+    :return: 2D array
+    '''
     mean_data = data[0] / len(data)
     for i in range(1, len(data)):
         mean_data = mean_data + data[i] / len(data)
     return mean_data
 def std_maps(data, mean_data):
+    '''
+    standard deviation of 2D Array maps
+    :param n: group of 2D arrays and mean 2D array
+    :return: std of 2D array
+    '''
     desv = (data[0] - mean_data) * (data[0] - mean_data)
     for i in range(1, len(data)):
         desv = desv + (data[i] - mean_data) * (data[i] - mean_data)
@@ -172,6 +179,11 @@ def std_maps(data, mean_data):
     return np.sqrt(desv / len(data))
 #CREATING INTENSITY DIST OF THE FRINGES
 def intensity_dist(data,fringe_axis):
+    '''
+    Calculate the intensity distribution of 2D array
+    :param: 2D arrays and arientation of fringes
+    :return: 2D array
+    '''
     data_dist = np.zeros(np.shape(data))
     nl,nr = np.shape(data)
     #vertical fringes
@@ -191,6 +203,11 @@ def intensity_dist(data,fringe_axis):
     return data_dist
 #CREATING SHIFT AND WIDTHS OF THE FRINGES
 def fringes_info(data1,data2,data3):
+    '''
+     Calculate 2D array shifts and widths fringes distribution
+    :param n: slice 2D arrays, slice 2D array of ref. image, 2D array ref.
+    :return: 2D arrays of shifts and widths fringes distribution
+    '''
     data_shift = np.zeros(np.shape(data3))
     data_dist = np.zeros(np.shape(data3))
     nl, nr = np.shape(data3)
@@ -213,7 +230,7 @@ def fringes_info(data1,data2,data3):
         ypeaks2 = np.delete(ypeaks2, -1)
     x = np.arange(nr)
     dist_i = np.interp(x, np.arange(len(np.diff(ypeaks1))), np.diff(ypeaks1))
-    shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks1 - ypeaks2)-np.min(ypeaks1 - ypeaks2)))
+    shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks1 - ypeaks2)-np.min(abs(ypeaks1 - ypeaks2))))
     for j in range(0,nl):
         data_shift[j] = shift_i
         data_dist[j] = dist_i
@@ -268,16 +285,10 @@ layout_area_selection = [
 ]
 # LAYOUT INPUT GAS AND RADIATION PARAMETERS
 layout_input_parameters = [
-    [sg.Text('Laser \nWavelength (nm):'),
+    [sg.Text('Lase \nWavelength (nm):'),
      sg.Input(lambda0, size=(5, 1), key='-lambda0-', enable_events=True)],
-    [sg.Text('Unc. laser\nWavelength (nm):'),
+    [sg.Text('Unc. \nWavelength (nm):'),
      sg.Input(unc_lambda0, size=(5, 1), key='-unclambda0-', enable_events=True)],
-    [sg.Text('Gas Type:           '),
-     sg.Combo(['H2', 'N2', 'He', 'Ar', '--'], default_value='N2', key='-combogas-', enable_events=True)],
-    [sg.Text('Polarizability (Å³):'),
-     sg.Input(polargas, size=(5, 1), key='-polargas-', enable_events=True)],
-    [sg.Text('Specific Heat:     '),
-     sg.Input(specificheat, size=(5, 1), key='-specificheatgas-', enable_events=True)],
 ]
 # LAYOUT INPUT MEASUREMENT PARAMETERS
 layout_analysis_parameters = [
@@ -290,7 +301,7 @@ layout_analysis_parameters = [
     [sg.Text('Fringes Orientation:     '),
      sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-combofringe-')],
     [sg.Text('Axisymmetric:            '),
-     sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-comboaxisymm-')]
+     sg.Combo(['vertical', 'horizontal'], default_value='horizontal', key='-comboaxisymm-')]
 ]
 # LAYOUT FRAME OF ALL INPUT OPTIONS
 layout_frame_Options = [
@@ -328,7 +339,7 @@ layout_frame_plot1D = [
      sg.Input(pos2, size=(4, 1), key='-pos2-', enable_events=True),
      sg.Checkbox('Prof. 3 (um)', default=False, key='-checkpos3-'),
      sg.Input(pos3, size=(4, 1), key='-pos3-', enable_events=True)],
-    [sg.Slider(key='sliderh', range=(490, 0), orientation='h', size=(400, 20), default_value=0,
+    [sg.Slider(key='sliderh', range=(0, 490), orientation='h', size=(400, 20), default_value=0,
                enable_events=True)]
 ]
 # LAYOUT STAGES OF THE TREATMENT
@@ -364,11 +375,11 @@ layout = [
               font='Arial 12 bold')],
 ]
 ######################################################################################################################
-window = sg.Window("Interferogram Analysis - Gas-Jet Density Profile(Version 1.0)", layout, margins=(1, 1), finalize=True)
+window = sg.Window("Interferogram Analysis - Plasma Density Profile(Version 1.0)", layout, margins=(1, 1), finalize=True)
 ######################################################################################################################
 '''
 ####################################################################################################
-#Windows events
+#WINDOWS EVENT
 ####################################################################################################
 '''
 while True:
@@ -487,24 +498,6 @@ while True:
             window['Apply Algorithm'].update(disabled=False)
             window['Select Analysis Area'].update(disabled=False)
     ########################################################################
-    # COMBO GAS TYPE
-    elif event == '-combogas-':
-        if values['-combogas-'] == 'N2':
-            window['-polargas-'].update(value='1.710')  # cm3
-            window['-specificheatgas-'].update(value='1.47')
-
-        elif values['-combogas-'] == 'H2':
-            window['-polargas-'].update(value='0.787')  # cm3
-            window['-specificheatgas-'].update(value='1.405')
-
-        elif values['-combogas-'] == 'He':
-            window['-polargas-'].update(value='0.208')  # cm3
-            window['-specificheatgas-'].update(value='1.667')
-
-        elif values['-combogas-'] == 'Ar':
-            window['-polargas-'].update(value='1.664')  # cm3
-            window['-specificheatgas-'].update(value='1.667')
-    ########################################################################
     # BUTTON SELECT AREA
     elif event == 'Select Analysis Area':
         apply_drawing(values, window)
@@ -570,8 +563,6 @@ while True:
             centerfilter = int(get_value("-centerfilter-", values))
             # sigma value of gaussian function
             sigma = int(get_value('-sigma_gfilter-', values))
-            # heat gas constant
-            alpha_gas = float(get_value('-polargas-', values)) * 1e-24  # in cm^3
             # Wavelength laser
             lambda0 = float(get_value('-lambda0-', values)) * 1e-9  # in meters
             unc_lambda0 = float(get_value('-unclambda0-', values)) * 1e-9  # in meters
@@ -596,8 +587,8 @@ while True:
 
         # Input original files
         phasemaps = []
-        gas_dens, gas_abelphasemap, gas_phasemap = [], [], []
-        std_phasemap, std_abelmap, std_gas_dens = [],[],[]
+        plasma_dens, plasma_abelphasemap, plasma_phasemap = [], [], []
+        std_phasemap, std_abelmap, std_plasma_dens = [],[],[]
 
         for j in range(0, len(path_files)):
             if rotate_degree != 0:
@@ -625,6 +616,7 @@ while True:
             # Defining line or row to apply gaussian filter
             fftmap = np.log(np.abs(fftgas))
             nlmap, nrmap = np.shape(fftmap)
+
             '''
             # Authomatic definition of the gaussian filter position: 
             this position are defined like the line or column (Vertical or horizontal fringes) with more intensity pixel
@@ -653,7 +645,7 @@ while True:
                 if len(filterpoints) == 0:
                     sg.popup(f"WARNING: Unable to apply the Fast Fourier Transform to the selected image!")
                     continue
-                if values['-combofringe-'] == 'horizontal':
+                if values['-combofringe-'] == 'vertical':
                     # filter range is equal to FWHM of signal of summaps
                     if filterpoints[0] <= 5:
                         centerfilter = filterpoints[1]
@@ -661,7 +653,7 @@ while True:
                     else:
                         centerfilter = filterpoints[0]
                         f_range = int(filterspoints_widths[0])
-                elif values['-combofringe-'] == 'vertical':
+                elif values['-combofringe-'] == 'horizontal':
 
                     if filterpoints[len(filterpoints) - 1] >= nrmap - 5:
                         centerfilter = filterpoints[len(filterpoints) - 2]
@@ -694,18 +686,23 @@ while True:
             # Creating Phase Maps arrays by subtracting the arguments of IFFT arrays
             phasemaps = (np.angle(ifftgas) - np.angle(ifftref))
             # Unwrap phase:
-            uwphasemap = unwrap_phase(phasemaps)
+            uwphasemap = np.unwrap(phasemaps)
+            '''
+            DEFINING STANDARD DEVIATION:
+            The standard deviation is calculation from fringes intensity distribution, fringes widths and 
+            fringes shifts displacement.
+            '''
             # Range for scan is 5% of total dimension of matrix
             frgs_shifts = np.ones(np.shape(intref))
             frgs_widths = np.ones(np.shape(intref))
-            frgs_shifts, frgs_widths = [], []
-            lim_l = int(0.05 * nlmap) + 1
-            lim_r = int(0.05 * nrmap) + 1
+            frgs_shifts,frgs_widths = [], []
+            lim_l = int(0.05*nlmap) + 1
+            lim_r = int(0.05*nrmap) + 1
             if values['-combofringe-'] == 'vertical':
                 # Intensity distribution
                 dist1 = intensity_dist(intref, 0)
                 dist2 = intensity_dist(intgas, 0)
-                for l in range(0, lim_l):
+                for l in range(0,lim_l):
                     # Scanning fringes pattern to define min. shift
                     frgs_ref = (intref0[l, begin_x:end_x])
                     frgs_plasma = (intgas0[l, begin_x:end_x])
@@ -718,7 +715,7 @@ while True:
                 dist1 = intensity_dist(intref, 1)
                 dist2 = intensity_dist(intgas, 1)
                 # fringes shift
-                for l in range(0, lim_r):
+                for l in range(0,lim_r):
                     frgs_ref = np.transpose(intref0[begin_y:end_y, l])
                     frgs_plasma = np.transpose(intgas0[begin_y:end_y, l])
                     frgs_shifts_i, frgs_widths_i = fringes_info(frgs_plasma, frgs_ref, np.transpose(intref))
@@ -737,50 +734,70 @@ while True:
             ################################################################################
             Applying Inverse Abel Transform (IAT):
             The IAT is applied using PyAbel algorithm and to apply its library correctly is necessary
-            to define a axis symmetric in image (Horizontal or Vertical). In gas profile case the axissymmetric is 
-            defined by more intensity pixel range. So, the image is cut according axissymetric.
+            to define a axis symmetric in image (Horizontal or Vertical). In gas profile case the axissymmetric is defined by
+            more intensity pixel range. So, the image is cut according axissymetric.
             The right side of image is used like standard to use IAT.
             NOTE: the Abel transform is always performed around the vertical axis, so when the image have horizontal
             axissymmetry the matrix must be transposed.
 
             '''
+            # Apply gaussian filter to define the region with more intensity pixel value
+            phasemap_corr = gaussian_filter(uwphasemap, sigma=sigma)
+
             # Transpose Matrix for Horizontal Axissmetry
             if values['-comboaxisymm-'] == 'horizontal':
                 phasemap_corr = np.transpose(phasemap_corr)
-            # Apply gaussian filter to define the region with more intensity pixel value
-            phasemap_corr = gaussian_filter(uwphasemap, sigma=sigma)
-            phasemap_corr = phasemap_corr - np.ones(np.shape(phasemap_corr))*np.min(phasemap_corr)
+                std_phasemap_i = np.transpose(std_phasemap_i)
+                
             nlines, nrows = np.shape(phasemap_corr)
+            for l in range(0,nlines):
+                bl_map = np.min(phasemap_corr[l])*np.ones(nrows)
+                phasemap_corr[l] = (phasemap_corr[l] - bl_map)*(-1)
 
             # Define region with more intensity pixel - position x and y
-            cline, crow = np.where(phasemap_corr >= phasemap_corr.max() * 0.95)
+            cline, crow = np.where(phasemap_corr <= np.min(phasemap_corr) * 0.95)
             cy, cx = int(np.median(cline)), int(np.median(crow))
-            vert_lim = int(2*cx+1)
+
             # If the region not found, set symmetric point like half image
             if math.isnan(cx) == True:
-                cx = nrow // 2
+                cx = int(nrows/2)
+            # If right-side of image is more width
+            if cx >= int(nrows/2):
+                  phasemap_corr = np.flip(phasemap_corr,0)
+                  std_phasemap_i = np.flip(std_phasemap_i,0)
+                  fliped_array = True
+                  vert_lim = int(2*(nrows-cx)+1)
+            # If left-side of image is more width
+            else:
+                 fliped_array = False
+                 vert_lim = int(2*cx+1)
 
             phasemap_symm = phasemap_corr[:, 0:vert_lim]
-            gas_diameter = int(2 * cy) # diameter of the cylinder used in IAT
+            std_phasemap_symm = std_phasemap_i[:,0:vert_lim]
+            plasma_diameter = vert_lim # diameter of the cylinder used in IAT
 
             try:
                 # Applying inverse Abel Transform
                 phase_abel = abel.Transform((phasemap_symm), symmetry_axis=0, direction='inverse',
-                                              method='onion_peeling').transform
+                                            method='onion_peeling').transform
             except:
                 phase_abel = np.zeros(np.shape(phasemap_symm))
                 sg.popup_error(f"WARNING: Unable to apply the Abel transform to the selected image! ")
 
+            if fliped_array == True:
+                phase_abel = np.flip(phase_abel,0)
+                phasemap_corr = np.flip(phasemap_corr,0)
+                phasemap_symm = np.flip(phasemap_symm,0)
+                std_phasemap_symm = np.flip(std_phasemap_symm,0)
             '''
             ############################################################################################
             Calculating std from Abel Transform:
             The std is calculated using deviation of mormalized phasemap and normalized IAT phasemap  
             '''
-            rangeh0, rangev0 = np.shape(phase_abel)
             norm_phasemap = np.zeros(np.shape(phase_abel))
-            for k in range(0, rangeh0):
+            for k in range(0, nlines):
                 norm_phasemap[k] = phasemap_symm[k] * np.max(abs(phase_abel[k])) / np.max(abs(phasemap_symm[k]))
-            std_abelmap0 = np.sqrt(np.square(phase_abel-norm_phasemap))
+            std_abelmap0 = abs(phase_abel - norm_phasemap)
 
             if values['-comboaxisymm-'] == 'horizontal':
                 vert_lim = nlines
@@ -788,7 +805,9 @@ while True:
                 phasemap_symm = np.transpose(phasemap_symm)
                 phase_abel = np.transpose(phase_abel)
                 std_abelmap0 = np.transpose(std_abelmap0)
-            gas_phasemap.append(phasemap_corr)
+                std_phasemap_symm = np.transpose(std_phasemap_symm)
+
+            plasma_phasemap.append(phasemap_corr)
             '''
             ########################################################################################
             Calculating refraction index and gas density from IAT phasemap:
@@ -808,18 +827,19 @@ while True:
             n_index0 = (1 + (phase_abel * lambda0) / (2 * np.pi*factor))
             # Cutting border of images due the computational artefacts generated by IAT and problems with no symmetric images
             n_index = n_index0[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]
-            # Calculating gas density from C-M relation
-            gas_dens_i = (3 * (np.square(n_index) - np.ones(np.shape(n_index)))) / \
-                             (4 * np.pi * alpha_gas * (np.square(n_index) + 2 * np.ones(np.shape(n_index))))
+            # Calculating plasma density. Const 1.11485e15 1/m
+            try:
+                const_plasma = 1.11485e15
+                plasma_dens_i = (const_plasma*((np.ones(np.shape(n_index)))-np.square(n_index)))\
+                                / (lambda0*lambda0)*1e-6 #cm-3
 
+                plasma_dens_i = plasma_dens_i-np.min(plasma_dens_i)*np.ones(np.shape(plasma_dens_i))
+            except:
+                plasma_dens_i = np.zeros(np.shape(n_index))
             #new matrix size for plot
-            rangeh, rangev = np.shape(gas_dens_i)
-
-            std_abelmap_i = std_abelmap0[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]
-            std_abelmap.append(std_abelmap_i)
-
-            gas_abelphasemap.append(phase_abel)
-            gas_dens.append(gas_dens_i)
+            rangeh, rangev = np.shape(plasma_dens_i)
+            plasma_abelphasemap.append(phase_abel)
+            plasma_dens.append(plasma_dens_i)
 
             '''
             CALCULATION TOTAL STANDARD DEVIATION FROM:
@@ -827,58 +847,57 @@ while True:
             2. Inverse Abel Transform
             3. Laser wavelength
             '''
-            dN_n = ((9 / (2 * np.pi * alpha_gas)) * n_index) / np.square(
-                np.square(n_index) + 2 * np.ones(np.shape(n_index)))
+            dN_n = (-const_plasma * 2 * n_index) / (np.square(lambda0))
             # Contribution 1: measurement interferogram
-            std_phase1 = np.square(std_phasemap_i[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
-                                   /(factor*gas_diameter)) #rad/metro
+            std_phase1 = np.square(std_phasemap_symm[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
+                                   /(factor*plasma_diameter)) #rad/metro
             # Contribution 2: Abel transformation accuracy
+            std_abelmap_i = std_abelmap0[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]
+            std_abelmap.append(std_abelmap_i)
             std_phase2 = np.square(std_abelmap_i/factor) #rad/metro
             std_phase = np.sqrt(std_phase2+std_phase1) #rad/metro
-            dn_phase=(lambda0/(2*np.pi)) #m
+            dn_phase = (lambda0)/(2*np.pi)#
 
             # Contribution 3: laser wavelength
-            dn_lambda = (phase_abel[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
-                                  /(2*np.pi*factor))#rad/m
+            dn_lambda = phase_abel[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
+                                  /(2*np.pi*factor)#rad/m
 
-            std_gas_dens_i = np.sqrt(np.square(dN_n)*(np.square(dn_phase*std_phase) + \
-                                                      np.square(dn_lambda*unc_lambda0)))*1e-6 # cm^-3
-            std_gas_dens.append(std_gas_dens_i)
+            std_plasma_dens_i =abs(dN_n)*np.sqrt(np.square(dn_phase*std_phase)+np.square(dn_lambda*unc_lambda0))*1e-6
+            std_plasma_dens.append(std_plasma_dens_i)
 
         #BUILDING MATRIX RESULTS FOR:
             # Many files
-        if len(gas_phasemap)>1:
+        if len(plasma_phasemap)>1:
             # PHASEMAP
-            gas_phasemap_mean = mean_maps(gas_phasemap)
+            plasma_phasemap_mean = mean_maps(plasma_phasemap)
             std_phasemap_mean = np.sqrt(np.square(mean_maps(std_phasemap))+\
-                                                  np.square(std_maps(gas_phasemap,gas_phasemap_mean)))
+                                                  np.square(std_maps(plasma_phasemap,plasma_phasemap_mean)))
             #INV. ABEL TRANSF. MAP
-            gas_abelmap_mean = mean_maps(gas_abelphasemap)
+            plasma_abelmap_mean = mean_maps(plasma_abelphasemap)
             std_abelmap_mean = np.sqrt(np.square(mean_maps(std_abelmap)) + \
-                                        np.square(std_maps(gas_abelphasemap, std_abelmap_mean)))
+                                        np.square(std_maps(plasma_abelphasemap, std_abelmap_mean)))
             # PLASMA DENSITY
-            gas_dens_mean = mean_maps(gas_dens)
-            std_dens_mean = np.sqrt(np.square(mean_maps(std_gas_dens)) + \
-                                       np.square(std_maps(gas_dens, std_dens_mean)))
+            plasma_dens_mean = mean_maps(plasma_dens)
+            std_dens_mean = np.sqrt(np.square(mean_maps(std_plasma_dens)) + \
+                                       np.square(std_maps(plasma_dens, std_dens_mean)))
         else:
             #PHASEMAP
-            gas_phasemap_mean = (gas_phasemap[0])
+            plasma_phasemap_mean = (plasma_phasemap[0])
             std_phasemap_mean =(std_phasemap[0])
             #INV. ABEL TRANSF. MAP
-            gas_abelmap_mean = (gas_abelphasemap[0])
+            plasma_abelmap_mean = (plasma_abelphasemap[0])
             std_abelmap_mean = (std_abelmap[0])
             #PLASMA DENSITY
-            gas_dens_mean = (gas_dens[0])
-            std_dens_mean = (std_gas_dens[0])
-
+            plasma_dens_mean = (plasma_dens[0])
+            std_dens_mean = (std_plasma_dens[0])
         '''
         BUILDING 2D AND 1D PLOTS
         '''
         #Ajust slider for horizontal/vertical
         if values['-comboaxisymm-'] == 'vertical':
-            window['sliderh'].update(range=(0, rangev - 1))
-        elif values['-comboaxisymm-'] == 'horizontal':
             window['sliderh'].update(range=(0, rangeh - 1))
+        else:
+            window['sliderh'].update(range=(0, rangev - 1))
 
         # Plots are building from user select
         if values['fftradio'] == True:  # Plot FFT map result
@@ -887,17 +906,17 @@ while True:
             matrix_plot = gfilter
         elif values['phaseradio'] == True:  # Plot phase map result
             if values['-checkstd-'] == False:
-                matrix_plot = gas_phasemap_mean
+                matrix_plot = plasma_phasemap_mean
             else:
                 matrix_plot = std_phasemap_mean
         elif values['abelradio'] == True:  # Plot gas density profile from IAT
             if values['-checkstd-'] == False:
-                matrix_plot = gas_abelmap_mean
+                matrix_plot = plasma_abelmap_mean
             else:
                 matrix_plot = std_abelmap_mean
         elif values['densradio'] == True:  # Plot gas density profile
             if values['-checkstd-'] == False:
-                matrix_plot = gas_dens_mean# - np.ones(np.shape(plasma_dens_mean)) * np.min(plasma_dens_mean)
+                matrix_plot = plasma_dens_mean
             else:
                 matrix_plot = std_dens_mean
 
@@ -947,10 +966,10 @@ while True:
             ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
             ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
             if values['-checkstd-'] == False:
-                cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
+                cb1.set_label(label='$Plasma\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
                               size=12, weight='bold')
             else:
-                cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$',\
+                cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Plasma\hspace{.5}Density\hspace{.5} (cm^{-3})$',\
                               size=12, weight='bold')
 
         else:
@@ -962,7 +981,7 @@ while True:
 
             abel_plot = ax1.imshow(matrix_plot, extent=[0, x_max, 0, y_max], cmap=newcmp)
             cb1 = fig.colorbar(abel_plot, cax=cax)
-            cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', size=12, weight='bold')
+            cb1.set_label(label='$Plasma\hspace{.5}Density\hspace{.5} (cm^{-3})$', size=12, weight='bold')
             ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
             ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
             if values['-checkstd-'] == False:
@@ -982,7 +1001,7 @@ while True:
         window['Dens. Profile 2D'].update(disabled=False)
         window['Dens. Profile 1D'].update(disabled=False)
     #########################################################################
-    # BUTTON DENS.PROFILE 2D
+    # BUTTON DENS.PROFILE 2
     if event == 'Dens. Profile 2D':
         # set height position
         h_prof = -1.0
@@ -993,17 +1012,17 @@ while True:
             matrix_plot = gfilter
         elif values['phaseradio'] == True:  # Plot phase map result
             if values['-checkstd-'] == False:
-                matrix_plot = gas_phasemap_mean
+                matrix_plot = plasma_phasemap_mean
             else:
                 matrix_plot = std_phasemap_mean
         elif values['abelradio'] == True:  # Plot gas density profile from IAT
             if values['-checkstd-'] == False:
-                matrix_plot = gas_abelmap_mean
+                matrix_plot = plasma_abelmap_mean
             else:
                 matrix_plot = std_abelmap_mean
         elif values['densradio'] == True:  # Plot gas density profile
             if values['-checkstd-'] == False:
-                matrix_plot = gas_dens_mean - np.ones(np.shape(gas_dens_mean)) * np.min(gas_dens_mean)
+                matrix_plot = plasma_dens_mean
             else:
                 matrix_plot = std_dens_mean
 
@@ -1091,9 +1110,8 @@ while True:
 
         except:
             continue
-
     #########################################################################
-    # BUTTON DENS.PROFILE 1D AND SLIDER POSITION
+    # SLIDER POSITION
     if (event == 'Dens. Profile 1D') or (event == 'sliderh'):
         # set height position
         h_prof = -1.0
@@ -1106,13 +1124,13 @@ while True:
             matrix_plot_std = np.zeros(np.shape(matrix_plot))
         elif values['phaseradio'] == True:  # Plot phase map result
             if values['-checkstd-'] == False:
-                matrix_plot = gas_phasemap_mean
+                matrix_plot = plasma_phasemap_mean
                 matrix_plot_std = std_phasemap_mean
         elif values['abelradio'] == True:  # Plot gas density profile from IAT
-            matrix_plot = gas_abelmap_mean
+            matrix_plot = plasma_abelmap_mean
             matrix_plot_std = std_abelmap_mean
         elif values['densradio'] == True:  # Plot gas density profile
-            matrix_plot = gas_dens_mean
+            matrix_plot = plasma_dens_mean
             matrix_plot_std = std_dens_mean
 
         try:
@@ -1135,7 +1153,6 @@ while True:
                 array_std = matrix_plot_std[pos]
 
             elif values['-comboaxisymm-'] == 'horizontal':
-                window['sliderh'].update(range=(0, rangeh - 1))
                 raxis = np.arange(-rangeh / 2, rangeh / 2, 1)
                 raxis_um = raxis * factor * 1e6  # um
                 # set origin position (exit nozzle position) and slider position
@@ -1225,6 +1242,7 @@ while True:
             file_data.seek(0)  # sets  point at the beginning of the file
             file_data.truncate()
 
+            # Saving 1D plots
             if visible_f1d==True:
                 rangeh, rangev = np.shape(matrix_plot)
                 raxis = np.arange(-rangev / 2, rangev / 2, 1)
