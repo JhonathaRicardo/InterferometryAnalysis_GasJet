@@ -30,9 +30,11 @@ Interferometry Analysis - The Gas-Jet software has a graphical interface develop
 In this section, we provide users with a simple review of the software's functions and how to use them.
 ### Main Screen
 
-[Open File]: Open the interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. 
-[Rotate]
-
+<p align = "justify">
+[Open File]: Open the interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used.  
+ 
+[Rotate]: Image rotate 
+</p>
 
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7)
@@ -45,5 +47,6 @@ Interferometry Analysis - Gas-Jet software was developed by researchs of the Hig
 
 ## License
 Copyright (c) 2023 Jhonatha Ricardo dos Santos
+
 ## Citation
 
