@@ -29,12 +29,13 @@ The second way to use this software is through the executable file. The users ca
 Interferometry Analysis - The Gas-Jet software has a graphical interface developed with PysimpleGUI. This interface assists users and facilitates their applications.
 In this section, we provide users with a simple review of the software's functions and how to use them.
 ### Main Screen
+[Image]: Scaled interferogram image.
 
-<p align = "justify">
-[Open File]: Open the interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used.  
+[Open File]: Open the interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
  
-[Rotate]: Image rotate 
-</p>
+[Rotate]: The image rotates in degrees. Positive degrees promote counterclockwise rotation.  
+
+[Image Scale]: The interferogram image shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the gas jet density profile are done with the original dimensions of the image file.
 
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7)
