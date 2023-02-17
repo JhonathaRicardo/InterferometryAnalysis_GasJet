@@ -46,6 +46,10 @@ In this section, we provide users with a simple review of the software's functio
 
 ***[Exit]:*** Close software.
 
+### Options
+***[Select Analysis Area]:***
+
+
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7)
 ## Authors
