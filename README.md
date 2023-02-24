@@ -30,31 +30,32 @@ Interferometry Analysis - The Gas-Jet software has a graphical interface develop
 In this section, we provide users with a simple review of the software's functions and how to use them.
 ### Main Screen
 ### Interferogram Images Fram
-***[Interferogram (Gas-Jet)]:*** Scaled gas-jet interferogram image.
+- ***[Interferogram (Gas-Jet)]:*** Scaled gas-jet interferogram image.
 
-***[Open File(s)]:*** Open interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
+- ***[Open File(s)]:*** Open interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
 
-***[Interferogram (Ref.)]:*** Scaled reference interferogram image.
+- ***[Interferogram (Ref.)]:*** Scaled reference interferogram image.
 
-***[Open File]:*** Open an undisturbed interferogram image(s) file(s). Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
+- ***[Open File]:*** Open an undisturbed interferogram image(s) file(s). Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
  
-***[Rotate]:*** The image rotates in degrees. Positive degrees promote counterclockwise rotation.  
+- ***[Rotate]:*** The image rotates in degrees. Positive degrees promote counterclockwise rotation.  
 
-***[Image Scale]:*** The interferogram image shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the gas jet density profile are done with the original dimensions of the image file.
+- ***[Image Scale]:*** The interferogram image shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the gas jet density profile are done with the original dimensions of the image file.
 
-***[Analyse Data]:*** From this command button, the software will apply data processing to generate accumulated phase, inverse Abel transforms, and gas jet density profile.
+- ***[Analyse Data]:*** From this command button, the software will apply data processing to generate accumulated phase, inverse Abel transforms, and gas jet density profile.
 
-***[Exit]:*** Close software.
+- ***[Exit]:*** Close software.
 
 ### Options
-***[Select Analysis Area]:*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. The selected area is defined by a rectangle with edges defined by X and Y coordinates(***[Y Coord]*** and ***[X Coord]***).
+- ***[Select Analysis Area]:*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. The selected area is defined by a rectangle with edges defined by X and Y coordinates(***[Y Coord]*** and ***[X Coord]***).
 The user that intends to use the whole interferogram figure needs to uncheck the checkbox ***[Use select area]***.
-***[Experimental Parameteres]*** In this form, the user set the experimental parameters used to obtain the interferogram image. These parameters are:
-- ***[Laser Wavelength]*** and ***[uncertainty Laser Wavelength]*** in nm;
-- Gas ***[Polarizability]*** in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
-- The [Specific Heat Ratio] of a gas is the ratio of the specific heat at constant pressure, Cp, to the specific heat at constant volume, Cv.
 
+- ***[Experimental Parameteres]*** In this form, the user set the experimental parameters used to obtain the interferogram image. These parameters are:
+  - ***[Laser Wavelength]*** and ***[uncertainty Laser Wavelength]*** in nm;
+  - Gas ***[Polarizability]*** in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
+   - The ***[Specific Heat Ratio]*** of a gas is the ratio of the specific heat at constant pressure, ***Cp***, to the specific heat at constant volume, ***Cv***.
 
+- 
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7)
 ## Authors
