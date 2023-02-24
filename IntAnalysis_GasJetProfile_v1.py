@@ -1,15 +1,15 @@
-# Software: Interfetometry Analysis - Gas-Jet Profile (Version 1.0)
+# Software: Gas-Jet Density Profile(Version 1.0)
 # Authors: Jhonatha Ricardo dos Santos, Armando Zuffi, Ricardo Edgul Samad, Nilson Dias Vieira Junior
 # Python 3.11
 
 # LYBRARIES
-# Numpy from https://numpy.org/
+# The Python Standard Library
 # PyAbel/PyAbel:v0.9.0rc1 from https://doi.org/10.5281/zenodo.7401589.svg
 # PySimpleGUI from pysimplegui.org
 # Matplotlib from matplotlib.org
 # Scipy from scipy.org
 # Scikit-image from  https://doi.org/10.7717/peerj.453
-# Pillow (PIL Fork) 9.3.0 from https://pypi.org/project/Pillow
+# Pillow (PIL Fork) 9.3.0 from pypi.org/project/Pillow
 import abel
 import PySimpleGUI as sg
 import os
@@ -44,7 +44,7 @@ tmp_file = tempfile.NamedTemporaryFile(suffix=".png").name
 tmp_file2 = tempfile.NamedTemporaryFile(suffix=".png").name
 tmp_file_plot = 'temp_plot_abel.png'
 
-# INITIALPARAMETERS
+# SETTING INITIAL PARAMETERS
 # Image paths
 path1 = ''
 path2 = ''
@@ -141,14 +141,15 @@ def apply_drawing(values, window):
     begin_y = get_value("-BEGIN_Y-", values)
     end_x = get_value("-END_X-", values)
     end_y = get_value("-END_Y-", values)
+    rotate_degree = get_value("-DEGREE-", values)
 
     if os.path.exists(image_file):
         shutil.copy(image_file, tmp_file)
         imagetmp = Image.open(tmp_file)
         imagetmp = imagetmp.resize(size)
+        imagetmp = imagetmp.rotate(rotate_degree, resample=Image.Resampling.BICUBIC)
         draw = ImageDraw.Draw(imagetmp)
-        draw.rectangle((begin_x, begin_y, end_x, end_y), width=2,
-                       outline='#FFFFFF')  ##DCDCDC
+        draw.rectangle((begin_x, begin_y, end_x, end_y), width=2, outline='#FFFFFF')  ##DCDCDC
         imagetmp.save(tmp_file)
         bio = io.BytesIO()
         imagetmp.save(bio, format='PNG')
@@ -220,32 +221,38 @@ def fringes_info(data1, data2, data3):
     nl, nr = np.shape(data3)
     ypeaks2, _ = find_peaks(data2)
     ypeaks1, _ = find_peaks(data1)
-    for i in range(0, len(ypeaks1)):
-        try:
-            teste = np.isclose(ypeaks2[:i + 1], ypeaks1[:i + 1], rtol=0, atol=2.1)
-            if teste[i] == False and ypeaks1[i] > ypeaks2[i]:
-                ypeaks2 = np.delete(ypeaks2, i)
-                i = 0
-            if teste[i] == False and ypeaks1[i] < ypeaks2[i]:
-                ypeaks1 = np.delete(ypeaks1, i)
-                i = 0
-        except:
-            break
-    while len(ypeaks1) > len(ypeaks2):
-        ypeaks1 = np.delete(ypeaks1, -1)
-    while len(ypeaks1) < len(ypeaks2):
-        ypeaks2 = np.delete(ypeaks2, -1)
-    x = np.arange(nr)
-    dist_i = np.interp(x, np.arange(len(np.diff(ypeaks1))), np.diff(ypeaks1))
-    shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks1 - ypeaks2) - np.min(abs(ypeaks1 - ypeaks2))))
-    for j in range(0, nl):
-        data_shift[j] = shift_i
-        data_dist[j] = dist_i
+    if len(ypeaks1) != 0 and len(ypeaks2) != 0:
+        mean_width = np.mean(np.diff(ypeaks1))/2
+
+        for i in range(0, len(ypeaks1)):
+            try:
+                teste = np.isclose(ypeaks2[:i + 1], ypeaks1[:i + 1], rtol=0, atol=mean_width)
+                if teste[i] == False and ypeaks1[i] > ypeaks2[i]:
+                    ypeaks2 = np.delete(ypeaks2, i)
+                    i = 0
+                if teste[i] == False and ypeaks1[i] < ypeaks2[i]:
+                    ypeaks1 = np.delete(ypeaks1, i)
+                    i = 0
+            except:
+                break
+        while len(ypeaks1) > len(ypeaks2):
+            ypeaks1 = np.delete(ypeaks1, -1)
+        while len(ypeaks1) < len(ypeaks2):
+            ypeaks2 = np.delete(ypeaks2, -1)
+
+        if len(ypeaks1)!=0 or len(ypeaks2) !=0 :
+            x = np.arange(nr)
+            dist_i = np.interp(x, np.arange(len(np.diff(ypeaks1))), np.diff(ypeaks1))
+            shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks1 - ypeaks2) - np.min(abs(ypeaks1 - ypeaks2))))
+            for j in range(0, nl):
+                data_shift[j] = shift_i
+                data_dist[j] = dist_i
+
     return data_shift, data_dist
 
 '''
 ########################################################################################
-#WINDOWS LAYOUT
+#Windows LAYOUTS
 Building frames for main windows
 ########################################################################################
 '''
@@ -255,7 +262,7 @@ layout_frame_ImgSample = [
               key='image1', expand_x=True)
      ],
     [sg.Input(expand_x=True, disabled=True, key='file1', visible='True')],
-    [sg.Button('Open File', font='Arial 10 bold'),
+    [sg.Button('Open File(s)', font='Arial 10 bold'),
      sg.Button('Rotate (°)', visible=True, font='Arial 10 bold', disabled=True),
      sg.Input('0', size=(5, 1), key='-DEGREE-', enable_events=True),
      sg.Text('  Image Rescale (w,h):'),
@@ -266,7 +273,7 @@ layout_frame_ImgReference = [
     [sg.Image(size=size2, background_color='black',
               key='image2', enable_events=True)],
     [sg.Input(expand_x=True, disabled=True, key='file2', visible='True')],
-    [sg.Button('Open Ref.', font='Arial 10 bold')],
+    [sg.Button('Open File', font='Arial 10 bold')],
 ]
 # LAYOUT SELECT COORD. AREA OPTIONS
 layout_area_coord = [
@@ -292,28 +299,28 @@ layout_area_selection = [
 ]
 # LAYOUT INPUT GAS AND RADIATION PARAMETERS
 layout_input_parameters = [
-    [sg.Text('Laser \nWavelength (nm): '),
+    [sg.Text('Laser \nWavelength (nm):'),
      sg.Input(lambda0, size=(5, 1), key='-lambda0-', enable_events=True)],
-    [sg.Text('Unc. laser\nWavelength (nm): '),
+    [sg.Text('Unc. laser\nWavelength (nm):'),
      sg.Input(unc_lambda0, size=(5, 1), key='-unclambda0-', enable_events=True)],
     [sg.Text('Gas Type:           '),
      sg.Combo(['H2', 'N2', 'He', 'Ar', '--'], default_value='N2', key='-combogas-', enable_events=True)],
     [sg.Text('Polarizability (Å³):'),
      sg.Input(polargas, size=(5, 1), key='-polargas-', enable_events=True)],
-    [sg.Text('Specific Heat:     '),
+    [sg.Text('Ratio Spec. Heat:'),
      sg.Input(specificheat, size=(5, 1), key='-specificheatgas-', enable_events=True)],
 ]
 # LAYOUT INPUT MEASUREMENT PARAMETERS
 layout_analysis_parameters = [
-    [sg.Text('Scaling Factor (µm/pixel):           '),
+    [sg.Text('Scaling Factor (µm/pixel):         '),
      sg.Input(factor, size=(5, 1), key='-factor-', enable_events=True)],
-    [sg.Text('Sigma - Gaussian Blur (pixel):     '),
+    [sg.Text('Sigma - Gaussian Blur (pixel):   '),
      sg.Input(sigma_gfilter, size=(5, 1), key='-sigma_gfilter-', enable_events=True)],
-    [sg.Text('Gaussian Filter position (pixel):   '),
+    [sg.Text('Gaussian Filter position (pixel): '),
      sg.Input(centerfilter, size=(5, 1), key='-centerfilter-', enable_events=True)],
-    [sg.Text('Fringes Orientation:       '),
+    [sg.Text('Fringes Orientation:     '),
      sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-combofringe-')],
-    [sg.Text('Axisymmetric:              '),
+    [sg.Text('Axisymmetric:            '),
      sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-comboaxisymm-')]
 ]
 # LAYOUT FRAME OF ALL INPUT OPTIONS
@@ -327,14 +334,14 @@ layout_frame_Options = [
 ]
 # LAYOUT FRAME LEFT - INPUTS
 layout_frame_ImagesL = [
-    [sg.Frame("Interferogram", layout_frame_ImgSample, size=(440, 430), title_location=sg.TITLE_LOCATION_TOP,
-              vertical_alignment="top", font='Arial 12 bold')],
+    [sg.Frame("Interferogram (Gas-Jet)", layout_frame_ImgSample, size=(440, 430), title_location=sg.TITLE_LOCATION_TOP,
+              vertical_alignment="top", font='Arial 10 bold')],
 ]
 # LAYOUT FRAME RIGHT - INPUTS AND APPLY
 layout_frame_ImagesR = [
-    [sg.Frame("Reference", layout_frame_ImgReference, size=(258, 258), title_location=sg.TITLE_LOCATION_TOP,
-              vertical_alignment="top", font='Arial 12 bold')],
-    [sg.Button('Apply Algorithm', size=(30, 6), font='Arial 12 bold', disabled=True, button_color='gray')],
+    [sg.Frame("Interferogram (Ref.)", layout_frame_ImgReference, size=(258, 258), title_location=sg.TITLE_LOCATION_TOP,
+              vertical_alignment="top", font='Arial 10 bold')],
+    [sg.Button('Analyse Data', size=(30, 6), font='Arial 12 bold', disabled=True, button_color='gray')],
     [sg.Button('Exit', size=(30, 2), button_color='black', font='Arial 10 bold')]
 ]
 # lAYOUT GLOBAL INPUTS
@@ -388,7 +395,7 @@ layout = [
               font='Arial 12 bold')],
 ]
 ######################################################################################################################
-window = sg.Window("Interferogram Analysis - Gas-Jet Profile (Version 1.0)", layout, margins=(1, 1), finalize=True)
+window = sg.Window("Interferogram Analysis - Gas-Jet Density Profile(Version 1.0)", layout, margins=(1, 1), finalize=True)
 ######################################################################################################################
 '''
 ####################################################################################################
@@ -405,7 +412,7 @@ while True:
         break
     ########################################################################
     # OPEN INTERFEROGRAM IMAGE
-    elif event == "Open File":
+    elif event == "Open File(s)":
         path_files = sg.popup_get_file("", no_window=True, multiple_files=True)
         if path_files:
             path1 = path_files[0]
@@ -462,11 +469,11 @@ while True:
         if path1 != '' and path2 != '':
             window['Rotate (°)'].update(disabled=False)
             window['-DEGREE-'].update(visible=True)
-            window['Apply Algorithm'].update(disabled=False)
+            window['Analyse Data'].update(disabled=False)
             window['Select Analysis Area'].update(disabled=False)
     ########################################################################
     # OPEN REFERENCE FILE
-    elif event == "Open Ref.":
+    elif event == "Open File":
         path_file2 = sg.popup_get_file("", no_window=True)
         if path_file2:
             path2 = path_file2
@@ -508,7 +515,7 @@ while True:
         if path1 != '' and path2 != '':
             window['Rotate (°)'].update(disabled=False)
             window['-DEGREE-'].update(visible=True)
-            window['Apply Algorithm'].update(disabled=False)
+            window['Analyse Data'].update(disabled=False)
             window['Select Analysis Area'].update(disabled=False)
     ########################################################################
     # COMBO GAS TYPE
@@ -554,20 +561,9 @@ while True:
     #########################################################################
     # BUTTON ROTATE
     elif event == 'Rotate (°)':
-        image_file = values["file1"]
-        rotate_degree = (get_value('-DEGREE-', values))
-        if os.path.exists(image_file):
-            shutil.copy(image_file, tmp_file)
-            imagetmp = Image.open(tmp_file)
-            imagetmp = imagetmp.rotate(rotate_degree, resample=Image.Resampling.BICUBIC)
-            imagetmp.save(tmp_file)
-            bio = io.BytesIO()
-            imagetmp.save(bio, format='PNG')
-            window["image1"].update(data=bio.getvalue(), size=size)
-        else:
-            continue
         apply_drawing(values, window)
-        window["image1"].update(data=bio.getvalue(), size=size)
+        centerfilter = 0
+        window['-centerfilter-'].update('0')
     '''
     #######################################################################
     # BUTTON APPLY - main event of window
@@ -575,7 +571,7 @@ while True:
     the data of gas profile.  
     #######################################################################
     '''
-    if event == 'Apply Algorithm':
+    if event == 'Analyse Data':
         # Cleaning plots
         try:
             fig_canvas_agg.get_tk_widget().forget()
@@ -674,25 +670,27 @@ while True:
                 # Range of gaussian filter
                 filterspoints_widths = (peak_widths(summap, filterpoints, rel_height=0.5)[0])
 
-                if len(filterpoints) == 0:
-                    sg.popup(f"WARNING: Unable to apply the Fast Fourier Transform to the selected image!")
-                    continue
-                if values['-combofringe-'] == 'horizontal':
-                    # filter range is equal to FWHM of signal of summaps
-                    if filterpoints[0] <= 5:
-                        centerfilter = filterpoints[1]
-                        f_range = int(filterspoints_widths[1])
-                    else:
-                        centerfilter = filterpoints[0]
-                        f_range = int(filterspoints_widths[0])
-                elif values['-combofringe-'] == 'vertical':
+                try:
+                    if values['-combofringe-'] == 'vertical':
+                        # filter range is equal to FWHM of signal of summaps
+                        if filterpoints[0] <= 5:
+                            centerfilter = filterpoints[1]
+                            f_range = int(filterspoints_widths[1])
+                        else:
+                            centerfilter = filterpoints[0]
+                            f_range = int(filterspoints_widths[0])
+                    elif values['-combofringe-'] == 'horizontal':
 
-                    if filterpoints[len(filterpoints) - 1] >= nrmap - 5:
-                        centerfilter = filterpoints[len(filterpoints) - 2]
-                        f_range = int(filterspoints_widths[len(filterpoints) - 2])
-                    else:
-                        centerfilter = filterpoints[len(filterpoints) - 1]
-                        f_range = int(filterspoints_widths[len(filterpoints) - 1])
+                        if filterpoints[len(filterpoints) - 1] >= nrmap - 5:
+                            centerfilter = filterpoints[len(filterpoints) - 2]
+                            f_range = int(filterspoints_widths[len(filterpoints) - 2])
+                        else:
+                            centerfilter = filterpoints[len(filterpoints) - 1]
+                            f_range = int(filterspoints_widths[len(filterpoints) - 1])
+                except:
+                    sg.popup(f"WARNING: Unable to apply the Fast Fourier Transform to the selected image!")
+                    centerfilter = 0
+                    continue
 
             window['-centerfilter-'].update(str(centerfilter))
 
@@ -704,12 +702,12 @@ while True:
                 gfilter[centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[centerfilter - f_range:centerfilter + f_range]))
                 # Applying gaussian filter at selected filter position
-                gfilter = gaussian_filter(gfilter, sigma=2 * f_range)
+                gfilter = gaussian_filter(gfilter, sigma=8 * f_range)
             elif values['-combofringe-'] == 'vertical':
                 gfilter[:, centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[:, centerfilter - f_range:centerfilter + f_range]))
                 # Applying gaussian filter at selected filter position
-                gfilter = gaussian_filter(gfilter, sigma=2 * f_range)
+                gfilter = gaussian_filter(gfilter, sigma=8 * f_range)
 
             # Applying Inverse FFT in resultant array obtained after use of the gaussian filter on FFT arrays
             ifftref = np.fft.ifft2(gfilter * fftref)
@@ -719,7 +717,7 @@ while True:
             phasemaps = (np.angle(ifftgas) - np.angle(ifftref))
             # Unwrap phase:
             uwphasemap = unwrap_phase(phasemaps)
-            # Range for scan is 5% of total dimension of matrix
+            # Range for scan is 5% of total dimension of 2D array
             frgs_shifts = np.ones(np.shape(intref))
             frgs_widths = np.ones(np.shape(intref))
             frgs_shifts, frgs_widths = [], []
@@ -733,6 +731,7 @@ while True:
                     # Scanning fringes pattern to define min. shift
                     frgs_ref = (intref0[l, begin_x:end_x])
                     frgs_plasma = (intgas0[l, begin_x:end_x])
+                    print(np.shape(frgs_plasma), np.shape(frgs_ref))
                     frgs_shifts_i, frgs_widths_i = fringes_info(frgs_plasma, frgs_ref, intref)
                     frgs_shifts.append(frgs_shifts_i)
                     frgs_widths.append(frgs_widths_i)
@@ -746,8 +745,8 @@ while True:
                     frgs_ref = np.transpose(intref0[begin_y:end_y, l])
                     frgs_plasma = np.transpose(intgas0[begin_y:end_y, l])
                     frgs_shifts_i, frgs_widths_i = fringes_info(frgs_plasma, frgs_ref, np.transpose(intref))
-                    frgs_shifts.append(np.transpose(frgs_shifts))
-                    frgs_widths.append(np.transpose(frgs_widths))
+                    frgs_shifts.append(np.transpose(frgs_shifts_i))
+                    frgs_widths.append(np.transpose(frgs_widths_i))
 
             frgs_shifts = mean_maps(frgs_shifts)
             frgs_widths = mean_maps(frgs_widths)
@@ -885,15 +884,18 @@ while True:
             std_dens_mean = np.sqrt(np.square(mean_maps(std_gas_dens)) + \
                                        np.square(std_maps(gas_dens, std_dens_mean)))
         else:
-            #PHASEMAP
-            gas_phasemap_mean = (gas_phasemap[0])
-            std_phasemap_mean =(std_phasemap[0])
-            #INV. ABEL TRANSF. MAP
-            gas_abelmap_mean = (gas_abelphasemap[0])
-            std_abelmap_mean = (std_abelmap[0])
-            #PLASMA DENSITY
-            gas_dens_mean = (gas_dens[0])
-            std_dens_mean = (std_gas_dens[0])
+            try:
+                #PHASEMAP
+                gas_phasemap_mean = (gas_phasemap[0])
+                std_phasemap_mean =(std_phasemap[0])
+                #INV. ABEL TRANSF. MAP
+                gas_abelmap_mean = (gas_abelphasemap[0])
+                std_abelmap_mean = (std_abelmap[0])
+                #PLASMA DENSITY
+                gas_dens_mean = (gas_dens[0])
+                std_dens_mean = (std_gas_dens[0])
+            except:
+                continue
 
         '''
         BUILDING 2D AND 1D PLOTS
