@@ -55,7 +55,13 @@ The user that intends to use the whole interferogram figure needs to uncheck the
   - Gas ***[Polarizability]*** in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
    - The ***[Specific Heat Ratio]*** of a gas is the ratio of the specific heat at constant pressure, ***Cp***, to the specific heat at constant volume, ***Cv***.
 
-- 
+- ***[Analysis Parameters]*** This form contains the parameters for analysis of the interferogram images:
+  - ***[Scaling Factor]*** of an interferogram image in pixels/micrometers;
+  - ***[Sigma - Gaussian Blur]*** is a multidimensional gaussian image filter. The standard deviation of the gaussian filter (Sigma) defined by the user is equal for all axes.
+  - ***[ Gaussian Filter Position]*** this parameter is different from Gaussian Blur. This parameter is set automatically by the algorithm and this position defines which frequency will be used to apply the Inverse Fourier Transform and build the phase map of the gas-jet.
+Both the above parameters are defined in pixels. ***Note:*** The algorithm set the frequency that defines a positive phase map.  But, users can change the filter position.
+  - ***[Fringes Orientation]*** can be vertical or horizontal.
+  - ***[Axisymmetric]*** An important parameter to apply the Inverse Abel Transform is the axis of symmetry (or axisymmetric). The axisymmetric can be horizontal or vertical.
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7)
 ## Authors
