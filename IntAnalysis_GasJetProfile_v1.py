@@ -294,21 +294,21 @@ layout_area_coord = [
 # LAYOUT SELECT AREA OPTIONS
 layout_area_selection = [
     [sg.Button('Select Analysis Area', size=(20, 2), font='Arial 10 bold', disabled=True)],
-    [sg.Checkbox('Cut selected area', default=True, key='-checkcut-')],
+    [sg.Checkbox('Use selected area', default=True, key='-checkcut-')],
     [sg.Frame('Area Coord.', layout_area_coord, size=(178, 80), title_location=sg.TITLE_LOCATION_TOP,
               vertical_alignment="top", font='Arial 10 bold')],
 ]
 # LAYOUT INPUT GAS AND RADIATION PARAMETERS
 layout_input_parameters = [
-    [sg.Text('Laser \nWavelength (nm):'),
+    [sg.Text('Laser \nWavelength (nm):   '),
      sg.Input(lambda0, size=(5, 1), key='-lambda0-', enable_events=True)],
-    [sg.Text('Unc. laser\nWavelength (nm):'),
+    [sg.Text('Unc. Laser\nWavelength (nm):   '),
      sg.Input(unc_lambda0, size=(5, 1), key='-unclambda0-', enable_events=True)],
-    [sg.Text('Gas Type:           '),
+    [sg.Text('Gas Type:              '),
      sg.Combo(['H2', 'N2', 'He', 'Ar', '--'], default_value='N2', key='-combogas-', enable_events=True)],
-    [sg.Text('Polarizability (Å³):'),
+    [sg.Text('Polarizability (Å³):   '),
      sg.Input(polargas, size=(5, 1), key='-polargas-', enable_events=True)],
-    [sg.Text('Ratio Spec. Heat:'),
+    [sg.Text('Spec. Heat Ratio:   '),
      sg.Input(specificheat, size=(5, 1), key='-specificheatgas-', enable_events=True)],
 ]
 # LAYOUT INPUT MEASUREMENT PARAMETERS
@@ -328,9 +328,9 @@ layout_analysis_parameters = [
 layout_frame_Options = [
     [sg.Frame('Select Area', layout_area_selection, size=(198, 210), title_location=sg.TITLE_LOCATION_TOP,
               vertical_alignment="top", font='Arial 10 bold'),
-     sg.Frame('Input Parameters', layout_input_parameters, size=(178, 210), title_location=sg.TITLE_LOCATION_TOP,
+     sg.Frame('Experimental Parameters', layout_input_parameters, size=(188, 210), title_location=sg.TITLE_LOCATION_TOP,
               vertical_alignment="top", font='Arial 10 bold'),
-     sg.Frame('Analysis Parameters', layout_analysis_parameters, size=(268, 210), title_location=sg.TITLE_LOCATION_TOP,
+     sg.Frame('Analysis Parameters', layout_analysis_parameters, size=(258, 210), title_location=sg.TITLE_LOCATION_TOP,
               vertical_alignment="top", font='Arial 10 bold')],
 ]
 # LAYOUT FRAME LEFT - INPUTS
@@ -672,7 +672,7 @@ while True:
                 filterspoints_widths = (peak_widths(summap, filterpoints, rel_height=0.5)[0])
 
                 try:
-                    if values['-combofringe-'] == 'vertical':
+                    if values['-combofringe-'] == 'horizontal':
                         # filter range is equal to FWHM of signal of summaps
                         if filterpoints[0] <= 5:
                             centerfilter = filterpoints[1]
@@ -680,7 +680,7 @@ while True:
                         else:
                             centerfilter = filterpoints[0]
                             f_range = int(filterspoints_widths[0])
-                    elif values['-combofringe-'] == 'horizontal':
+                    elif values['-combofringe-'] == 'vertical':
 
                         if filterpoints[len(filterpoints) - 1] >= nrmap - 5:
                             centerfilter = filterpoints[len(filterpoints) - 2]
@@ -732,7 +732,6 @@ while True:
                     # Scanning fringes pattern to define min. shift
                     frgs_ref = (intref0[l, begin_x:end_x])
                     frgs_plasma = (intgas0[l, begin_x:end_x])
-                    print(np.shape(frgs_plasma), np.shape(frgs_ref))
                     frgs_shifts_i, frgs_widths_i = fringes_info(frgs_plasma, frgs_ref, intref)
                     frgs_shifts.append(frgs_shifts_i)
                     frgs_widths.append(frgs_widths_i)
