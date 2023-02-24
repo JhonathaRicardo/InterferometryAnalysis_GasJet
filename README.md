@@ -47,7 +47,12 @@ In this section, we provide users with a simple review of the software's functio
 ***[Exit]:*** Close software.
 
 ### Options
-***[Select Analysis Area]:*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. Note: the user that intends to use the whole interferogram figure needs to uncheck the checkbox ***[use select area]***.  
+***[Select Analysis Area]:*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. The selected area is defined by a rectangle with edges defined by X and Y coordinates(***[Y Coord]*** and ***[X Coord]***).
+The user that intends to use the whole interferogram figure needs to uncheck the checkbox ***[Use select area]***.
+***[Experimental Parameteres]*** In this form, the user set the experimental parameters used to obtain the interferogram image. These parameters are:
+- ***[Laser Wavelength]*** and ***[uncertainty Laser Wavelength]*** in nm;
+- Gas ***[Polarizability]*** in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
+- The [Specific Heat Ratio] of a gas is the ratio of the specific heat at constant pressure, Cp, to the specific heat at constant volume, Cv.
 
 
 ## Reference
