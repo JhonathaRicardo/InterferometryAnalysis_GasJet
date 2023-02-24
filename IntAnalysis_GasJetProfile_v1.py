@@ -1,6 +1,7 @@
-# Software: Gas-Jet Density Profile(Version 1.0)
+# Software: Interferometry Analysis - Gas-Jet Profile(Version 1.0)
 # Authors: Jhonatha Ricardo dos Santos, Armando Zuffi, Ricardo Edgul Samad, Nilson Dias Vieira Junior
 # Python 3.11
+# Last update: 24/02/23
 
 # LYBRARIES
 # The Python Standard Library
@@ -702,12 +703,12 @@ while True:
                 gfilter[centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[centerfilter - f_range:centerfilter + f_range]))
                 # Applying gaussian filter at selected filter position
-                gfilter = gaussian_filter(gfilter, sigma=8 * f_range)
+                gfilter = gaussian_filter(gfilter, sigma=0.05 * nlmap * f_range)
             elif values['-combofringe-'] == 'vertical':
                 gfilter[:, centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[:, centerfilter - f_range:centerfilter + f_range]))
                 # Applying gaussian filter at selected filter position
-                gfilter = gaussian_filter(gfilter, sigma=8 * f_range)
+                gfilter = gaussian_filter(gfilter, sigma=0.05 * nrmap * f_range)
 
             # Applying Inverse FFT in resultant array obtained after use of the gaussian filter on FFT arrays
             ifftref = np.fft.ifft2(gfilter * fftref)
