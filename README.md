@@ -47,7 +47,7 @@ In this section, we provide users with a simple review of the software's functio
 ***[Exit]:*** Close software.
 
 ### Options
-***[Select Analysis Area]:***
+***[Select Analysis Area]:*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. Note: the user that intends to use the whole interferogram figure needs to uncheck the checkbox ***[use select area]***.  
 
 
 ## Reference
