@@ -4,15 +4,14 @@
 ![version](https://img.shields.io/badge/version-v.1.0-green)
 ![status](https://img.shields.io/badge/status-under%20development-green)
 ## Abstract
-<p align = "justify">
 The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the target gas is crucial to understand the phenomena involved in the particle acceleration process [[1]](#reference).
 This Python algorithm was developed to recover the accumulated phase across the neutral gas target as well as estimate the target density distribution.
-</p>
 
 ## Summary
 * [Installation](#installation)
 * [How to use](#how-to-use)
   * [Main Screen](#main-screen)
+* [Reference](#reference)
 * [Authors](#authors)
 * [License](#license)
 * [Citation](#citation)
