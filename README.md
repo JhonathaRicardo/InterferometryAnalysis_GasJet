@@ -64,6 +64,8 @@ Both the above parameters are defined in pixels. ***Note:*** The algorithm set t
   - ***[Axisymmetric]*** An important parameter to apply the Inverse Abel Transform is the axis of symmetry (or axisymmetric). The axisymmetric can be horizontal or vertical.
 
 ### Gas-Jet Profile
+- ***[Stages]:*** The stages of the results obtained by the algorithm can be viewed by user.
+ - ***[Fourier Transform]*** This image is build trought the Fourier Transform of interferogram image.
 
 
 ## Reference
