@@ -28,7 +28,8 @@ The second way to use this software is through the executable file. The users ca
 Interferometry Analysis - The Gas-Jet software has a graphical interface developed with PysimpleGUI. This interface assists users and facilitates their applications.
 In this section, we provide users with a simple review of the software's functions and how to use them.
 ### Main Screen
-### Interferogram Images Fram
+![Template](https://github.com/JhonathaRicardo/InterferometryAnalysis_GasJetProfile/blob/main/Images/Template_image.jpg)
+### Interferogram Image Frame
 - ***[Interferogram (Gas-Jet)]:*** Scaled gas-jet interferogram image.
 
 - ***[Open File(s)]:*** Open interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
@@ -61,6 +62,10 @@ The user that intends to use the whole interferogram figure needs to uncheck the
 Both the above parameters are defined in pixels. ***Note:*** The algorithm set the frequency that defines a positive phase map.  But, users can change the filter position.
   - ***[Fringes Orientation]*** can be vertical or horizontal.
   - ***[Axisymmetric]*** An important parameter to apply the Inverse Abel Transform is the axis of symmetry (or axisymmetric). The axisymmetric can be horizontal or vertical.
+
+### Gas-Jet Profile
+
+
 ## Reference
 [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7)
 ## Authors
