@@ -76,13 +76,13 @@ Both the above parameters are defined in pixels. ***Note:*** The algorithm set t
     | *Fig.2 - Fourier Transform of gas-jet interferogram* |
   
   Note: Case the ***[Gaussian Filter position]*** is zero, the software will set the valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
-  - ***[Gaussian Filter]*** 
+  - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency.
 
     | ![Gaussian filter](/Images/Gaussian_Filter.png) |
     |:--:| 
     | *Fig.3 -  Applied Gaussian filter* | 
   
-  - ***[Accumulated Phase]***
+  - ***[Accumulated Phase]*** Accumulated phase map of the gas-jet.
   
     | ![Acc.phase map](/Images/Accumulated_Phase.png) |
     |:--:| 
