@@ -65,7 +65,9 @@ Both the above parameters are defined in pixels. ***Note:*** The algorithm set t
 
 ### Gas-Jet Profile
 - ***[Stages]:*** The stages of the results obtained by the algorithm can be viewed by user.
- - ***[Fourier Transform]*** This image is build trought the Fourier Transform of interferogram image.
+  - ***[Fourier Transform]*** 
+  
+This image is built through the Fourier Transform of gas-jet interferogram image. From this frequency map, the software selects automatically the frequency that generates a positive phase map. The pixel position (red line) of the selected frequency is the ***[Gaussian Filter position]***. Note: Case the ***[Gaussian Filter position]*** is zero, the software will set the valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
 
 
 ## Reference
