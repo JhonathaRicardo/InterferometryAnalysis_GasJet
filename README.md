@@ -22,7 +22,7 @@ This Python algorithm was developed to recover the accumulated phase across the 
 * [Citation](#citation)
 
 ## Installation
-Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of some packages: [NumPy](https://numpy.org/) [[2]](#reference), [Scipy](https://scipy.org/) [[3]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[4]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[5]](#reference)to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[5]] to plot results, and
+Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of some packages: [NumPy](https://numpy.org/) [[2]](#reference), [Scipy](https://scipy.org/) [[3]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[4]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[5]](#reference) to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[6]](#reference) to plot results, and
 [PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the users template.
 
 The second way to use this software is through the executable file. The users can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
