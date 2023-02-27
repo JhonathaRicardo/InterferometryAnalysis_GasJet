@@ -11,6 +11,9 @@ This Python algorithm was developed to recover the accumulated phase across the 
 * [Installation](#installation)
 * [How to use](#how-to-use)
   * [Main Screen](#main-screen)
+  * [Interferogram Image](#interferogram-image)
+  * [Options](#options)
+  * [Gas-Jet Profile](#gas-jet-profile)
 * [Reference](#reference)
 * [Authors](#authors)
 * [License](#license)
@@ -33,7 +36,7 @@ In this section, we provide users with a simple review of the software's functio
 |:--:| 
 | *Fig.1 - Software Template* |
 
-### Interferogram Image Frame
+### Interferogram Image
 - ***[Interferogram (Gas-Jet)]*** Scaled gas-jet interferogram image.
 
 - ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
