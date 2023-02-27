@@ -113,6 +113,7 @@ From the next three steps, users have the option of viewing the average values o
 The interferogram analysis software algorithm works according to the flowchart below:
 
 ### Accumulated Phase
+The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the interferogram fringes.
 
 #### Standard Deviation of Accumulated Phase
 
