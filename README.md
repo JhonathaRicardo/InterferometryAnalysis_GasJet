@@ -22,7 +22,7 @@ This Python algorithm was developed to recover the accumulated phase across the 
 * [Citation](#citation)
 
 ## Installation
-Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of some packages: [NumPy](https://numpy.org/), [Scipy](https://scipy.org/) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) for data processing, [Pillow](https://pypi.org/project/Pillow/) to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) to plot results, and
+Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of some packages: [NumPy](https://numpy.org/)[[2]](#reference), [Scipy](https://scipy.org/)[[3]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html)[[4]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/)[[5]](#reference)to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) to plot results, and
 [PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the users template.
 
 The second way to use this software is through the executable file. The users can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
@@ -97,21 +97,33 @@ From the next three steps, users have the option of viewing the average values o
     
   - ***[Abel Transform]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
   
-    | ![Acc.phase map](/Images/Abel_Transform.png) |
+    | ![Phase map](/Images/Abel_Transform.png) |
     |:--:| 
-    | *Fig.4 -  Phase map of gas-jet interferogram* |  
+    | *Fig.5 -  Phase map of gas-jet interferogram* |  
     
-   - ***[Abel Transform]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
-  
-    | ![Acc.phase map](/Images/GasjetDensity.png) |
+  - ***[Density Profile]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
+    
+    | ![Gasjet_density](/Images/GasjetDensity.png) |
     |:--:| 
-    | *Fig.5 -  Gas-jet density profile* |
-
+    | *Fig.6 -  Gas-jet density profile* |
+    
+    
 ## How to work
+The interferogram analysis software algorithm works according to the flowchart below:
 
+### Accumulated Phase
+
+### Inverse Abel Transform
+
+### Standard deviation
   
 ## Reference
-[1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[https://doi.org/10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7)
+- [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[DOI: 10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7).
+- [2] Harris, C.R., Millman, K.J., van der Walt, S.J. et al. Array programming with NumPy. Nature 585, 357–362 (2020). [DOI: 10.1038/s41586-020-2649-2](https://www.nature.com/articles/s41586-020-2649-2). 
+- [3] Pauli Virtanen, et. al. (2020) SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 17(3), 261-272. [DOI: 10.1038/s41592-019-0686-2](https://www.nature.com/articles/s41592-019-0686-2).
+- [4] Gibson, Stephen; Hickstein, Daniel D.; Yurchak, Roman; Ryazanov, Mikhail; Das, Dhrubajyoti; Shih, Gilbert.(2022) PyAbel, PyAbel: v0.9.0, Zenodo,  [DOI: 10.5281/zenodo.7438595](https://doi.org/10.5281/zenodo.7438595)
+- [5] Clark, A. (2015). Pillow (PIL Fork) Documentation. readthedocs. Retrieved from [https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf](https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf)
+
 ## Authors
 Interferometry Analysis - Gas-Jet software was developed by researchs of the High Power Ultrashort Pulse Lasers Group of the Center for Lasers and Applications (CLA) at Instituto de Pesquisas Energéticas e Nucleares ([IPEN](https://www.ipen.br/portal_por/portal/default.php)).
 * Jhonatha Ricardo dos Santos [![logo_ORCID](/Images/logo_ORCID.png)](https://orcid.org/0000-0001-7877-0580)
