@@ -78,13 +78,13 @@ Both the above parameters are defined in pixels. ***Note:*** The algorithm set t
   Note: Case the ***[Gaussian Filter position]*** is zero, the software will set the valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
   - ***[Gaussian Filter]*** 
 
-    | ![Gaussian filter](/Images/Gaussian Filter.png) |
+    | ![Gaussian filter](/Images/Gaussian_Filter.png) |
     |:--:| 
     | *Fig.3 -  Applied Gaussian filter* | 
   
   - ***[Accumulated Phase]***
   
-    | ![Acc.phase map](/Images/Accumulated Phase.png) |
+    | ![Acc.phase map](/Images/Accumulated_Phase.png) |
     |:--:| 
     | *Fig.4 -  Accumulated phase of gas-jet interferogram* |   
   
