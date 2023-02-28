@@ -117,7 +117,7 @@ The Accumulated Phase map or accumulated phase shift map is obtained from the sh
 
 $$&Delta;&phi; =  tan^{-1}\left\lbrack{&phi;_{gas}-&phi;_{background}}\right\rbrack$$
 
-where: $&phi;_{gas}$ and $&phi;_{background}$ is the background phase map.
+where $&phi;{gas}$ and $&phi;{background}$ is the background phase map.
 
 #### Standard Deviation of Accumulated Phase
 The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion [[6]](#reference). According to M. Lehmann [[7]](#reference), for two well-resolved speckle fields (background and perturbed by gas) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
