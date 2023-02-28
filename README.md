@@ -113,14 +113,15 @@ From the next three steps, users have the option of viewing the average values o
 The interferogram analysis software algorithm works according to the flowchart below:
 
 ### Accumulated Phase
-The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the interferogram fringes. Two interferogram images are used. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift $&Delta;&phi;$ along the beam propagation direction (z direction) by the following equation:
+The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[6]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[6,7]](#reference) along the beam propagation direction (z direction) by the following equation:
 
-$$&Delta;&phi; =  tan^{-1}\left\lbrack{&phi;_{gas}-&phi;_{background}}\right\rbrack$$
+$$&Delta;&phi;_{z} =  tan^{-1}\left\lbrack{&phi;_{gas}-&phi;_{background}}\right\rbrack$$
 
 where  $&phi;_{gas}$  and  $&phi; _{background}$   is the background phase map.
 
 #### Standard Deviation of Accumulated Phase
-The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion [[6]](#reference). According to M. Lehmann [[7]](#reference), for two well-resolved speckle fields (background and perturbed by gas) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
+
+The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion [[8]](#reference). According to M. Lehmann [[9]](#reference), for two well-resolved speckle fields (background and perturbed by gas) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
 
 $$ &sigma;_{&Delta;&phi;}(&Delta;x,I_{1},I_{2}) = {&Delta;x\over 2}{&pi;\over &beta;} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2} $$
 
@@ -128,7 +129,13 @@ where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields 
 
 ### Inverse Abel Transform
 
+As mentioned above, $&Delta;&phi;_{z}$ the integrated phase map along the laser beam propagation direction (z direction). 
+
+Assuming an axisymmetric gas-jet, the integrated information along z is sufficient to reconstruct the radial information using inversion $&Delta;&phi;_{r}$ such as the Abel inversion method [[7,8]](#reference).
+
+
 #### Standard Deviation of Inverse Abel Transform
+
 
 ### Density Profile
 
@@ -140,8 +147,11 @@ where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields 
 - [3] Pauli Virtanen, et. al. (2020) SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 17(3), 261-272. [DOI: 10.1038/s41592-019-0686-2](https://www.nature.com/articles/s41592-019-0686-2).
 - [4] Gibson, Stephen; Hickstein, Daniel D.; Yurchak, Roman; Ryazanov, Mikhail; Das, Dhrubajyoti; Shih, Gilbert.(2022) PyAbel, PyAbel: v0.9.0, Zenodo,  [DOI: 10.5281/zenodo.7438595](https://doi.org/10.5281/zenodo.7438595).
 - [5] Clark, A. (2015). Pillow (PIL Fork) Documentation. readthedocs. Retrieved from [https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf](https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf).
-- [6] A. Saville, M. (2022). 2D Relative Phase Reconstruction in Plasma Diagnostics. Optical Interferometry - A Multidisciplinary Technique in Science and Engineering. [DOI: 10.5772/intechopen.104748](https://www.intechopen.com/chapters/81777).
-- [7] Mathias Lehmann, "Decorrelation-induced phase errors in phase-shifting speckle interferometry," Appl. Opt. 36, 3657-3667 (1997). [DOI: 10.1364/AO.36.003657](https://doi.org/10.1364/AO.36.003657).  
+- [6] J. P. Couperus, A. Kohler, T. A. W. Wolterink, A. Jochmann, O. Zarini, H. M. J. Bastiaens, K. J. Boller, A. Irman, and U. Schramm, Nucl Instrum Meth A 830, 504-509 (2016).[DOI: 10.1016/j.nima.2016.02.099](https://doi.org/10.1016/j.nima.2016.02.099).
+- [7] H. Y. Lin, Y. H. Huang, S. Y. Cheng, Y. J. Lin, C. P. Liu, C. L. Huang, and C. L. Lin, Ther Innov Regul Sci 55, 872-880 (2021).***[VERIFY]***
+- [7] V. Malka, C. Coulaud, J. P. Geindre, V. Lopez, Z. Najmudin, D. Neely, and F. Amiranoff, Rev. Sci. Instrum. 71, 2329-2333 (2000). [DOI: 10.1063/1.1150619](https://doi.org/10.1063/1.1150619)
+- [8] A. Saville, M. (2022). 2D Relative Phase Reconstruction in Plasma Diagnostics. Optical Interferometry - A Multidisciplinary Technique in Science and Engineering. [DOI: 10.5772/intechopen.104748](https://www.intechopen.com/chapters/81777).
+- [9] Mathias Lehmann, "Decorrelation-induced phase errors in phase-shifting speckle interferometry," Appl. Opt. 36, 3657-3667 (1997). [DOI: 10.1364/AO.36.003657](https://doi.org/10.1364/AO.36.003657).  
 
 ## Authors
 Interferometry Analysis - Gas-Jet software was developed by researchs of the High Power Ultrashort Pulse Lasers Group of the Center for Lasers and Applications (CLA) at Instituto de Pesquisas Energéticas e Nucleares ([IPEN](https://www.ipen.br/portal_por/portal/default.php)).
