@@ -56,7 +56,7 @@ In this section, we provide users with a simple review of the software's functio
 - ***[Exit]*** Close software.
 
 ### Options
-- ***[Select Analysis Area]*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. The selected area is defined by a rectangle with edges defined by X and Y coordinates(***[Y Coord]*** and ***[X Coord]***).
+- ***[Select Analysis Area]*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***).
 The user that intends to use the whole interferogram figure needs to uncheck the checkbox ***[Use select area]***.
 
 - ***[Experimental Parameteres]*** In this form, the user set the experimental parameters used to obtain the interferogram image. These parameters are:
@@ -117,6 +117,7 @@ The Accumulated Phase map or accumulated phase shift map is obtained from the sh
 
 #### Standard Deviation of Accumulated Phase
 The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion.
+According to M. Lehmann [[6]](#reference), for two well-resolved speckle fields (background and perturbed by gas, for example) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
 
 $$ &sigma;_{x}(&Delta;x,I_{1},I_{2}) = {&Delta;x\over 2}{&pi;\over &beta;} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2} $$
 
