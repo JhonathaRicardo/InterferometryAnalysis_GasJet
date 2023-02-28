@@ -116,6 +116,11 @@ The interferogram analysis software algorithm works according to the flowchart b
 The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the interferogram fringes. Two interferogram images are used. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes.
 
 #### Standard Deviation of Accumulated Phase
+The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion.
+
+$$ &sigma;_{x}(&Delta;x,I_{1},I_{2}) = {&Delta;x\over 2}{&pi;\over &beta;} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2} $$
+
+
 
 ### Inverse Abel Transform
 
@@ -131,7 +136,7 @@ The Accumulated Phase map or accumulated phase shift map is obtained from the sh
 - [3] Pauli Virtanen, et. al. (2020) SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 17(3), 261-272. [DOI: 10.1038/s41592-019-0686-2](https://www.nature.com/articles/s41592-019-0686-2).
 - [4] Gibson, Stephen; Hickstein, Daniel D.; Yurchak, Roman; Ryazanov, Mikhail; Das, Dhrubajyoti; Shih, Gilbert.(2022) PyAbel, PyAbel: v0.9.0, Zenodo,  [DOI: 10.5281/zenodo.7438595](https://doi.org/10.5281/zenodo.7438595).
 - [5] Clark, A. (2015). Pillow (PIL Fork) Documentation. readthedocs. Retrieved from [https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf](https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf).
-- [6] 
+- [6] Mathias Lehmann, "Decorrelation-induced phase errors in phase-shifting speckle interferometry," Appl. Opt. 36, 3657-3667 (1997). [DOI: 10.1364/AO.36.003657](https://doi.org/10.1364/AO.36.003657).  
 
 ## Authors
 Interferometry Analysis - Gas-Jet software was developed by researchs of the High Power Ultrashort Pulse Lasers Group of the Center for Lasers and Applications (CLA) at Instituto de Pesquisas Energéticas e Nucleares ([IPEN](https://www.ipen.br/portal_por/portal/default.php)).
