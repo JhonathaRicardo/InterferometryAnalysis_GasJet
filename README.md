@@ -134,6 +134,9 @@ Assuming an axisymmetric gas-jet, the integrated information along z is sufficie
 
 $$ \Delta\phi_{r} = - {1 \over \pi} \int_{r}^{\infty} {d (\Delta\phi_{z}) \over dz} {dz \over \sqrt {z² - r²}} $$ 
 
+In this software, the phase map is determined from the application of the PyAbel [[4]](#refence) algorithm on the accumulated phase map.
+
+PyAbel is a Python package that provides functions for the forward and inverse Abel transforms. The inverse Abel transform takes a 2D projection and reconstructs a slice of the cylindrically symmetric 3D distribution and, for that,.
 
 #### Standard Deviation of Inverse Abel Transform
 
