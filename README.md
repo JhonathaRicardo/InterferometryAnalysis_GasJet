@@ -115,23 +115,24 @@ The interferogram analysis software algorithm works according to the flowchart b
 ### Accumulated Phase
 The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[6]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[6,7]](#reference) along the beam propagation direction (z direction) by the following equation:
 
-$$&Delta;&phi;_{z} =  tan^{-1}\left\lbrack{&phi;_{gas}-&phi;_{background}}\right\rbrack$$
+$$ \Delta\phi_{z} =  tan^{-1}\left\lbrack{\phi_{gas} - \phi_{background}}\right\rbrack$$
 
-where  $&phi;_{gas}$  and  $&phi; _{background}$   is the background phase map.
+where  $\phi_{gas}$  and  $\phi_{background}$   is the background phase map.
 
 #### Standard Deviation of Accumulated Phase
 
 The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion [[8]](#reference). According to M. Lehmann [[9]](#reference), for two well-resolved speckle fields (background and perturbed by gas) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
 
-$$ &sigma;_{&Delta;&phi;}(&Delta;x,I_{1},I_{2}) = {&Delta;x\over 2}{&pi;\over &beta;} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2} $$
+$$ \sigma_{\Delta\phi}(\Delta x, I_{1} ,I_{2}) = {\Delta x \over 2}{\pi \over \beta} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2} $$
 
-where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields (with mean intensity $\overline{I}$ each), $&Delta;x$ is the displacement of the image in the direction perpendicular to the direction axis of the fringes, and $&beta;$ is the speckle size. 
+where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields (with mean intensity $\overline{I}$ each), $&Delta;x$ is the displacement of the image in the direction perpendicular to the direction axis of the fringes, and $\beta$ is the speckle size. 
 
 ### Inverse Abel Transform
 
-As mentioned above, $&Delta;&phi;_{z}$ the integrated phase map along the laser beam propagation direction (z direction). 
+As mentioned above, $\Delta\phi_{z}$ the integrated phase map along the laser beam propagation direction (z direction).
+Assuming an axisymmetric gas-jet, the integrated information along z is sufficient to reconstruct the radial information using inversion $\Delta\phi_{r}$ such as the Abel inversion method [[7,8]](#reference).
 
-Assuming an axisymmetric gas-jet, the integrated information along z is sufficient to reconstruct the radial information using inversion $&Delta;&phi;_{r}$ such as the Abel inversion method [[7,8]](#reference).
+$$ \Delta\phi_{r} = - {1 \over \pi} \int_{r}^{\infty} {d (\Delta\phi_{z}) \over dz} {dz \over \sqrt {z² - r²}} $$ 
 
 
 #### Standard Deviation of Inverse Abel Transform
