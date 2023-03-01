@@ -170,9 +170,9 @@ $$ n = 1 + {\Delta\phi_{r} \lambda \over 2\pi} \tag{4}$$
 
 
 #### Standard Deviation of Density
-The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement ($\sigma_{measurement} = \sigma_{\Delta\phi_{z}}$), and the numerical accuracy of the Abel inversion [[14]](#reference) ($\sigma_{abel}$). This way, the standard deviation of phase-shift map $\sigma_{\Delta\phi_{r}}$ can be write as ($5$):
+The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement ($\sigma_{\Delta\phi_{z}}$), and the numerical accuracy of the Abel inversion [[14]](#reference) ($\sigma_{abel}$). This way, the standard deviation of phase-shift map $\sigma_{\Delta\phi_{r}}$ can be write as ($5$):
 
-$$  \sigma_{\Delta\phi_{r}} = \sqrt{\left({\sigma_{measurement}}^2 + {\sigma_{abel}}^2\right)} \tag{5}$$
+$$  \sigma_{\Delta\phi_{r}} = \sqrt{\left({\sigma_{\Delta\phi_{z}}}^2 + {\sigma_{abel}}^2\right)} \tag{5}$$
 
 So, the standard deviation of gas density $\sigma_{\rho}$ is given by ($6$):
 
