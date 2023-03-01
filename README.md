@@ -220,9 +220,9 @@ Interferogram Analysis - Gas-Jet software was developed to help with the analyze
 The author Jhonatha Ricardo dos Santos also acknowledges the FAPESP for doctoral fellowship 2017/13737-8. 
 
 ## License
-Copyright (c) 2023 Jhonatha Ricardo dos Santos
+Interferogram Analysis - Gas-Jet Profile is licensed under the [MIT license](/LICENSE).
 
-Interferogram Analysis - Gas-Jet Profile is licensed under the [MIT license](/MIT license), so it can be used for pretty much whatever you want! Of course, it is provided “as is” with absolutely no warranty.
+Copyright (c) 2023 Jhonatha Ricardo dos Santos
 
 ## Citation
 
