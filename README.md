@@ -9,12 +9,12 @@ This Python algorithm was developed to recover the accumulated phase across the 
 
 ## Summary
 * [Installation](#installation)
-* [How to use](#how-to-use)
+* [How to use it](#how-to-use-it)
   * [Main Screen](#main-screen)
   * [Interferogram Image](#interferogram-image)
   * [Options](#options)
   * [Gas-Jet Profile](#gas-jet-profile)
-* [How to work](#how-to-work)
+* [How it work](#how-it-work)
 * [Reference](#reference)
 * [Authors](#authors)
 * [Acknowledgment](#acknowledgment)
@@ -29,7 +29,7 @@ The second way to use this software is through the executable file. The users ca
 
 <code>   pyinstaller --onefile -w IntAnalysis_GasJetProfile.py                </code>
 
-## How to use
+## How to use it
 Interferometry Analysis - The Gas-Jet software has a graphical interface developed with PysimpleGUI. This interface assists users and facilitates their applications.
 In this section, we provide users with a simple review of the software's functions and how to use them.
 ### Main Screen
@@ -41,11 +41,15 @@ In this section, we provide users with a simple review of the software's functio
 ### Interferogram Image
 - ***[Interferogram (Gas-Jet)]*** Scaled gas-jet interferogram image.
 
-- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
+- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.
+  > **Warning**   
+  >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
 - ***[Interferogram (Ref.)]*** Scaled reference interferogram image.
 
-- ***[Open File]*** Open an undisturbed interferogram image(s) file(s). Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.  
+- ***[Open File]*** Open an undisturbed interferogram image(s) file(s). Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.
+  > **Warning**   
+  >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
  
 - ***[Rotate]*** The image rotates in degrees. Positive degrees promote counterclockwise rotation.  
 
@@ -109,11 +113,11 @@ From the next three steps, users have the option of viewing the average values o
     | *Fig.6 -  Gas-jet density profile* |
     
     
-## How to work
+## How it work
 The interferogram analysis software algorithm works according to the flowchart below:
 
 ### Accumulated Phase
-The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[6]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[6,7]](#reference) along the beam propagation direction (z direction) by the following equation:
+The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[7]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[8, 9]](#reference) along the beam propagation direction (z direction) by the following equation:
 
 $$ \Delta\phi_{z} =  tan^{-1}\left\lbrack{\phi_{gas} - \phi_{background}}\right\rbrack$$
 
@@ -121,7 +125,7 @@ where  $\phi_{gas}$  and  $\phi_{background}$   is the background phase map.
 
 #### Standard Deviation of Accumulated Phase
 
-The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion [[8]](#reference). According to M. Lehmann [[9]](#reference), for two well-resolved speckle fields (background and perturbed by gas) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
+According to M. Lehmann [[10]](#reference), for two well-resolved speckle fields (background and perturbed by gas) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
 
 $$ \sigma_{\Delta\phi}(\Delta x, I_{1} ,I_{2}) = {\Delta x \over 2}{\pi \over \beta} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2} $$
 
@@ -130,7 +134,7 @@ where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields 
 ### Inverse Abel Transform
 
 As mentioned above, $\Delta\phi_{z}$ the integrated phase map along the laser beam propagation direction (z direction).
-Assuming an axisymmetric gas-jet, the integrated information along z is sufficient to reconstruct the radial information using inversion $\Delta\phi_{r}$ such as the Abel inversion method [[7,8]](#reference).
+Assuming an axisymmetric gas-jet, the integrated information along z is sufficient to reconstruct the radial information using inversion $\Delta\phi_{r}$ such as the Abel inversion method [[8, 9]](#reference).
 
 $$ \Delta\phi_{r} = - {1 \over \pi} \int_{r}^{\infty} {d (\Delta\phi_{z}) \over dz} {dz \over \sqrt {z² - r²}} $$ 
 
@@ -140,11 +144,14 @@ PyAbel is a Python package that provides functions for the forward and inverse A
 PyAbel provides efficient implementations of several Abel transform algorithms [[11]](#reference). No software Interferogram Analysis o método de transformação escolhido foi o algoritmo de deconvolução Dash Onion Peeling por ser simples e computacionalmente muito eficiente. De acordo com Dash [[12]](#reference), esse método tem menos suavização do que outros métodos.  
 
 #### Standard Deviation of Inverse Abel Transform
-
+The accuracy of applying the inverse Abel transform is associated with the standard deviation generated by a convolution between the phase map and the integrated phase map.
 
 ### Density Profile
 
+$$ n = 1 + {\Delta\phi_{r} \lambda \over 2\pi} $$
+
 #### Standard Deviation of Density
+The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion [[13]](#reference).
   
 ## Reference
 - [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[DOI: 10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7).
@@ -152,13 +159,15 @@ PyAbel provides efficient implementations of several Abel transform algorithms [
 - [3] Pauli Virtanen, et. al. (2020) SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 17(3), 261-272. [DOI: 10.1038/s41592-019-0686-2](https://www.nature.com/articles/s41592-019-0686-2).
 - [4] Gibson, Stephen; Hickstein, Daniel D.; Yurchak, Roman; Ryazanov, Mikhail; Das, Dhrubajyoti; Shih, Gilbert.(2022) PyAbel, PyAbel: v0.9.0, Zenodo,  [DOI: 10.5281/zenodo.7438595](https://doi.org/10.5281/zenodo.7438595).
 - [5] Clark, A. (2015). Pillow (PIL Fork) Documentation. readthedocs. Retrieved from [https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf](https://buildmedia.readthedocs.org/media/pdf/pillow/latest/pillow.pdf).
-- [6] J. P. Couperus, A. Kohler, T. A. W. Wolterink, A. Jochmann, O. Zarini, H. M. J. Bastiaens, K. J. Boller, A. Irman, and U. Schramm, Nucl Instrum Meth A 830, 504-509 (2016).[DOI: 10.1016/j.nima.2016.02.099](https://doi.org/10.1016/j.nima.2016.02.099).
-- [7] H. Y. Lin, Y. H. Huang, S. Y. Cheng, Y. J. Lin, C. P. Liu, C. L. Huang, and C. L. Lin, Ther Innov Regul Sci 55, 872-880 (2021).***[VERIFY]***
-- [8] V. Malka, C. Coulaud, J. P. Geindre, V. Lopez, Z. Najmudin, D. Neely, and F. Amiranoff, Rev. Sci. Instrum. 71, 2329-2333 (2000). [DOI: 10.1063/1.1150619](https://doi.org/10.1063/1.1150619)
-- [9] A. Saville, M. (2022). 2D Relative Phase Reconstruction in Plasma Diagnostics. Optical Interferometry - A Multidisciplinary Technique in Science and Engineering. [DOI: 10.5772/intechopen.104748](https://www.intechopen.com/chapters/81777).
+- [6] J. D. Hunter, Matplotlib: A 2D Graphics Environment. Computing in Science & Engineering, 9 (3), 90-95 (2007). [
+DOI: 10.1109/MCSE.2007.55] (https://ieeexplore.ieee.org/document/4160265)
+- [7] J. P. Couperus, A. Kohler, T. A. W. Wolterink, A. Jochmann, O. Zarini, H. M. J. Bastiaens, K. J. Boller, A. Irman, and U. Schramm, Nucl Instrum Meth A 830, 504-509 (2016).[DOI: 10.1016/j.nima.2016.02.099](https://doi.org/10.1016/j.nima.2016.02.099).
+- [8] H. Y. Lin, Y. H. Huang, S. Y. Cheng, Y. J. Lin, C. P. Liu, C. L. Huang, and C. L. Lin, Ther Innov Regul Sci 55, 872-880 (2021).***[VERIFY]***
+- [9] V. Malka, C. Coulaud, J. P. Geindre, V. Lopez, Z. Najmudin, D. Neely, and F. Amiranoff, Rev. Sci. Instrum. 71, 2329-2333 (2000). [DOI: 10.1063/1.1150619](https://doi.org/10.1063/1.1150619)
 - [10] Mathias Lehmann, "Decorrelation-induced phase errors in phase-shifting speckle interferometry," Appl. Opt. 36, 3657-3667 (1997). [DOI: 10.1364/AO.36.003657](https://doi.org/10.1364/AO.36.003657).
 - [11] Daniel D. Hickstein, Stephen T. Gibson, Roman Yurchak, Dhrubajyoti D. Das, Mikhail Ryazanov. A direct comparison of high-speed methods for the numerical Abel transform. Rev. Sci. Instrum., 90, 065115, 2019. [DOI: 10.1063/1.5092635](https://doi.org/10.1063/1.5092635).
 - [12] C. J. Dasch, “One-dimensional tomography: a comparison of Abel, onion-peeling, and filtered backprojection methods”, Appl. Opt. 31, 1146–1152 (1992). [DOI 10.1364/AO.31.001146](https://doi.org/10.1364/AO.31.001146).
+- [13] A. Saville, M. (2022). 2D Relative Phase Reconstruction in Plasma Diagnostics. Optical Interferometry - A Multidisciplinary Technique in Science and Engineering. [DOI: 10.5772/intechopen.104748](https://www.intechopen.com/chapters/81777).
 
 ## Authors
 Interferometry Analysis - Gas-Jet software was developed by researchs of the High Power Ultrashort Pulse Lasers Group of the Center for Lasers and Applications (CLA) at Instituto de Pesquisas Energéticas e Nucleares ([IPEN](https://www.ipen.br/portal_por/portal/default.php)).
