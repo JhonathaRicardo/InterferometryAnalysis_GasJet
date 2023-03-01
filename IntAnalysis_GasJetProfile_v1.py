@@ -53,9 +53,10 @@ path2 = ''
 lambda0 = '395'  # nm
 unc_lambda0 = '0'
 polargas = '1.710'  #
-sigma_gfilter = '10'  # sigma of gauss function
+sigma_gfilter = '0'  # sigma of gauss function
+sigma_gblur = '10' # sigma of gaussian blur
 centerfilter = '0'  # Center of the gaussian filter application
-specificheat = '1.47'  # specific heat of gas in A³ (Angstrom)
+#specificheat = '1.47'  # specific heat of gas in A³ (Angstrom)
 factor = '1.000'  # factor um/pixel
 # Image parameters
 h_prof = -1.0  # heigth null
@@ -302,27 +303,28 @@ layout_area_selection = [
 layout_input_parameters = [
     [sg.Text('Laser \nWavelength (nm):   '),
      sg.Input(lambda0, size=(5, 1), key='-lambda0-', enable_events=True)],
-    [sg.Text('Unc. Laser\nWavelength (nm):   '),
+    [sg.Text('Laser bandwidth \n    FWHM  (nm):    '),
      sg.Input(unc_lambda0, size=(5, 1), key='-unclambda0-', enable_events=True)],
     [sg.Text('Gas Type:              '),
      sg.Combo(['H2', 'N2', 'He', 'Ar', '--'], default_value='N2', key='-combogas-', enable_events=True)],
     [sg.Text('Polarizability (Å³):   '),
      sg.Input(polargas, size=(5, 1), key='-polargas-', enable_events=True)],
-    [sg.Text('Spec. Heat Ratio:   '),
-     sg.Input(specificheat, size=(5, 1), key='-specificheatgas-', enable_events=True)],
 ]
 # LAYOUT INPUT MEASUREMENT PARAMETERS
 layout_analysis_parameters = [
-    [sg.Text('Scaling Factor (µm/pixel):         '),
+    [sg.Text('Scaling Factor (µm/pixel):           '),
      sg.Input(factor, size=(5, 1), key='-factor-', enable_events=True)],
-    [sg.Text('Sigma - Gaussian Blur (pixel):   '),
+    [sg.Text('Sigma - Gaussian filter (pixel):    '),
      sg.Input(sigma_gfilter, size=(5, 1), key='-sigma_gfilter-', enable_events=True)],
-    [sg.Text('Gaussian Filter position (pixel): '),
-     sg.Input(centerfilter, size=(5, 1), key='-centerfilter-', enable_events=True)],
-    [sg.Text('Fringes Orientation:     '),
+    [sg.Text('Gaussian Filter position (pixel):  '),
+     sg.Spin([i for i in range(minvalue_x, maxvalue_x + 1)], initial_value=0, size=(4, 1), key='-centerfilter-',
+             enable_events=True)],
+    [sg.Text('Fringes Orientation:      '),
      sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-combofringe-')],
-    [sg.Text('Axisymmetric:            '),
-     sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-comboaxisymm-')]
+    [sg.Text('Axisymmetric:             '),
+     sg.Combo(['vertical', 'horizontal'], default_value='horizontal', key='-comboaxisymm-')],
+    [sg.Text('Sigma - Gaussian Blur (pixel):    '),
+     sg.Input(sigma_gblur, size=(5, 1), key='-sigma_gblur-', enable_events=True)],
 ]
 # LAYOUT FRAME OF ALL INPUT OPTIONS
 layout_frame_Options = [
@@ -375,8 +377,8 @@ layout_frame_Steps = [
 layout_frame_Result = [
     [sg.Frame('Stages', layout_frame_Steps, size=(490, 70), title_location=sg.TITLE_LOCATION_TOP_LEFT,
               key='framesteps', font='Arial 10 bold')],
-    [sg.Button('Dens. Profile 1D', size=(16, 1), font='Arial 10 bold', disabled=True),
-     sg.Button('Dens. Profile 2D', size=(16, 1), font='Arial 10 bold', disabled=True),
+    [sg.Button('1D Profile', size=(16, 1), font='Arial 10 bold', disabled=True),
+     sg.Button('2D Profile', size=(16, 1), font='Arial 10 bold', disabled=True),
      sg.Checkbox('Standard deviation', default=False, key='-checkstd-'),
      ],
     [sg.Canvas(key='canvasabel', size=(490, 400), background_color='black')],
@@ -392,11 +394,11 @@ layout_frame_Result = [
 # lAYOUT GLOBAL
 layout = [
     [sg.Frame("Interferogram Images", layout_frame_Images, size=(700, 700), font='Arial 12 bold'),
-     sg.Frame("Density Profile", layout_frame_Result, size=(500, 700), title_location=sg.TITLE_LOCATION_TOP,
+     sg.Frame("Gas-Jet Profile", layout_frame_Result, size=(500, 700), title_location=sg.TITLE_LOCATION_TOP,
               font='Arial 12 bold')],
 ]
 ######################################################################################################################
-window = sg.Window("Interferogram Analysis - Gas-Jet Density Profile(Version 1.0)", layout, margins=(1, 1), finalize=True)
+window = sg.Window("Interferogram Analysis - Gas-Jet Density Profile (Version 1.0)", layout, margins=(1, 1), finalize=True)
 ######################################################################################################################
 '''
 ####################################################################################################
@@ -523,48 +525,54 @@ while True:
     elif event == '-combogas-':
         if values['-combogas-'] == 'N2':
             window['-polargas-'].update(value='1.710')  # cm3
-            window['-specificheatgas-'].update(value='1.47')
+            #window['-specificheatgas-'].update(value='1.47')
 
         elif values['-combogas-'] == 'H2':
             window['-polargas-'].update(value='0.787')  # cm3
-            window['-specificheatgas-'].update(value='1.405')
+            #window['-specificheatgas-'].update(value='1.405')
 
         elif values['-combogas-'] == 'He':
             window['-polargas-'].update(value='0.208')  # cm3
-            window['-specificheatgas-'].update(value='1.667')
+            #window['-specificheatgas-'].update(value='1.667')
 
         elif values['-combogas-'] == 'Ar':
             window['-polargas-'].update(value='1.664')  # cm3
-            window['-specificheatgas-'].update(value='1.667')
+            #window['-specificheatgas-'].update(value='1.667')
     ########################################################################
     # BUTTON SELECT AREA
     elif event == 'Select Analysis Area':
         apply_drawing(values, window)
         centerfilter = 0
         window['-centerfilter-'].update('0')
+        window['-sigma_gfilter-'].update('0')
     # BUTTON COORD AREA
     elif event == '-BEGIN_X-':
         apply_drawing(values, window)
         centerfilter = 0
         window['-centerfilter-'].update('0')
+        window['-sigma_gfilter-'].update('0')
     elif event == '-END_X-':
         apply_drawing(values, window)
         centerfilter = 0
         window['-centerfilter-'].update('0')
+        window['-sigma_gfilter-'].update('0')
     elif event == '-BEGIN_Y-':
         apply_drawing(values, window)
         centerfilter = 0
         window['-centerfilter-'].update('0')
+        window['-sigma_gfilter-'].update('0')
     elif event == '-END_Y-':
         apply_drawing(values, window)
         centerfilter = 0
         window['-centerfilter-'].update('0')
+        window['-sigma_gfilter-'].update('0')
     #########################################################################
     # BUTTON ROTATE
     elif event == 'Rotate (°)':
         apply_drawing(values, window)
         centerfilter = 0
         window['-centerfilter-'].update('0')
+        window['-sigma_gfilter-'].update('0')
     '''
     #######################################################################
     # BUTTON APPLY - main event of window
@@ -590,7 +598,9 @@ while True:
             # Manual definition of the filter position
             centerfilter = int(get_value("-centerfilter-", values))
             # sigma value of gaussian function
-            sigma = int(get_value('-sigma_gfilter-', values))
+            sigma_gfilter = int(get_value('-sigma_gfilter-', values))
+            # sigma value of gaussian blur
+            sigma = int(get_value('-sigma_gblur-', values))
             # heat gas constant
             alpha_gas = float(get_value('-polargas-', values)) * 1e-24  # in cm^3
             # Wavelength laser
@@ -646,6 +656,7 @@ while True:
             # Defining line or row to apply gaussian filter
             fftmap = np.log(np.abs(fftgas))
             nlmap, nrmap = np.shape(fftmap)
+
             '''
             # Authomatic definition of the gaussian filter position: 
             this position are defined like the line or column (Vertical or horizontal fringes) with more intensity pixel
@@ -680,6 +691,7 @@ while True:
                         else:
                             centerfilter = filterpoints[0]
                             f_range = int(filterspoints_widths[0])
+
                     elif values['-combofringe-'] == 'vertical':
 
                         if filterpoints[len(filterpoints) - 1] >= nrmap - 5:
@@ -700,15 +712,21 @@ while True:
 
             # Creating Filter for Horizontal/vertical fringes orientation
             if values['-combofringe-'] == 'horizontal':
+                if sigma_gfilter == 0:
+                    sigma_gfilter = int(0.05 * nlmap * f_range)
+                    window['-sigma_gfilter-'].update(str(sigma_gfilter))
                 gfilter[centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[centerfilter - f_range:centerfilter + f_range]))
                 # Applying gaussian filter at selected filter position
-                gfilter = gaussian_filter(gfilter, sigma=0.05 * nlmap * f_range)
+                gfilter = gaussian_filter(gfilter, sigma=sigma_gfilter)
             elif values['-combofringe-'] == 'vertical':
+                if sigma_gfilter == 0:
+                    sigma_gfilter = int(0.05 * nrmap * f_range)
+                    window['-sigma_gfilter-'].update(str(sigma_gfilter))
                 gfilter[:, centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[:, centerfilter - f_range:centerfilter + f_range]))
                 # Applying gaussian filter at selected filter position
-                gfilter = gaussian_filter(gfilter, sigma=0.05 * nrmap * f_range)
+                gfilter = gaussian_filter(gfilter, sigma=sigma_gfilter)
 
             # Applying Inverse FFT in resultant array obtained after use of the gaussian filter on FFT arrays
             ifftref = np.fft.ifft2(gfilter * fftref)
@@ -767,24 +785,37 @@ while True:
             axissymmetry the matrix must be transposed.
 
             '''
+            # Apply gaussian filter to define the region with more intensity pixel value
+            phasemap_corr = (gaussian_filter(uwphasemap, sigma=sigma))
             # Transpose Matrix for Horizontal Axissmetry
             if values['-comboaxisymm-'] == 'horizontal':
                 phasemap_corr = np.transpose(phasemap_corr)
+                std_phasemap_i = np.transpose(std_phasemap_i)
+
             # Apply gaussian filter to define the region with more intensity pixel value
-            phasemap_corr = gaussian_filter(uwphasemap, sigma=sigma)
             phasemap_corr = phasemap_corr - np.ones(np.shape(phasemap_corr))*np.min(phasemap_corr)
             nlines, nrows = np.shape(phasemap_corr)
 
             # Define region with more intensity pixel - position x and y
             cline, crow = np.where(phasemap_corr >= phasemap_corr.max() * 0.95)
             cy, cx = int(np.median(cline)), int(np.median(crow))
-            vert_lim = int(2*cx+1)
             # If the region not found, set symmetric point like half image
             if math.isnan(cx) == True:
                 cx = nrow // 2
+            # If right-side of image is more width
+            if cx >= int(nrows / 2):
+                phasemap_corr = np.flip(phasemap_corr, 0)
+                std_phasemap_i = np.flip(std_phasemap_i, 0)
+                fliped_array = True
+                vert_lim = int(2 * (nrows - cx) + 1)
+                # If left-side of image is more width
+            else:
+                fliped_array = False
+                vert_lim = int(2 * cx + 1)
 
             phasemap_symm = phasemap_corr[:, 0:vert_lim]
-            gas_diameter = int(2 * cy) # diameter of the cylinder used in IAT
+            std_phasemap_symm = std_phasemap_i[:, 0:vert_lim]
+            gas_diameter = 2*vert_lim # diameter of the cylinder used in IAT
 
             try:
                 # Applying inverse Abel Transform
@@ -793,6 +824,12 @@ while True:
             except:
                 phase_abel = np.zeros(np.shape(phasemap_symm))
                 sg.popup_error(f"WARNING: Unable to apply the Abel transform to the selected image! ")
+
+            if fliped_array == True:
+                phase_abel = np.flip(phase_abel,0)
+                phasemap_corr = np.flip(phasemap_corr,0)
+                phasemap_symm = np.flip(phasemap_symm,0)
+                std_phasemap_symm = np.flip(std_phasemap_symm,0)
 
             '''
             ############################################################################################
@@ -811,6 +848,8 @@ while True:
                 phasemap_symm = np.transpose(phasemap_symm)
                 phase_abel = np.transpose(phase_abel)
                 std_abelmap0 = np.transpose(std_abelmap0)
+                std_phasemap_symm = np.transpose(std_phasemap_symm)
+
             gas_phasemap.append(phasemap_corr)
             '''
             ########################################################################################
@@ -827,6 +866,7 @@ while True:
 
             NOTE: The gas density is calculated using C-M relation.        
             '''
+            #plt.imsave('phaseteste.jpg', phasemap_symm)
             # Calculating index refraction from IAT of phasemap
             n_index0 = (1 + (phase_abel * lambda0) / (2 * np.pi*factor))
             # Cutting border of images due the computational artefacts generated by IAT and problems with no symmetric images
@@ -837,10 +877,6 @@ while True:
 
             #new matrix size for plot
             rangeh, rangev = np.shape(gas_dens_i)
-
-            std_abelmap_i = std_abelmap0[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]
-            std_abelmap.append(std_abelmap_i)
-
             gas_abelphasemap.append(phase_abel)
             gas_dens.append(gas_dens_i)
 
@@ -853,9 +889,11 @@ while True:
             dN_n = ((9 / (2 * np.pi * alpha_gas)) * n_index) / np.square(
                 np.square(n_index) + 2 * np.ones(np.shape(n_index)))
             # Contribution 1: measurement interferogram
-            std_phase1 = np.square(std_phasemap_i[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
+            std_phase1 = np.square(std_phasemap_symm[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
                                    /(factor*gas_diameter)) #rad/metro
             # Contribution 2: Abel transformation accuracy
+            std_abelmap_i = std_abelmap0[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]
+            std_abelmap.append(std_abelmap_i)
             std_phase2 = np.square(std_abelmap_i/factor) #rad/metro
             std_phase = np.sqrt(std_phase2+std_phase1) #rad/metro
             dn_phase=(lambda0/(2*np.pi)) #m
@@ -1005,11 +1043,11 @@ while True:
         window['Save Data'].update(disabled=False)
         window['Save Plot'].update(disabled=False)
         window['frame1d'].update(visible=False)
-        window['Dens. Profile 2D'].update(disabled=False)
-        window['Dens. Profile 1D'].update(disabled=False)
+        window['1D Profile'].update(disabled=False)
+        window['2D Profile'].update(disabled=False)
     #########################################################################
     # BUTTON DENS.PROFILE 2D
-    if event == 'Dens. Profile 2D':
+    if event == '2D Profile':
         # set height position
         h_prof = -1.0
         # Plots are building from user select
@@ -1085,10 +1123,10 @@ while True:
                 ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
                 ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
                 if values['-checkstd-'] == False:
-                    cb1.set_label(label='$Plasma\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
+                    cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
                                   size=12, weight='bold')
                 else:
-                    cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Plasma\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
+                    cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
                                   size=12, weight='bold')
 
             else:
@@ -1100,7 +1138,7 @@ while True:
 
                 abel_plot = ax1.imshow(matrix_plot, extent=[0, x_max, 0, y_max], cmap=newcmp)
                 cb1 = fig.colorbar(abel_plot, cax=cax)
-                cb1.set_label(label='$Plasma\hspace{.5}Density\hspace{.5} (cm^{-3})$', size=12, weight='bold')
+                cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', size=12, weight='bold')
                 ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
                 ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
                 if values['-checkstd-'] == False:
@@ -1120,7 +1158,7 @@ while True:
 
     #########################################################################
     # BUTTON DENS.PROFILE 1D AND SLIDER POSITION
-    if (event == 'Dens. Profile 1D') or (event == 'sliderh'):
+    if (event == '1D Profile') or (event == 'sliderh'):
         # set height position
         h_prof = -1.0
         # Plots are building from user select
@@ -1214,7 +1252,7 @@ while True:
             ax1.set_xlabel('$r\hspace{.5}(\mu m)$', fontsize=12)
 
             if values['densradio'] == True:
-                ax1.set_ylabel('$Plasma\hspace{.5}Density\hspace{.5} (cm^{-3})$', fontsize=12)
+                ax1.set_ylabel('$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', fontsize=12)
 
             elif values['abelradio'] == True:
                 ax1.set_ylabel('$Phase\hspace{.5} (rad)$', fontsize=12)
