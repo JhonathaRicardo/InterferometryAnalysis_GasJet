@@ -41,13 +41,13 @@ In this section, we provide users with a simple review of the software's functio
 ### Interferogram Image
 - ***[Interferogram (Gas-Jet)]*** Scaled gas-jet interferogram image.
 
-- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. ***lembrar flar da média - If more than one file was opened the analysis will treated the avereage of those data***
+- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. If more than one file has been opened, each file will be analyzed individually and the average of all results will be presented to the user.
   > **Warning**   
   >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
 - ***[Interferogram (Ref.)]*** Scaled reference interferogram image.
 
-- ***[Open File]*** Open an undisturbed interferogram image file. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. ***lembrar de flar que é so umas - as reference file this algorith allow to open only one file, unlike the gas jet interferogram***
+- ***[Open File]*** Open an undisturbed interferogram image file. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
   > **Warning**   
   >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
  
