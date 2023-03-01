@@ -119,7 +119,12 @@ The interferogram analysis software algorithm works according to the flowchart b
 ### Accumulated Phase
 The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[7]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[8, 9]](#reference) along the beam propagation direction (z direction) by the following equation:
 
-$$ \Delta\phi_{z} =  tan^{-1}\left\lbrack{\phi_{gas} - \phi_{background}}\right\rbrack$$
+$$ 
+\begin{equation}
+\Delta\phi_{z} =  tan^{-1}\left({\phi_{gas} - \phi_{background}}\right)
+\tag{1}
+\end{equation}
+$$
 
 where  $\phi_{gas}$  and  $\phi_{background}$   is the background phase map.
 
@@ -127,7 +132,12 @@ where  $\phi_{gas}$  and  $\phi_{background}$   is the background phase map.
 
 According to M. Lehmann [[10]](#reference), for two well-resolved speckle fields (background and perturbed by gas) the phase error is determined by the probability distributions of the intensities and phase derivatives of two speckle fields. Considering that each field has a Gaussian distribution of speckle intensities and since the measured phase is the difference between two speckle phases, its error also follows a Gaussian probability distribution, with standard deviation given by:
 
-$$ \sigma_{\Delta\phi}(\Delta x, I_{1} ,I_{2}) = {\Delta x \over 2}{\pi \over \beta} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2} $$
+$$ 
+\begin{equation}
+\sigma_{\Delta\phi}(\Delta x, I_{1} ,I_{2}) = {\Delta x \over 2}{\pi \over \beta} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2}
+\tag{2}
+\end{equation}
+$$
 
 where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields (with mean intensity $\overline{I}$ each), $&Delta;x$ is the displacement of the image in the direction perpendicular to the direction axis of the fringes, and $\beta$ is the speckle size. 
 
@@ -136,7 +146,7 @@ where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields 
 As mentioned above, $\Delta\phi_{z}$ the integrated phase map along the laser beam propagation direction (z direction).
 Assuming an axisymmetric gas-jet, the integrated information along z is sufficient to reconstruct the radial information using inversion $\Delta\phi_{r}$ such as the Abel inversion method [[8, 9]](#reference).
 
-$$ \Delta\phi_{r} = - {1 \over \pi} \int_{r}^{\infty} {d (\Delta\phi_{z}) \over dz} {dz \over \sqrt {z² - r²}} $$ 
+$$ \Delta\phi_{r} = - {1 \over \pi} \int_{r}^{\infty} {d (\Delta\phi_{z}) \over dz} {dz \over \sqrt {z² - r²}} \tag{3}$$ 
 
 In this software, the phase map is determined from the application of the PyAbel [[4]](#refence) algorithm on the accumulated phase map.
 PyAbel is a Python package that provides functions for the forward and inverse Abel transforms. The inverse Abel transform takes a 2D projection and reconstructs a slice of the cylindrically symmetric 3D distribution, which makes this function an important tool in analyzing the projections of angle-resolved, plasma plumes, flames, solar occultation [[4]](#reference), and gas-jets.
@@ -148,10 +158,31 @@ The accuracy of applying the inverse Abel transform is associated with the stand
 
 ### Density Profile
 
-$$ n = 1 + {\Delta\phi_{r} \lambda \over 2\pi} $$
+$$ 
+\begin{equation}
+n = 1 + {\Delta\phi_{r} \lambda \over 2\pi}
+\tag{4}
+\end{equation}
+$$
 
 #### Standard Deviation of Density
-The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement, and the numerical accuracy of the Abel inversion [[13]](#reference).
+The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement ($\sigma_{measurement} = \sigma_{\Delta\phi_{z}}$), and the numerical accuracy of the Abel inversion [[13]](#reference) ($\sigma_{abel}$). This way, the standard deviation of phase-shift map $\sigma_{\Delta\phi_{r}}$ can be write as:
+
+$$  \sigma_{\Delta\phi_{r}} = \sqrt{\left({\sigma_{measurement}}^2 + {\sigma_{abel}}^2\right)} \tag{5}$$
+
+And the total standard deviation of gas density $\sigma_{\rho}$ given by:
+
+$$ 
+\begin{equation}
+\sigma_{\rho} = \sqrt{\left({\partial\rho \over \partial\Delta\phi_{r}}\right)^2 \left({\sigma_{\Delta\phi_{r}}}\right)^2 + 
+\left({\partial\rho \over \partial\lambda}\right)^2 \left({\sigma_{\lambda}}\right)^2}
+\tag{6}
+\end{equation}
+$$
+
+where $\sigma_{\lambda}$ is user-defined experimental parameter.
+  > **Note**
+  > The contribution of this parameter to the density standard deviation is usually very small. 
   
 ## Reference
 - [1] Hariharan, P. (2007) Basics of Interferometry. 2nd Edition, Elsevier, Amsterdam.[DOI: 10.1016/B978-0-12-373589-8.X5000-7](https://doi.org/10.1016/B978-0-12-373589-8.X5000-7).
