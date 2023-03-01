@@ -4,8 +4,8 @@
 ![version](https://img.shields.io/badge/version-v.1.0-green)
 ![status](https://img.shields.io/badge/status-under%20development-green)
 ## Abstract
-The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the target gas is crucial to understand the phenomena involved in the particle acceleration process [[1]](#reference).
-This Python algorithm was developed to recover the accumulated phase across the neutral gas target as well as estimate the target density distribution.
+The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the gas target is crucial to understand the phenomena involved in the particle acceleration process [[1]](#reference).
+This Python algorithm was developed to recover the accumulated phase across the neutral gas target as well as estimate its density distribution.
 
 ## Summary
 * [Installation](#installation)
@@ -22,7 +22,7 @@ This Python algorithm was developed to recover the accumulated phase across the 
 * [Citation](#citation)
 
 ## Installation
-Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of some packages: [NumPy](https://numpy.org/) [[2]](#reference), [Scipy](https://scipy.org/) [[3]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[4]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[5]](#reference) to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[6]](#reference) to plot results, and
+Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of the following packages: [NumPy](https://numpy.org/) [[2]](#reference), [Scipy](https://scipy.org/) [[3]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[4]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[5]](#reference) to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[6]](#reference) to plot results, and
 [PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the users template.
 
 The second way to use this software is through the executable file. The users can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
@@ -41,13 +41,13 @@ In this section, we provide users with a simple review of the software's functio
 ### Interferogram Image
 - ***[Interferogram (Gas-Jet)]*** Scaled gas-jet interferogram image.
 
-- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet . Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.
+- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. ***lembrar flar da média - If more than one file was opened the analysis will treated the avereage of those data***
   > **Warning**   
   >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
 - ***[Interferogram (Ref.)]*** Scaled reference interferogram image.
 
-- ***[Open File]*** Open an undisturbed interferogram image(s) file(s). Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above.
+- ***[Open File]*** Open an undisturbed interferogram image file. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. ***lembrar de flar que é so umas - as reference file this algorith allow to open only one file, unlike the gas jet interferogram***
   > **Warning**   
   >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
  
@@ -66,13 +66,15 @@ The user that intends to use the whole interferogram figure needs to uncheck the
 - ***[Experimental Parameteres]*** In this form, the user set the experimental parameters used to obtain the interferogram image. These parameters are:
   - ***[Laser Wavelength]*** and ***[uncertainty Laser Wavelength]*** in nm;
   - Gas ***[Polarizability]*** in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
-   - The ***[Specific Heat Ratio]*** of a gas is the ratio of the specific heat at constant pressure, ***Cp***, to the specific heat at constant volume, ***Cv***.
 
 - ***[Analysis Parameters]*** This form contains the parameters for analysis of the interferogram images:
   - ***[Scaling Factor]*** of an interferogram image in pixels/micrometers;
   - ***[Sigma - Gaussian Blur]*** is a multidimensional gaussian image filter. The standard deviation of the gaussian filter (Sigma) defined by the user is equal for all axes.
   - ***[ Gaussian Filter Position]*** this parameter is different from Gaussian Blur. This parameter is set automatically by the algorithm and this position defines which frequency will be used to apply the Inverse Fourier Transform and build the phase map of the gas-jet.
-Both the above parameters are defined in pixels. ***Note:*** The algorithm set the frequency that defines a positive phase map.  But, users can change the filter position.
+Both the above parameters are defined in pixels. 
+    > **Note** 
+    > The algorithm set the frequency that defines a positive phase map.  But, users can change the filter position.
+  
   - ***[Fringes Orientation]*** can be vertical or horizontal.
   - ***[Axisymmetric]*** An important parameter to apply the Inverse Abel Transform is the axis of symmetry (or axisymmetric). The axisymmetric can be horizontal or vertical.
 
@@ -92,7 +94,7 @@ Both the above parameters are defined in pixels. ***Note:*** The algorithm set t
     |:--:| 
     | *Fig.3 -  Applied Gaussian filter* |
 
-From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** selection box.
+From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** checkbox.
   
   - ***[Accumulated Phase]*** Accumulated phase map of the gas-jet.
   
@@ -117,16 +119,16 @@ From the next three steps, users have the option of viewing the average values o
 The interferogram analysis software algorithm works according to the flowchart below:
 
 ### Accumulated Phase
-The Accumulated Phase map or accumulated phase shift map is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a background image with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[7]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[7, 8]](#reference) along the beam propagation direction (z direction) by the following equation:
+The Accumulated Phase map (or accumulated phase shift map) is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a backgroung image (or reference) with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[7]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[7, 8]](#reference) along the beam propagation direction (z direction) by the following equation:
 
 $$ 
 \begin{equation}
-\Delta\phi_{z} =  tan^{-1}\left({\phi_{gas} - \phi_{background}}\right)
+\Delta\phi_{z} =  tan^{-1}\left({\phi_{gas} - \phi_{ref}}\right)
 \tag{1}
 \end{equation}
 $$
 
-where  $\phi_{gas}$  and  $\phi_{background}$   is the background phase map.
+where  $\phi_{gas}$  and  $\phi_{ref}$   is, respectively, the gas-jet and background phase map.
 
 #### Standard Deviation of Accumulated Phase
 
@@ -144,14 +146,14 @@ where $I_{1}$ and $I_{2}$ are the intensity distribution of both speckle fields 
 ### Inverse Abel Transform
 
 As mentioned above, $\Delta\phi_{z}$ the integrated phase map along the laser beam propagation direction (z direction).
-Assuming an axisymmetric gas-jet, the integrated information along z is sufficient to reconstruct the radial information using inversion $\Delta\phi_{r}$ such as the Abel inversion method [[8]](#reference).
+Assuming an axisymmetric gas-jet, the integrated information along $z$ is sufficient to reconstruct the radial information using inversion $\Delta\phi_{r}$ such as the Abel inversion method [[8]](#reference).
 
 $$ \Delta\phi_{r} = - {1 \over \pi} \int_{r}^{\infty} {d (\Delta\phi_{z}) \over dz} {dz \over \sqrt {z² - r²}} \tag{3}$$ 
 
-In this software, the phase map is determined from the application of the PyAbel [[4]](#refence) algorithm on the accumulated phase map.
+In this software, the phase map is determined from the application of the PyAbel [[4]](#reference) algorithm on the accumulated phase map.
 PyAbel is a Python package that provides functions for the forward and inverse Abel transforms. The inverse Abel transform takes a 2D projection and reconstructs a slice of the cylindrically symmetric 3D distribution, which makes this function an important tool in analyzing the projections of angle-resolved, plasma plumes, flames, solar occultation [[4]](#reference), and gas-jets.
 
-PyAbel provides efficient implementations of several Abel transform algorithms [[10]](#reference). No software Interferogram Analysis o método de transformação escolhido foi o algoritmo de deconvolução Dash Onion Peeling por ser simples e computacionalmente muito eficiente. De acordo com Dash [[11]](#reference), esse método tem menos suavização do que outros métodos.  
+PyAbel provides efficient implementations of several Abel transform algorithms [[10]](#reference). In this software, the chosen method was the deconvolution algorithm Dash Onion Peeling because it is simple and computationally very efficient [[4]](#reference). According to Dash [[11]](#reference), this method requires less smoothing than other methods.
 
 #### Standard Deviation of Inverse Abel Transform
 The accuracy of applying the inverse Abel transform is associated with the standard deviation generated by a convolution between the phase map and the integrated phase map.
