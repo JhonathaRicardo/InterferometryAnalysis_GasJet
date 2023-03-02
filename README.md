@@ -1,7 +1,13 @@
 # <h1 align = "center">Interferometry Analysis - Gas-Jet Profile </h1>
-The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the gas target is crucial to understand the phenomena involved in the particle acceleration process.
-This Python algorithm was developed to recover the accumulated phase across the neutral gas target as well as estimate its density distribution.
-![Logo](https://github.com/JhonathaRicardo/InterferometryAnalysis_GasJetProfile/blob/main/Images/Intro_GasJet.jpg)
+<p align="justify">
+  The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the gas target is crucial to understand the phenomena involved in the particle acceleration process.
+  This Python algorithm was developed to recover the accumulated phase across the neutral gas target as well as estimate its density distribution.
+</p>
+
+<p align="center">
+  <img src = '/Images/Intro_GasJet.jpg' width="80%" align="center">
+</p>
+
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![version](https://img.shields.io/badge/version-v.1.0-green)
 ![status](https://img.shields.io/badge/status-under%20development-green)
@@ -44,9 +50,9 @@ Interferometry Analysis - The Gas-Jet software has a graphical interface develop
 In this section, we provide users with a simple review of the software's functions and how to use them.
 ### Main Screen
 
-| ![Template](/Images/Template_image.jpg) |
+|<img src = '/Images/MainScreen.png' width="80%"> |
 |:--:| 
-| *Fig.1 - Software Template* |
+| *Fig.1 - Software Main Screen* |
 
 ### Interferogram Image
 - ***[Interferogram (Gas-Jet)]*** Scaled gas-jet interferogram image.
@@ -90,27 +96,22 @@ Both the above parameters are defined in pixels.
 
 ### Gas-Jet Profile
 - ***[Stages]:*** The stages of the results obtained by the algorithm can be viewed by user.
-  - ***[Fourier Transform]*** This image is built through the Fourier Transform of gas-jet interferogram image. From this frequency map, the software selects automatically the frequency that generates a positive phase map. The pixel position (red line) of the selected frequency is the ***[Gaussian Filter position]***. 
-
-    | ![Fourier map](/Images/Fourier_transform_map.png) |
-    |:--:| 
-    | *Fig.2 - Fourier Transform of gas-jet interferogram* |
-  
+  - ***[Fourier Transform]*** This image is built through the Fourier Transform of gas-jet interferogram image. From this frequency map [Fig. 2 (left)], the software selects automatically the frequency that generates a positive phase map. The pixel position (red line) of the selected frequency is the ***[Gaussian Filter position]***.  
   > **Note**   
   >  Case the ***[Gaussian Filter position]*** is zero, the software will set the valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
-  - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency.
+  - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency [Fig. 2 (right)].
 
-    | ![Gaussian filter](/Images/Gaussian_Filter.png) |
+    |<img src = '/Images/Stage1.png' width="40%"> <img src = '/Images/Stage2.png' width="40%">  |
     |:--:| 
-    | *Fig.3 -  Applied Gaussian filter* |
+    | *Fig. 2 -  Fourier Transform of gas-jet interferogram and Applied Gaussian filter* |
 
 From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** checkbox.
   
   - ***[Accumulated Phase]*** Accumulated phase map of the gas-jet.
   
-    | ![Acc.phase map](/Images/Accumulated_Phase.png) |
+    |<img src = '/Images/Stage3_2D.jpg' width="40%"> <img src = '/Images/Stage3_1D.jpg' width="40%">|
     |:--:| 
-    | *Fig.4 -  Accumulated phase of gas-jet interferogram* |   
+    | *Fig. 4 - 1D and 2D Accumulated phase of gas-jet* |   
     
   - ***[Abel Transform]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
   
