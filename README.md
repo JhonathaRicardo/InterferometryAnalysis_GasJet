@@ -50,7 +50,7 @@ Interferometry Analysis - The Gas-Jet software has a graphical interface develop
 In this section, we provide users with a simple review of the software's functions and how to use them.
 ### Main Screen
 
-|<img src = '/Images/MainScreen.png' width="80%"> |
+|<img src = '/Images/MainScreen1.png'> |
 |:--:| 
 | *Fig.1 - Software Main Screen* |
 
@@ -97,36 +97,40 @@ Both the above parameters are defined in pixels.
 
 ### Gas-Jet Profile
 - ***[Stages]:*** The stages of the results obtained by the algorithm can be viewed by user.
-  - ***[Fourier Transform]*** This image is built through the Fourier Transform of gas-jet interferogram image. From this frequency map [Fig. 2 (left)], the software selects automatically the frequency that generates a positive phase map. The pixel position (red line) of the selected frequency is the ***[Gaussian Filter position]***.  
+  - ***[Fourier Transform]*** This image is built through the Fourier Transform of gas-jet interferogram image. From this frequency map (*Fig. 2.A*), the software selects automatically the frequency that generates a positive phase map. The pixel position (red line) of the selected frequency is the ***[Gaussian Filter position]***.  
   > **Note**   
   >  Case the ***[Gaussian Filter position]*** is zero, the software will set the valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
-  - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency [Fig. 2 (right)].
+  - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency (*Fig. 2.B*).
 
-    |<img src = '/Images/Stage1.png' width="45%"> <img src = '/Images/Stage2.png' width="45%">  |
+    |<img src = '/Images/Stages1and2.png' width="80%"> |
     |:--:| 
-    | *Fig. 2 -  Example of the 2D freguency domain obtained from Fourier Transform, and Gaussian filter applied on selected frequency* |
+    | *Fig. 2 -  Example of: (A) 2D freguency domain obtained from Fourier Transform with selected frequency; (B) Gaussian filter applied on selected frequency.* |
 
-From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** checkbox.
+    From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** checkbox.
   
-  - ***[Accumulated Phase]*** Accumulated phase map of the gas-jet.
+    - ***[Accumulated Phase]*** Accumulated phase map of the gas-jet.
   
-    |<img src = '/Images/Stage3_2D.jpg' width="40%"> <img src = '/Images/Stage3_1D.jpg' width="40%">|
+    |<img src = '/Images/Stage3.png'>|
     |:--:| 
-    | *Fig. 4 - Exemple of 2D and 1D Accumulated phase of gas-jet* |   
+    | *Fig. 3 - Example of: (A) 2D accumulated phase map  and (B) 2D standard deviation map; (C) 1D accumulated phase curves  and (D) standard deviation of one curve.*|   
     
-  - ***[Abel Transform]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
+    - ***[Abel Transform]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
   
-    | ![Phase map](/Images/Abel_Transform.png) |
+    | ![Phase map](/Images/Stage4.png) |
     |:--:| 
-    | *Fig.5 -  Phase map of gas-jet interferogram* |  
+    | *Fig.4 - Example of: (A) 2D phase map obtained from inverse Abel transform, and (B) 2D standard deviation map.* |  
     
-  - ***[Density Profile]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
+    - ***[Density Profile]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
     
-    | ![Gasjet_density](/Images/GasjetDensity.png) |
+    | ![Gasjet_density](/Images/Stage5.png)|
     |:--:| 
-    | *Fig.6 -  Gas-jet density profile* |
-    
-    
+    | *Fig.5 - Example of: (A) 2D gas density map  and (B) 2D standard deviation map; (C) 1D gas density curves  and (D) standard deviation of one density curve. * |
+
+- ***[1D Profile]*** This button allows 1D form options (*Fig. 6*) where the user can visualize the curves of each select stage for different positions on the symmetrical axis.
+- ***[2D Profile]*** This button enable the visualization of each step in 2D images.
+> **Note**   
+>  Standard deviation checkbox change 1D and 2D measurement images visualization to standard deviation images. 
+
 ## How it work
 The interferogram analysis software algorithm works according to the flowchart below:
 
