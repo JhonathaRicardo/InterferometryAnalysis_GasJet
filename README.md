@@ -102,9 +102,9 @@ Both the above parameters are defined in pixels.
   >  Case the ***[Gaussian Filter position]*** is zero, the software will set the valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
   - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency [Fig. 2 (right)].
 
-    |<img src = '/Images/Stage1.png' width="40%"> <img src = '/Images/Stage2.png' width="40%">  |
+    |<img src = '/Images/Stage1.png' width="45%"> <img src = '/Images/Stage2.png' width="45%">  |
     |:--:| 
-    | *Fig. 2 -  Fourier Transform of gas-jet interferogram and Applied Gaussian filter* |
+    | *Fig. 2 -  Example of the 2D freguency domain obtained from Fourier Transform, and Gaussian filter applied on selected frequency* |
 
 From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** checkbox.
   
@@ -112,7 +112,7 @@ From the next three steps, users have the option of viewing the average values o
   
     |<img src = '/Images/Stage3_2D.jpg' width="40%"> <img src = '/Images/Stage3_1D.jpg' width="40%">|
     |:--:| 
-    | *Fig. 4 - 1D and 2D Accumulated phase of gas-jet* |   
+    | *Fig. 4 - Exemple of 2D and 1D Accumulated phase of gas-jet* |   
     
   - ***[Abel Transform]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
   
