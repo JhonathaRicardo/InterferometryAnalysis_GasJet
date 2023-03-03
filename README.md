@@ -128,8 +128,13 @@ Both the above parameters are defined in pixels.
 
 - ***[1D Profile]*** This button allows 1D form options (*Fig. 6*) where the user can visualize the curves of each select stage for different positions on the symmetrical axis.
 - ***[2D Profile]*** This button enable the visualization of each step in 2D images.
-> **Note**   
->  Standard deviation checkbox change 1D and 2D measurement images visualization to standard deviation images. 
+    
+|<img src = '/Images/MainScreen2.png'>|
+|:--:| 
+| *Fig. 6 - Software Main Screen with 1D form enabled and Standard Deviation checkbox selected* |
+
+- ***[Save Plot]*** with this button the user can save the visualized graph as an image file (*.png*, *.jpg*, *.bmp*, etc).
+- ***[Save Data]*** with this button the user can save the 2D array that generated the visualized graph as a *.dat* or *.txt* file.
 
 ## How it work
 The interferogram analysis software algorithm works according to the flowchart below:
