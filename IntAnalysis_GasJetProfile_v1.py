@@ -212,15 +212,13 @@ def intensity_dist(data, fringe_axis):
             data_dist[:, i] = np.interp(x, ypeaks, y[ypeaks])
     return data_dist
 # CREATING SHIFT AND WIDTHS OF THE FRINGES
-def fringes_info(data1, data2, data3):
+def fringes_info(data1, data2):
     '''
      Calculate 2D array shifts and widths fringes distribution
     :param n: slice 2D arrays, slice 2D array of ref. image, 2D array ref.
     :return: 2D arrays of shifts and widths fringes distribution
     '''
-    data_shift = np.zeros(np.shape(data3))
-    data_dist = np.zeros(np.shape(data3))
-    nl, nr = np.shape(data3)
+    nr = len(data1)
     ypeaks2, _ = find_peaks(data2)
     ypeaks1, _ = find_peaks(data1)
     if len(ypeaks1) != 0 and len(ypeaks2) != 0:
@@ -244,13 +242,10 @@ def fringes_info(data1, data2, data3):
 
         if len(ypeaks1)!=0 or len(ypeaks2) !=0 :
             x = np.arange(nr)
-            dist_i = np.interp(x, np.arange(len(np.diff(ypeaks1))), np.diff(ypeaks1))
-            shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks1 - ypeaks2) - np.min(abs(ypeaks1 - ypeaks2))))
-            for j in range(0, nl):
-                data_shift[j] = shift_i
-                data_dist[j] = dist_i
+            dist_i = np.interp(x, np.arange(len(np.diff(ypeaks2))), np.diff(ypeaks2))
+            shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks2 - ypeaks1) - np.min(abs(ypeaks2 - ypeaks1))))
 
-    return data_shift, data_dist
+    return shift_i,dist_i
 
 '''
 ########################################################################################
@@ -267,7 +262,7 @@ layout_frame_ImgSample = [
     [sg.Button('Open File(s)', font='Arial 10 bold'),
      sg.Button('Rotate (°)', visible=True, font='Arial 10 bold', disabled=True),
      sg.Input('0', size=(5, 1), key='-DEGREE-', enable_events=True),
-     sg.Text('  Image Rescale (w,h):'),
+     sg.Text('  Image Scale (w,h):'),
      sg.Text('', key='-scale1-')],
 ]
 # LAYOUT REFERENCE IMAGE
@@ -322,7 +317,7 @@ layout_analysis_parameters = [
     [sg.Text('Fringes Orientation:      '),
      sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-combofringe-')],
     [sg.Text('Axisymmetric:             '),
-     sg.Combo(['vertical', 'horizontal'], default_value='horizontal', key='-comboaxisymm-')],
+     sg.Combo(['vertical', 'horizontal'], default_value='vertical', key='-comboaxisymm-')],
     [sg.Text('Sigma - Gaussian Blur (pixel):    '),
      sg.Input(sigma_gblur, size=(5, 1), key='-sigma_gblur-', enable_events=True)],
 ]
@@ -344,8 +339,8 @@ layout_frame_ImagesL = [
 layout_frame_ImagesR = [
     [sg.Frame("Interferogram (Ref.)", layout_frame_ImgReference, size=(258, 258), title_location=sg.TITLE_LOCATION_TOP,
               vertical_alignment="top", font='Arial 10 bold')],
-    [sg.Button('Analyse Data', size=(30, 6), font='Arial 12 bold', disabled=True, button_color='gray')],
-    [sg.Button('Exit', size=(30, 2), button_color='black', font='Arial 10 bold')]
+    [sg.Button('Analyse Data', size=(30, 6), font='Arial 12 bold', disabled=True, button_color='black')],
+    [sg.Button('Clear', size=(30, 2), button_color='gray', font='Arial 10 bold')]
 ]
 # lAYOUT GLOBAL INPUTS
 layout_frame_Images = [
@@ -407,12 +402,39 @@ window = sg.Window("Interferogram Analysis - Gas-Jet Density Profile (Version 1.
 '''
 while True:
     event, values = window.read()
+    event, values = window.read()
     # Removing temp files when the main window is closed
-    if event =='Exit' or event == sg.WINDOW_CLOSED:
+    if event == sg.WINDOW_CLOSED:
         if '_temp.png' in path1:
             os.remove(path1)
             os.remove(path2)
         break
+
+    if event == 'Clear':
+        if '_temp.png' in path1:
+            os.remove(path1)
+            os.remove(path2)
+
+        # Disable specific buttons and frames for 2D analysis
+        window['Save Data'].update(disabled=True)
+        window['Save Plot'].update(disabled=True)
+        window['frame1d'].update(visible=False)
+        window['2D Profile'].update(disabled=True)
+        window['1D Profile'].update(disabled=True)
+        window['Rotate (°)'].update(disabled=True)
+        window['-DEGREE-'].update(visible=True)
+        window['Analyse Data'].update(disabled=True)
+        window['Select Analysis Area'].update(disabled=True)
+        # Reset values
+        path1 = ''
+        path2 = ''
+        window['image1'].update(size=size, data='')
+        window['image2'].update(size=size2, data='')
+        window['file1'].update(path1)
+        window['file2'].update(path1)
+        window['-centerfilter-'].update('0')
+        window['-sigma_gfilter-'].update('0')
+
     ########################################################################
     # OPEN INTERFEROGRAM IMAGE
     elif event == "Open File(s)":
@@ -525,19 +547,16 @@ while True:
     elif event == '-combogas-':
         if values['-combogas-'] == 'N2':
             window['-polargas-'].update(value='1.710')  # cm3
-            #window['-specificheatgas-'].update(value='1.47')
 
         elif values['-combogas-'] == 'H2':
             window['-polargas-'].update(value='0.787')  # cm3
-            #window['-specificheatgas-'].update(value='1.405')
 
         elif values['-combogas-'] == 'He':
             window['-polargas-'].update(value='0.208')  # cm3
-            #window['-specificheatgas-'].update(value='1.667')
 
         elif values['-combogas-'] == 'Ar':
             window['-polargas-'].update(value='1.664')  # cm3
-            #window['-specificheatgas-'].update(value='1.667')
+
     ########################################################################
     # BUTTON SELECT AREA
     elif event == 'Select Analysis Area':
@@ -602,7 +621,7 @@ while True:
             # sigma value of gaussian blur
             sigma = int(get_value('-sigma_gblur-', values))
             # heat gas constant
-            alpha_gas = float(get_value('-polargas-', values)) * 1e-24  # in cm^3
+            alpha_gas = float(get_value('-polargas-', values)) * 1e-30  # in m^3
             # Wavelength laser
             lambda0 = float(get_value('-lambda0-', values)) * 1e-9  # in meters
             unc_lambda0 = float(get_value('-unclambda0-', values)) * 1e-9  # in meters
@@ -713,7 +732,7 @@ while True:
             # Creating Filter for Horizontal/vertical fringes orientation
             if values['-combofringe-'] == 'horizontal':
                 if sigma_gfilter == 0:
-                    sigma_gfilter = int(0.05 * nlmap * f_range)
+                    sigma_gfilter = int(0.025 * nlmap * f_range)
                     window['-sigma_gfilter-'].update(str(sigma_gfilter))
                 gfilter[centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[centerfilter - f_range:centerfilter + f_range]))
@@ -721,7 +740,7 @@ while True:
                 gfilter = gaussian_filter(gfilter, sigma=sigma_gfilter)
             elif values['-combofringe-'] == 'vertical':
                 if sigma_gfilter == 0:
-                    sigma_gfilter = int(0.05 * nrmap * f_range)
+                    sigma_gfilter = int(0.025 * nrmap * f_range)
                     window['-sigma_gfilter-'].update(str(sigma_gfilter))
                 gfilter[:, centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
                     fftgas[:, centerfilter - f_range:centerfilter + f_range]))
@@ -736,42 +755,36 @@ while True:
             phasemaps = (np.angle(ifftgas) - np.angle(ifftref))
             # Unwrap phase:
             uwphasemap = unwrap_phase(phasemaps)
-            # Range for scan is 5% of total dimension of 2D array
-            frgs_shifts = np.ones(np.shape(intref))
-            frgs_widths = np.ones(np.shape(intref))
-            frgs_shifts, frgs_widths = [], []
-            lim_l = int(0.05 * nlmap) + 1
-            lim_r = int(0.05 * nrmap) + 1
+
+            frgs_shifts = np.zeros(np.shape(intref))
+            frgs_widths = np.zeros(np.shape(intref))
+
             if values['-combofringe-'] == 'vertical':
                 # Intensity distribution
                 dist1 = intensity_dist(intref, 0)
                 dist2 = intensity_dist(intgas, 0)
-                for l in range(0, lim_l):
+                for l in range(0, nlmap):
                     # Scanning fringes pattern to define min. shift
                     frgs_ref = (intref0[l, begin_x:end_x])
-                    frgs_plasma = (intgas0[l, begin_x:end_x])
-                    frgs_shifts_i, frgs_widths_i = fringes_info(frgs_plasma, frgs_ref, intref)
-                    frgs_shifts.append(frgs_shifts_i)
-                    frgs_widths.append(frgs_widths_i)
+                    frgs_gas = (intgas0[l, begin_x:end_x])
+                    frgs_shifts[l], frgs_widths[l] = fringes_info(frgs_gas, frgs_ref)
 
             if values['-combofringe-'] == 'horizontal':
                 # Intensity distribution
                 dist1 = intensity_dist(intref, 1)
                 dist2 = intensity_dist(intgas, 1)
                 # fringes shift
-                for l in range(0, lim_r):
+                for l in range(0, nrmap):
                     frgs_ref = np.transpose(intref0[begin_y:end_y, l])
-                    frgs_plasma = np.transpose(intgas0[begin_y:end_y, l])
-                    frgs_shifts_i, frgs_widths_i = fringes_info(frgs_plasma, frgs_ref, np.transpose(intref))
-                    frgs_shifts.append(np.transpose(frgs_shifts_i))
-                    frgs_widths.append(np.transpose(frgs_widths_i))
+                    frgs_gas = np.transpose(intgas0[begin_y:end_y, l])
+                    frgs_shifts[l], frgs_widths[l] = fringes_info(frgs_gas, frgs_ref)
+                frgs_shifts.append(np.transpose(frgs_shifts))
+                frgs_widths.append(np.transpose(frgs_widths))
 
-            frgs_shifts = mean_maps(frgs_shifts)
-            frgs_widths = mean_maps(frgs_widths)
-            frgs_shifts = gaussian_filter(frgs_shifts, sigma=int(np.mean(frgs_widths) / 2))
-            frgs_widths = gaussian_filter(frgs_widths, sigma=int(np.mean(frgs_widths) / 2))
-            std_phasemap_i = ((np.pi * frgs_shifts / (2 * frgs_widths)) * \
-                              np.sqrt((np.mean(dist1) * (dist1 + dist2)) / (2 * dist1 * dist2)))
+            frgs_shifts = gaussian_filter(frgs_shifts, sigma=sigma)
+            frgs_widths = gaussian_filter(frgs_widths, sigma=sigma)
+            std_phasemap_i = ((np.pi * frgs_shifts) / (2 * frgs_widths)) * \
+                              np.sqrt((np.mean(dist1) * (dist1 + dist2)) / (2 * dist1 * dist2))
             std_phasemap.append(std_phasemap_i)
 
             '''
@@ -873,7 +886,7 @@ while True:
             n_index = n_index0[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]
             # Calculating gas density from C-M relation
             gas_dens_i = (3 * (np.square(n_index) - np.ones(np.shape(n_index)))) / \
-                             (4 * np.pi * alpha_gas * (np.square(n_index) + 2 * np.ones(np.shape(n_index))))
+                             (4 * np.pi * alpha_gas * (np.square(n_index) + 2 * np.ones(np.shape(n_index))))*1e-6 #cm^-3
 
             #new matrix size for plot
             rangeh, rangev = np.shape(gas_dens_i)
@@ -890,20 +903,19 @@ while True:
                 np.square(n_index) + 2 * np.ones(np.shape(n_index)))
             # Contribution 1: measurement interferogram
             std_phase1 = np.square(std_phasemap_symm[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
-                                   /(factor*gas_diameter)) #rad/metro
+                                   /(factor*gas_diameter)) #rad/m
             # Contribution 2: Abel transformation accuracy
             std_abelmap_i = std_abelmap0[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]
             std_abelmap.append(std_abelmap_i)
-            std_phase2 = np.square(std_abelmap_i/factor) #rad/metro
-            std_phase = np.sqrt(std_phase2+std_phase1) #rad/metro
-            dn_phase=(lambda0/(2*np.pi)) #m
+            std_phase2 = np.square(std_abelmap_i/factor) #rad/m
+            std_phase = np.sqrt(std_phase2+std_phase1) #rad/m
+            dn_phase=(lambda0/(2*np.pi)) #m/rad
 
             # Contribution 3: laser wavelength
             dn_lambda = (phase_abel[:, int(0.05 * vert_lim): int(0.95 * vert_lim)]\
                                   /(2*np.pi*factor))#rad/m
 
-            std_gas_dens_i = np.sqrt(np.square(dN_n)*(np.square(dn_phase*std_phase) + \
-                                                      np.square(dn_lambda*unc_lambda0)))*1e-6 # cm^-3
+            std_gas_dens_i = abs(dN_n)*np.sqrt(np.square(dn_phase*std_phase)+np.square(dn_lambda*unc_lambda0))*1e-6
             std_gas_dens.append(std_gas_dens_i)
 
         #BUILDING MATRIX RESULTS FOR:
@@ -961,7 +973,7 @@ while True:
                 matrix_plot = std_abelmap_mean
         elif values['densradio'] == True:  # Plot gas density profile
             if values['-checkstd-'] == False:
-                matrix_plot = gas_dens_mean# - np.ones(np.shape(plasma_dens_mean)) * np.min(plasma_dens_mean)
+                matrix_plot = gas_dens_mean
             else:
                 matrix_plot = std_dens_mean
 
@@ -1169,9 +1181,8 @@ while True:
             matrix_plot = gfilter
             matrix_plot_std = np.zeros(np.shape(matrix_plot))
         elif values['phaseradio'] == True:  # Plot phase map result
-            if values['-checkstd-'] == False:
-                matrix_plot = gas_phasemap_mean
-                matrix_plot_std = std_phasemap_mean
+            matrix_plot = gas_phasemap_mean
+            matrix_plot_std = std_phasemap_mean
         elif values['abelradio'] == True:  # Plot gas density profile from IAT
             matrix_plot = gas_abelmap_mean
             matrix_plot_std = std_abelmap_mean
@@ -1199,7 +1210,6 @@ while True:
                 array_std = matrix_plot_std[pos]
 
             elif values['-comboaxisymm-'] == 'horizontal':
-                window['sliderh'].update(range=(0, rangeh - 1))
                 raxis = np.arange(-rangeh / 2, rangeh / 2, 1)
                 raxis_um = raxis * factor * 1e6  # um
                 # set origin position (exit nozzle position) and slider position
@@ -1225,29 +1235,29 @@ while True:
                 h_prof1 = int(get_value('-pos1-', values))
                 pos1 = int(h_prof1 / (factor * 1e6))
                 if values['-comboaxisymm-'] == 'vertical':
-                    ax1.plot(raxis_um, matrix_plot[pos1], label='$%d \hspace{.5}\mu m$' % h_prof1, lw=1,
+                    ax1.plot(raxis_um, matrix_plot[pos_0-pos1], label='$%d \hspace{.5}\mu m$' % (h_prof1), lw=1,
                              color="red")
                 elif values['-comboaxisymm-'] == 'horizontal':
-                    ax1.plot(raxis_um, matrix_plot[:, pos1], label='$%d \hspace{.5}\mu m$' % h_prof1, lw=1,
+                    ax1.plot(raxis_um, matrix_plot[:, pos1], label='$%d \hspace{.5}\mu m$' %(h_prof1), lw=1,
                              color="red")
             if values['-checkpos2-'] == True:
                 h_prof2 = int(get_value('-pos2-', values))
                 pos2 = int(h_prof2 / (factor * 1e6))
                 if values['-comboaxisymm-'] == 'vertical':
-                    ax1.plot(raxis_um, matrix_plot[pos2], label='$%d \hspace{.5}\mu m$' % h_prof2, lw=1,
-                             color="red")
+                    ax1.plot(raxis_um, matrix_plot[pos_0-pos2], label='$%d \hspace{.5}\mu m$' % (h_prof2), lw=1,
+                             color="orange")
                 elif values['-comboaxisymm-'] == 'horizontal':
                     ax1.plot(raxis_um, matrix_plot[:, pos2], label='$%d \hspace{.5}\mu m$' % h_prof2, lw=1,
-                             color="red")
+                             color="orange")
             if values['-checkpos3-'] == True:
                 h_prof3 = int(get_value('-pos3-', values))
                 pos3 = int(h_prof3 / (factor * 1e6))
                 if values['-comboaxisymm-'] == 'vertical':
-                    ax1.plot(raxis_um, matrix_plot[pos3], label='$%d \hspace{.5}\mu m$' % h_prof3, lw=1,
-                             color="red")
+                    ax1.plot(raxis_um, matrix_plot[pos_0-pos3], label='$%d \hspace{.5}\mu m$' % (h_prof3), lw=1,
+                             color="yellow")
                 elif values['-comboaxisymm-'] == 'horizontal':
                     ax1.plot(raxis_um, matrix_plot[:, pos3], label='$%d \hspace{.5}\mu m$' % h_prof3, lw=1,
-                             color="red")
+                             color="yellow")
 
             ax1.set_xlabel('$r\hspace{.5}(\mu m)$', fontsize=12)
 
