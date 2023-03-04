@@ -131,7 +131,7 @@ Both the above parameters are defined in pixels.
     
 |<img src = '/Images/MainScreen2.png'>|
 |:--:| 
-| *Fig. 6 - Software Main Screen with 1D form enabled and Standard Deviation checkbox selected* |
+| *Fig. 6 - Software Main Screen with 1D form enabled and Standard Deviation checkbox selected.* |
 
 - ***[Save Plot]*** with this button the user can save the visualized graph as an image file (*.png*, *.jpg*, *.bmp*, etc).
 - ***[Save Data]*** with this button the user can save the 2D array that generated the visualized graph as a *.dat* or *.txt* file.
@@ -141,7 +141,7 @@ The interferogram analysis software algorithm works according to the flowchart b
 
 |<img src = '/Images/Flowchart.png'>|
 |:--:| 
-| *Fig. 6 - Software Main Screen with 1D form enabled and Standard Deviation checkbox selected* |
+| *Fig.  7 - Scheme for determining the gas density profile from interferograms.* |
 
 ### Accumulated Phase
 The Accumulated Phase map (or accumulated phase shift map) is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a backgroung image (or reference) with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[7]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $\Delta\varphi_{z}$ [[7, 8]](#reference) along the beam propagation direction (z direction) by the following equation:
