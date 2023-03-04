@@ -139,17 +139,21 @@ Both the above parameters are defined in pixels.
 ## How it work
 The interferogram analysis software algorithm works according to the flowchart below:
 
+|<img src = '/Images/Flowchart.png'>|
+|:--:| 
+| *Fig. 6 - Software Main Screen with 1D form enabled and Standard Deviation checkbox selected* |
+
 ### Accumulated Phase
-The Accumulated Phase map (or accumulated phase shift map) is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a backgroung image (or reference) with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[7]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $&Delta;&phi;_{z}$ [[7, 8]](#reference) along the beam propagation direction (z direction) by the following equation:
+The Accumulated Phase map (or accumulated phase shift map) is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a backgroung image (or reference) with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[7]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $\Delta\varphi_{z}$ [[7, 8]](#reference) along the beam propagation direction (z direction) by the following equation:
 
 $$ 
 \begin{equation}
-\Delta\phi_{z} =  tan^{-1}\left({\phi_{gas} - \phi_{ref}}\right)
+\Delta\varphi_{z} =  tan^{-1}\left({\varphi_{gas} - \phi_{ref}}\right)
 \tag{1}
 \end{equation}
 $$
 
-where  $\phi_{gas}$  and  $\phi_{ref}$   is, respectively, the gas-jet and background phase map.
+where  $\varphi_{gas}$  and  $\varphi_{ref}$   is, respectively, the gas-jet and background phase map.
 
 #### Standard Deviation of Accumulated Phase
 
@@ -157,7 +161,7 @@ According to M. Lehmann [[9]](#reference), for two well-resolved speckle fields 
 
 $$ 
 \begin{equation}
-\sigma_{\Delta\phi}(\Delta x, I_{1} ,I_{2}) = {\Delta x \over 2}{\pi \over \beta} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2}
+\sigma_{\Deltavarphi}(\Delta x, I_{1} ,I_{2}) = {\Delta x \over 2}{\pi \over \beta} \left\lbrack{ \overline{I} (I_{1} + I_{2}) \over 2 I_{1} I_{2}}\right\rbrack^{1/2}
 \tag{2}
 \end{equation}
 $$
@@ -184,22 +188,22 @@ The gas molecular density $\rho_{gas}$ is obtained through the simple expression
 
 $$ \rho_{gas} = {3 \over 4\pi\alpha} {(n^2-1) \over (n^3+2)} \tag{4}$$
 
-where $\alpha$ is the molecular polarizability of gas and $n$ is the spatial refractive index distribution. This 2D refractive index map is determined from the phase-shift map $\Delta\phi_{r}$:
+where $\alpha$ is the molecular polarizability of gas and $n$ is the spatial refractive index distribution. This 2D refractive index map is determined from the phase-shift map $\Delta\varphi_{r}$:
 
-$$ n = 1 + {\Delta\phi_{r} \lambda \over 2\pi} \tag{4}$$
+$$ n = 1 + {\Delta\varphi_{r} \lambda \over 2\pi} \tag{4}$$
 
 
 
 #### Standard Deviation of Density
-The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement ($\sigma_{\Delta\phi_{z}}$), and the numerical accuracy of the Abel inversion [[14]](#reference) ($\sigma_{abel}$). This way, the standard deviation of phase-shift map $\sigma_{\Delta\phi_{r}}$ can be write as ($5$):
+The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement ($\sigma_{\Delta\varphi_{z}}$), and the numerical accuracy of the Abel inversion [[14]](#reference) ($\sigma_{abel}$). This way, the standard deviation of phase-shift map $\sigma_{\Delta\varphi_{r}}$ can be write as ($5$):
 
-$$  \sigma_{\Delta\phi_{r}} = \sqrt{\left({\sigma_{\Delta\phi_{z}}}^2 + {\sigma_{abel}}^2\right)} \tag{5}$$
+$$  \sigma_{\Delta\varphi_{r}} = \sqrt{\left({\sigma_{\Delta\varphi_{z}}}^2 + {\sigma_{abel}}^2\right)} \tag{5}$$
 
 So, the standard deviation of gas density $\sigma_{\rho}$ is given by ($6$):
 
 $$ 
 \begin{equation}
-\sigma_{\rho} = \sqrt{\left({\partial\rho \over \partial\Delta\phi_{r}}\right)^2 \left({\sigma_{\Delta\phi_{r}}}\right)^2 + 
+\sigma_{\rho} = \sqrt{\left({\partial\rho \over \partial\Delta\varphi_{r}}\right)^2 \left({\sigma_{\Delta\varphi_{r}}}\right)^2 + 
 \left({\partial\rho \over \partial\lambda}\right)^2 \left({\sigma_{\lambda}}\right)^2}
 \tag{6}
 \end{equation}
