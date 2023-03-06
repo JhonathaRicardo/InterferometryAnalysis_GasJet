@@ -220,7 +220,7 @@ def fringes_info(data1, data2):
         if len(ypeaks1)!=0 or len(ypeaks2) !=0 :
             x = np.arange(nr)
             dist_i = np.interp(x, np.arange(len(np.diff(ypeaks2))), np.diff(ypeaks2))
-            shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks2 - ypeaks1) - np.min(abs(ypeaks2 - ypeaks1))))
+            shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks2 - ypeaks1)))
 
     return shift_i,dist_i
 
