@@ -187,30 +187,7 @@ def std_maps(data, mean_data):
         desv = desv + (data[i] - mean_data) * (data[i] - mean_data)
 
     return np.sqrt(desv / len(data))
-# CREATING INTENSITY DIST OF THE FRINGES
-def intensity_dist(data, fringe_axis):
-    '''
-    Calculate the intensity distribution of 2D array
-    :param: 2D arrays and arientation of fringes
-    :return: 2D array
-    '''
-    data_dist = np.zeros(np.shape(data))
-    nl, nr = np.shape(data)
-    # vertical fringes
-    if fringe_axis == 0:
-        for i in range(0, nl):
-            y = data[i, :]
-            x = np.arange(len(y))
-            ypeaks, _ = find_peaks(y)
-            data_dist[i, :] = np.interp(x, ypeaks, y[ypeaks])
-            # horizontal fringes
-    elif fringe_axis == 1:
-        for i in range(0, nr):
-            y = data[:, i]
-            x = np.arange(len(y))
-            ypeaks, _ = find_peaks(y)
-            data_dist[:, i] = np.interp(x, ypeaks, y[ypeaks])
-    return data_dist
+
 # CREATING SHIFT AND WIDTHS OF THE FRINGES
 def fringes_info(data1, data2):
     '''
@@ -402,7 +379,6 @@ window = sg.Window("Interferogram Analysis - Gas-Jet Density Profile (Version 1.
 '''
 while True:
     event, values = window.read()
-    event, values = window.read()
     # Removing temp files when the main window is closed
     if event == sg.WINDOW_CLOSED:
         if '_temp.png' in path1:
@@ -437,7 +413,7 @@ while True:
 
     ########################################################################
     # OPEN INTERFEROGRAM IMAGE
-    elif event == "Open File(s)":
+    if event == "Open File(s)":
         path_files = sg.popup_get_file("", no_window=True, multiple_files=True)
         if path_files:
             path1 = path_files[0]
@@ -498,7 +474,7 @@ while True:
             window['Select Analysis Area'].update(disabled=False)
     ########################################################################
     # OPEN REFERENCE FILE
-    elif event == "Open File":
+    if event == "Open File":
         path_file2 = sg.popup_get_file("", no_window=True)
         if path_file2:
             path2 = path_file2
@@ -544,7 +520,7 @@ while True:
             window['Select Analysis Area'].update(disabled=False)
     ########################################################################
     # COMBO GAS TYPE
-    elif event == '-combogas-':
+    if event == '-combogas-':
         if values['-combogas-'] == 'N2':
             window['-polargas-'].update(value='1.710')  # cm3
 
@@ -559,7 +535,7 @@ while True:
 
     ########################################################################
     # BUTTON SELECT AREA
-    elif event == 'Select Analysis Area':
+    if event == 'Select Analysis Area':
         apply_drawing(values, window)
         centerfilter = 0
         window['-centerfilter-'].update('0')
@@ -624,7 +600,7 @@ while True:
             alpha_gas = float(get_value('-polargas-', values)) * 1e-30  # in m^3
             # Wavelength laser
             lambda0 = float(get_value('-lambda0-', values)) * 1e-9  # in meters
-            unc_lambda0 = float(get_value('-unclambda0-', values)) * 1e-9  # in meters
+            unc_lambda0 = float(get_value('-unclambda0-', values))*0.8493218 * 1e-9  # 1/e in meters
         except:
             sg.popup_error(f"WARNING: Data fields must have numerical values! ")
             continue
@@ -701,6 +677,7 @@ while True:
                 # Range of gaussian filter
                 filterspoints_widths = (peak_widths(summap, filterpoints, rel_height=0.5)[0])
 
+
                 try:
                     if values['-combofringe-'] == 'horizontal':
                         # filter range is equal to FWHM of signal of summaps
@@ -760,19 +737,19 @@ while True:
             frgs_widths = np.zeros(np.shape(intref))
 
             if values['-combofringe-'] == 'vertical':
-                # Intensity distribution
-                dist1 = intensity_dist(intref, 0)
-                dist2 = intensity_dist(intgas, 0)
                 for l in range(0, nlmap):
                     # Scanning fringes pattern to define min. shift
                     frgs_ref = (intref0[l, begin_x:end_x])
                     frgs_gas = (intgas0[l, begin_x:end_x])
                     frgs_shifts[l], frgs_widths[l] = fringes_info(frgs_gas, frgs_ref)
+                # Intensity distribution
+                dist1 = gaussian_filter(intref, sigma=int(np.mean(frgs_widths)/2))
+                dist2 = gaussian_filter(intgas, sigma=int(np.mean(frgs_widths)/2))
 
             if values['-combofringe-'] == 'horizontal':
                 # Intensity distribution
-                dist1 = intensity_dist(intref, 1)
-                dist2 = intensity_dist(intgas, 1)
+                dist1 = gaussian_filter(intref, sigma=int(np.mean(frgs_widths)/2))
+                dist2 = gaussian_filter(intgas, sigma=int(np.mean(frgs_widths)/2))
                 # fringes shift
                 for l in range(0, nrmap):
                     frgs_ref = np.transpose(intref0[begin_y:end_y, l])
@@ -783,8 +760,8 @@ while True:
 
             frgs_shifts = gaussian_filter(frgs_shifts, sigma=sigma)
             frgs_widths = gaussian_filter(frgs_widths, sigma=sigma)
-            std_phasemap_i = ((np.pi * frgs_shifts) / (2 * frgs_widths)) * \
-                              np.sqrt((np.mean(dist1) * (dist1 + dist2)) / (2 * dist1 * dist2))
+            std_phasemap_i = ((np.pi * frgs_shifts) / (2*frgs_widths))*\
+                             np.sqrt((np.mean(dist1) * (dist1 + dist2)) / (2 * dist1 * dist2))
             std_phasemap.append(std_phasemap_i)
 
             '''
@@ -854,6 +831,11 @@ while True:
             for k in range(0, rangeh0):
                 norm_phasemap[k] = phasemap_symm[k] * np.max(abs(phase_abel[k])) / np.max(abs(phasemap_symm[k]))
             std_abelmap0 = np.sqrt(np.square(phase_abel-norm_phasemap))
+
+            #Suport Images - this images are used to verified each alhorithm processes
+            #plt.imsave('phaseabel.jpg', phase_abel)
+            #plt.imsave('norm_phase.jpg', norm_phasemap)
+            #plt.imsave('phasemap.jpg', phasemap_symm)
 
             if values['-comboaxisymm-'] == 'horizontal':
                 vert_lim = nlines
@@ -1266,6 +1248,9 @@ while True:
 
             elif values['abelradio'] == True:
                 ax1.set_ylabel('$Phase\hspace{.5} (rad)$', fontsize=12)
+
+            elif values['phaseradio'] == True:
+                ax1.set_ylabel('$Accumulated Phase\hspace{.5} (rad)$', fontsize=12)
 
             ax1.legend()
             ax1.grid(True)
