@@ -166,7 +166,11 @@ $$
 \end{equation}
 $$
 
-where $I$ and $I_{0}$ are the intensity distribution of both speckle fields (with mean intensity $\overline{I}$ each), $&Delta;x$ is the displacement of the image in the direction perpendicular to the direction axis of the fringes, and $\beta$ is the speckle size. 
+where $I$ and $I_{0}$ are the intensity distribution of both speckle fields (with mean intensity $\overline{I}$ each), $\Delta x$ is the displacement of the image in the direction perpendicular to the direction axis of the fringes, and $\beta$ is the speckle size. 
+
+|<img src = '/Images/Scheme_fringewidth_and_disp.png' width = '50%'>|
+|:--:| 
+| Fig.  8 - Scheme for determining the fringes widths (or speckles size) and images displacement   . |
 
 ### Inverse Abel Transform
 
@@ -190,7 +194,7 @@ This way, the standard deviation map $\sigma_{Abel}$ is build from each $\left(\
 
 |<img src = '/Images/Scheme_stdAbel.png' width = '50%'>|
 |:--:| 
-| *Fig.  8 - Scheme for determining the standard deviation of the phase map.* |
+| *Fig.  9 - Scheme for determining the standard deviation of the phase map.* |
 
 ### Density Profile
 The gas molecular density $\rho_{gas}$ is obtained through the simple expression of the Lorentz-Lorenz relation [[39, 40]](#reference):
