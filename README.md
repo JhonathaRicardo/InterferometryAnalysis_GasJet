@@ -124,7 +124,7 @@ Both the above parameters are defined in pixels.
     
     | ![Gasjet_density](/Images/Stage5.png)|
     |:--:| 
-    | *Fig.5 - Example of: (A) 2D gas density map  and (B) 2D standard deviation map; (C) 1D gas density curves  and (D) standard deviation of one density curve. * |
+    | *Fig.5 - Example of: (A) 2D gas density map  and (B) 2D standard deviation map; (C) 1D gas density curves  and (D) standard deviation of one density curve.* |
 
 - ***[1D Profile]*** This button enable 1D form options (*Fig. 6*) where the user can visualize the curves of each select stage for different positions on the symmetrical axis.
 - ***[2D Profile]*** This button enable the visualization of each *Stage* in 2D images.
