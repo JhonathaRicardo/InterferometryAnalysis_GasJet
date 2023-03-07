@@ -135,6 +135,11 @@ Both the above parameters are defined in pixels.
 
 - ***[Save Plot]*** with this button the user can save the visualized graph as an image file (*.png*, *.jpg*, *.bmp*, etc).
 - ***[Save Data]*** with this button the user can save the 2D array that generated the visualized graph as a *.dat* or *.txt* file.
+- ***[Colormap dist.]*** With this option, the user can choose between three colormaps distributions: linear (*Fig 7.A*), quadratic (*Fig 7.B*), or cubic(*Fig 7.C*).
+
+|<img src = '/Images/Colormaps.png'>|
+|:--:| 
+| *Fig. 7 - Examples with the colormaps distributions: (A) Linear distribution, (B) Quadratic distribution, (C) Cubic Distribution.* |
 
 ## How it works
 The interferogram analysis software algorithm works according to the flowchart below:
