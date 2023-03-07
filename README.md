@@ -20,7 +20,7 @@
   * [Interferogram Image](#interferogram-image)
   * [Options](#options)
   * [Gas-Jet Profile](#gas-jet-profile)
-* [How it work](#how-it-work)
+* [How it works](#how-it-works)
 * [Reference](#reference)
 * [Authors](#authors)
 * [Acknowledgment](#acknowledgment)
@@ -73,7 +73,7 @@ In this section, we provide users with a simple review of the software's functio
 
 - ***[Analyse Data]*** From this command button, the software will apply data processing to generate accumulated phase, inverse Abel transforms, and gas jet density profile.
 
-- ***[Exit]*** Close software.
+- ***[Clear]*** This button clears software input datas.
 
 ### Options
 - ***[Select Analysis Area]*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***).
@@ -136,7 +136,7 @@ Both the above parameters are defined in pixels.
 - ***[Save Plot]*** with this button the user can save the visualized graph as an image file (*.png*, *.jpg*, *.bmp*, etc).
 - ***[Save Data]*** with this button the user can save the 2D array that generated the visualized graph as a *.dat* or *.txt* file.
 
-## How it work
+## How it works
 The interferogram analysis software algorithm works according to the flowchart below:
 
 |<img src = '/Images/Flowchart.png'>|
