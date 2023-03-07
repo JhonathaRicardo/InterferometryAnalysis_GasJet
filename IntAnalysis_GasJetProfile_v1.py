@@ -29,7 +29,6 @@ from matplotlib import cm
 from matplotlib.colors import ListedColormap
 from scipy.ndimage import gaussian_filter
 from scipy.signal import peak_widths, find_peaks
-from skimage.restoration import unwrap_phase
 from PIL import Image, ImageDraw, UnidentifiedImageError
 
 # Matplotlib Tk style
@@ -52,21 +51,20 @@ path2 = ''
 # Physics Parametres
 lambda0 = '395'  # nm
 unc_lambda0 = '0'
-polargas = '1.710'  #
+polargas = '1.710'  # for N2 gas in A^3
 sigma_gfilter = '0'  # sigma of gauss function
 sigma_gblur = '10' # sigma of gaussian blur
 centerfilter = '0'  # Center of the gaussian filter application
-#specificheat = '1.47'  # specific heat of gas in A³ (Angstrom)
 factor = '1.000'  # factor um/pixel
 # Image parameters
-h_prof = -1.0  # heigth null
+h_prof = -1.0  # height null
 rotate_degree = 0.0  # angle to image rotation
 # Initial values to cut image
 begin_x = '100'
 begin_y = '100'
 end_x = '300'
 end_y = '300'
-# Initial values of heigths for 1D analysis
+# Initial values of heights for 1D analysis
 pos1 = '50'
 pos2 = '75'
 pos3 = '100'
@@ -78,7 +76,7 @@ width3, height3 = size3 = 428, 342  # Scale image - Result
 # Min and Max values of Interferogram Image
 minvalue_x, maxvalue_x, minvalue_y, maxvalue_y = 0, 428, 0, 342
 #Frame 1D visible
-visible_f1d=False
+visible_f1d = False
 
 #################################################################################
 # FUNCTIONS
@@ -102,8 +100,8 @@ def getBinaryData(filename):
 def draw_figure(canvas, figure):
     '''
     Drawing rectangle figure on canvas
-    :param canvas:
-    :param figure:
+    :param canvas: image canvas
+    :param figure: original interferogram
     :return: rectangle drawn on figure
     '''
     figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
@@ -162,7 +160,7 @@ def func_colormap(n):
     '''
     Color distribution at the colormap
     :param n: n_order for colormap (linear,quadratic, cubic)
-    :return:
+    :return: colormap distribution
     '''
     return ListedColormap(cm.get_cmap('rainbow_r', 512)(np.power(np.linspace(1, 0, 512), n)))
 # CREATING MEAN MAPS/ARRAY AND STD ARRAY
@@ -191,8 +189,8 @@ def std_maps(data, mean_data):
 # CREATING SHIFT AND WIDTHS OF THE FRINGES
 def fringes_info(data1, data2):
     '''
-     Calculate 2D array shifts and widths fringes distribution
-    :param n: slice 2D arrays, slice 2D array of ref. image, 2D array ref.
+    Calculate 2D array shifts and widths fringes distribution
+    :param n: 2D arrays, 2D array of ref. image.
     :return: 2D arrays of shifts and widths fringes distribution
     '''
     nr = len(data1)
@@ -220,7 +218,7 @@ def fringes_info(data1, data2):
         if len(ypeaks1)!=0 or len(ypeaks2) !=0 :
             x = np.arange(nr)
             dist_i = np.interp(x, np.arange(len(np.diff(ypeaks2))), np.diff(ypeaks2))
-            shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks2 - ypeaks1)))
+            shift_i = np.interp(x, np.arange(len(ypeaks1)), (abs(ypeaks2 - ypeaks1))) #- np.min(abs(ypeaks2 - ypeaks1))
 
     return shift_i,dist_i
 
@@ -387,6 +385,7 @@ while True:
         break
 
     if event == 'Clear':
+        # Removing temp files when the main window is closed
         if '_temp.png' in path1:
             os.remove(path1)
             os.remove(path2)
@@ -410,6 +409,9 @@ while True:
         window['file2'].update(path1)
         window['-centerfilter-'].update('0')
         window['-sigma_gfilter-'].update('0')
+        # clearing figures and plots
+        fig_canvas_agg.get_tk_widget().forget()
+        plt.close('all')
 
     ########################################################################
     # OPEN INTERFEROGRAM IMAGE
@@ -433,10 +435,9 @@ while True:
                 data0 = np.flip(databinary[60:60 + 720 * 576])
                 originalgassnp = Image.new(mode='L', size=(720, 576))
                 originalgassnp.putdata(data0)
-
                 ipath = ipath.replace('.snp', '_temp.png')
-
                 originalgaspng = originalgassnp.save(ipath)
+
                 if len(path_files) == 0:
                     path1 = ipath
                     window['file1'].update(path1)
@@ -677,10 +678,9 @@ while True:
                 # Range of gaussian filter
                 filterspoints_widths = (peak_widths(summap, filterpoints, rel_height=0.5)[0])
 
-
                 try:
                     if values['-combofringe-'] == 'horizontal':
-                        # filter range is equal to FWHM of signal of summaps
+                        # filter range depend to FWHM of signal of summaps
                         if filterpoints[0] <= 5:
                             centerfilter = filterpoints[1]
                             f_range = int(filterspoints_widths[1])
@@ -709,6 +709,7 @@ while True:
             # Creating Filter for Horizontal/vertical fringes orientation
             if values['-combofringe-'] == 'horizontal':
                 if sigma_gfilter == 0:
+                    # sigma filter is a func of image dimensions and f_rqnge
                     sigma_gfilter = int(0.025 * nlmap * f_range)
                     window['-sigma_gfilter-'].update(str(sigma_gfilter))
                 gfilter[centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
@@ -717,6 +718,7 @@ while True:
                 gfilter = gaussian_filter(gfilter, sigma=sigma_gfilter)
             elif values['-combofringe-'] == 'vertical':
                 if sigma_gfilter == 0:
+                    # sigma filter is a func of image dimensions and f_rqnge
                     sigma_gfilter = int(0.025 * nrmap * f_range)
                     window['-sigma_gfilter-'].update(str(sigma_gfilter))
                 gfilter[:, centerfilter - f_range:centerfilter + f_range] = np.ones(np.shape(
@@ -731,8 +733,9 @@ while True:
             # Creating Phase Maps arrays by subtracting the arguments of IFFT arrays
             phasemaps = (np.angle(ifftgas) - np.angle(ifftref))
             # Unwrap phase:
-            uwphasemap = unwrap_phase(phasemaps)
+            uwphasemap = np.unwrap(phasemaps)
 
+            # Creating 2D array for fringes shifts and fringes widths
             frgs_shifts = np.zeros(np.shape(intref))
             frgs_widths = np.zeros(np.shape(intref))
 
@@ -767,10 +770,9 @@ while True:
             '''
             ################################################################################
             Applying Inverse Abel Transform (IAT):
-            The IAT is applied using PyAbel algorithm and to apply its library correctly is necessary
-            to define a axis symmetric in image (Horizontal or Vertical). In gas profile case the axissymmetric is 
-            defined by more intensity pixel range. So, the image is cut according axissymetric.
-            The right side of image is used like standard to use IAT.
+            The IAT is applied using Dash Onion Peeling algorithm from PyAbel. To apply its library correctly is necessary
+            to define a axis symmetric in image (Horizontal or Vertical) and it is defined from more intensity pixel range. 
+            So, the image is cut according axissymetric.
             NOTE: the Abel transform is always performed around the vertical axis, so when the image have horizontal
             axissymmetry the matrix must be transposed.
 
@@ -848,20 +850,8 @@ while True:
             gas_phasemap.append(phasemap_corr)
             '''
             ########################################################################################
-            Calculating refraction index and gas density from IAT phasemap:
-            This step is subdivided in 2 modes of refrac. index and gas dens. calculation.
-            1 - Symmetric Images:
-                In this case refrac. index and gas density are calculated directly by IAT phasemap,
-                exploring the symmetry of image
-
-            2 - For No Symmetric Images
-                In this case the refrac. index is calculated directly by phasemap (without IAT) and
-                gas dens. are normalized using gas density values obtained using IAT for each height
-                of the gas density profile.
-
-            NOTE: The gas density is calculated using C-M relation.        
+            Calculating refraction index and gas density from IAT phasemap.        
             '''
-            #plt.imsave('phaseteste.jpg', phasemap_symm)
             # Calculating index refraction from IAT of phasemap
             n_index0 = (1 + (phase_abel * lambda0) / (2 * np.pi*factor))
             # Cutting border of images due the computational artefacts generated by IAT and problems with no symmetric images
@@ -879,7 +869,7 @@ while True:
             CALCULATION TOTAL STANDARD DEVIATION FROM:
             1. Measurement of interferogram
             2. Inverse Abel Transform
-            3. Laser wavelength
+            3. FWHM Laser wavelength
             '''
             dN_n = ((9 / (2 * np.pi * alpha_gas)) * n_index) / np.square(
                 np.square(n_index) + 2 * np.ones(np.shape(n_index)))
