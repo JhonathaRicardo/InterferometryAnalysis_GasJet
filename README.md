@@ -199,7 +199,7 @@ This way, the standard deviation map $\sigma_{Abel}$ is build from each $\left(\
 
 |<img src = '/Images/Scheme_stdAbel.png' width = '50%'>|
 |:--:| 
-| *Fig.  9 - Scheme for determining the standard deviation of the phase map.* |
+| *Fig.  10 - Scheme for determining the standard deviation of the phase map.* |
 
 ### Density Profile
 The gas molecular density $\rho_{gas}$ is obtained through the simple expression of the Lorentz-Lorenz relation [[39, 40]](#reference):
@@ -209,7 +209,6 @@ $$ \rho_{gas} = {3 \over 4\pi\alpha} {(n^2-1) \over (n^3+2)} \tag{5}$$
 where $\alpha$ is the molecular polarizability of gas and $n$ is the spatial refractive index distribution. This 2D refractive index map is determined from the phase-shift map $\Delta\varphi_{r}$:
 
 $$ n = 1 + {\Delta\varphi_{r} \lambda \over 2\pi} \tag{6}$$
-
 
 #### Standard Deviation of Density
 The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement ($\sigma_{\Delta\varphi_{z}}$), and the numerical accuracy of the Abel inversion [[41]](#reference) ($\sigma_{Abel}$). This way, the standard deviation of phase-shift map $\sigma_{\Delta\varphi_{r}}$ can be write from ($2$) and ($4$):
