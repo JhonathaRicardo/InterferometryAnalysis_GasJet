@@ -1,7 +1,7 @@
 # Software: Interferometry Analysis - Gas-Jet Profile(Version 1.0)
 # Authors: Jhonatha Ricardo dos Santos, Armando Zuffi, Ricardo Edgul Samad, Nilson Dias Vieira Junior
 # Python 3.11
-# Last update: 24/02/23
+# Last update: 07/03/23
 
 # LYBRARIES
 # The Python Standard Library
