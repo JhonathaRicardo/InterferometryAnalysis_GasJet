@@ -137,7 +137,7 @@ Both the above parameters are defined in pixels.
 - ***[Save Data]*** with this button the user can save the 2D array that generated the visualized graph as a *.dat* or *.txt* file.
 - ***[Colormap dist.]*** With this option, the user can choose between three colormaps distributions: linear (*Fig 7.A*), quadratic (*Fig 7.B*), or cubic(*Fig 7.C*).
 
-|<img src = '/Images/Colormaps.png'>|
+|<img src = '/Images/Colormaps.png' width="60%"> |
 |:--:| 
 | *Fig. 7 - Examples with the colormaps distributions: (A) Linear distribution, (B) Quadratic distribution, (C) Cubic Distribution.* |
 
@@ -146,7 +146,7 @@ The interferogram analysis software algorithm works according to the flowchart b
 
 |<img src = '/Images/Flowchart.png'>|
 |:--:| 
-| *Fig.  7 - Scheme for determining the gas density profile from interferograms.* |
+| *Fig.  8 - Scheme for determining the gas density profile from interferograms.* |
 
 ### Accumulated Phase
 The Accumulated Phase map (or accumulated phase shift map) is obtained from the shifts of the speckle fields from two interferogram images. The first is the interferogram image with fringes disturbed due to the presence of gas and the second is a backgroung image (or reference) with undisturbed fringes. According to the flowchart, apply 2D Fourier transforms on both interferograms by transporting them in the frequency domain. Applying a Gaussian filter over the region containing the phase shift information [[33]](#reference) and inverting the Fourier transform over two frequency domain maps. Finally, we obtain the accumulated (or integrated) phase-shift map $\Delta\varphi_{z}$ [[33, 34]](#reference) along the beam propagation direction (z direction) by the following equation:
@@ -175,7 +175,7 @@ where $I$ and $I_{0}$ are the intensity distribution of both speckle fields (wit
 
 |<img src = '/Images/Scheme_fringewidth_and_disp.png' width = '50%'>|
 |:--:| 
-| Fig.  8 - Scheme for determining the fringes widths (or speckles size) and images displacement   . |
+| Fig.  9 - Scheme for determining the fringes widths (or speckles size) and images displacement   . |
 
 ### Inverse Abel Transform
 
@@ -204,25 +204,25 @@ This way, the standard deviation map $\sigma_{Abel}$ is build from each $\left(\
 ### Density Profile
 The gas molecular density $\rho_{gas}$ is obtained through the simple expression of the Lorentz-Lorenz relation [[39, 40]](#reference):
 
-$$ \rho_{gas} = {3 \over 4\pi\alpha} {(n^2-1) \over (n^3+2)} \tag{4}$$
+$$ \rho_{gas} = {3 \over 4\pi\alpha} {(n^2-1) \over (n^3+2)} \tag{5}$$
 
 where $\alpha$ is the molecular polarizability of gas and $n$ is the spatial refractive index distribution. This 2D refractive index map is determined from the phase-shift map $\Delta\varphi_{r}$:
 
-$$ n = 1 + {\Delta\varphi_{r} \lambda \over 2\pi} \tag{5}$$
+$$ n = 1 + {\Delta\varphi_{r} \lambda \over 2\pi} \tag{6}$$
 
 
 #### Standard Deviation of Density
 The accuracy of the gas density measurement depends on the accuracies of the phase-shift measurement ($\sigma_{\Delta\varphi_{z}}$), and the numerical accuracy of the Abel inversion [[41]](#reference) ($\sigma_{Abel}$). This way, the standard deviation of phase-shift map $\sigma_{\Delta\varphi_{r}}$ can be write from ($2$) and ($4$):
 
-$$  \sigma_{\Delta\varphi_{r}} = \sqrt{\left({\sigma_{\Delta\varphi_{z}}}^2 + {\sigma_{Abel}}^2\right)} \tag{6}$$
+$$  \sigma_{\Delta\varphi_{r}} = \sqrt{\left({\sigma_{\Delta\varphi_{z}}}^2 + {\sigma_{Abel}}^2\right)} \tag{7}$$
 
-So, the standard deviation of gas density $\sigma_{\rho}$ is given by ($7$):
+So, the standard deviation of gas density $\sigma_{\rho}$ is given by ($8$):
 
 $$ 
 \begin{equation}
 \sigma_{\rho} = \sqrt{\left({\partial\rho \over \partial\Delta\varphi_{r}}\right)^2 \left({\sigma_{\Delta\varphi_{r}}}\right)^2 + 
 \left({\partial\rho \over \partial\lambda}\right)^2 \left({\sigma_{\lambda}}\right)^2}
-\tag{7}
+\tag{8}
 \end{equation}
 $$
 
