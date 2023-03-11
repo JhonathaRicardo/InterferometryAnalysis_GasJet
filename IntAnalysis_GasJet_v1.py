@@ -1,7 +1,7 @@
-# Software: Interferometry Analysis - Gas-Jet Profile(Version 1.0)
-# Authors: Jhonatha Ricardo dos Santos, Armando Zuffi, Ricardo Edgul Samad, Nilson Dias Vieira Junior
+# Software: Interferometry Analysis - Gas-Jet (Version 1.0)
+# Authors: Jhonatha Ricardo dos Santos, Armando Zuffi, Ricardo Edgul Samad, Edison Puig Maldonado, Nilson Dias Vieira Junior
 # Python 3.11
-# Last update: 07/03/23
+# Last update: 2023_03_10
 
 # LYBRARIES
 # The Python Standard Library
@@ -30,6 +30,7 @@ from matplotlib.colors import ListedColormap
 from scipy.ndimage import gaussian_filter
 from scipy.signal import peak_widths, find_peaks
 from PIL import Image, ImageDraw, UnidentifiedImageError
+from skimage.restoration import unwrap_phase
 
 # Matplotlib Tk style
 matplotlib.use('TkAgg')
@@ -249,13 +250,13 @@ layout_frame_ImgReference = [
 ]
 # LAYOUT SELECT COORD. AREA OPTIONS
 layout_area_coord = [
-    [sg.Text('Coord X'),
+    [sg.Text('X Coord'),
      sg.Spin([i for i in range(minvalue_x, maxvalue_x + 1)], initial_value=begin_x, key='-BEGIN_X-', size=(4, 1),
              enable_events=True),
      sg.Spin([i for i in range(minvalue_x, maxvalue_x + 1)], initial_value=end_x, key='-END_X-', size=(4, 1),
              enable_events=True)],
 
-    [sg.Text('Coord Y'),
+    [sg.Text('Y Coord'),
      sg.Spin([i for i in range(minvalue_y, maxvalue_y + 1)], initial_value=begin_y, key='-BEGIN_Y-', size=(4, 1),
              enable_events=True),
      sg.Spin([i for i in range(minvalue_y, maxvalue_y + 1)], initial_value=end_y, key='-END_Y-', size=(4, 1),
@@ -337,10 +338,10 @@ layout_frame_plot1D = [
 ]
 # LAYOUT STAGES OF THE TREATMENT
 layout_frame_Steps = [
-    [sg.Radio('Fourier \nTransform', "RADIO1", default=False, key='fftradio'),
+    [sg.Radio('Frequency \nDomain', "RADIO1", default=False, key='fftradio'),
      sg.Radio('Gaussian \nFilter', 'RADIO1', default=False, key='filterradio'),
-     sg.Radio('Accumulated \nPhase', "RADIO1", default=True, key='phaseradio'),
-     sg.Radio('Abel \nTransform', "RADIO1", default=False, key='abelradio'),
+     sg.Radio('Acc. \nPhase-shift', "RADIO1", default=True, key='phaseradio'),
+     sg.Radio('Radial \nPhase-shift', "RADIO1", default=False, key='abelradio'),
      sg.Radio('Density \nProfile', "RADIO1", default=False, key='densradio')],
 ]
 # LAYOUT GLOBAL OUTPUTS
@@ -368,7 +369,7 @@ layout = [
               font='Arial 12 bold')],
 ]
 ######################################################################################################################
-window = sg.Window("Interferogram Analysis - Gas-Jet Density Profile (Version 1.0)", layout, margins=(1, 1), finalize=True)
+window = sg.Window("Interferogram Analysis - Gas-Jet (Version 1.0)", layout, margins=(1, 1), finalize=True)
 ######################################################################################################################
 '''
 ####################################################################################################
@@ -585,10 +586,13 @@ while True:
         # Input datas
         h_prof = -1.0
         try:
+            # get rectangle coord.
             begin_x = int(get_value("-BEGIN_X-", values) / scale[0])
             begin_y = int(get_value("-BEGIN_Y-", values) / scale[1])
             end_x = int(get_value("-END_X-", values) / scale[0])
             end_y = int(get_value("-END_Y-", values) / scale[1])
+            # angle to image rotation
+            rotate_degree =  float(get_value('-DEGREE-', values))
             # get conversion factor in meters/pixel
             factor = float(get_value('-factor-', values)) * 1e-6
             # Manual definition of the filter position
@@ -616,7 +620,7 @@ while True:
 
         # Rotate Image
         if rotate_degree != 0:
-            originalref = originalref.rotate(total_rot_degree, resample=Image.Resampling.BICUBIC)
+            originalref = originalref.rotate(rotate_degree, resample=Image.Resampling.BICUBIC)
 
         # Input ref. array from ref. image
         array_ref = np.asarray(originalref)
@@ -628,7 +632,7 @@ while True:
 
         for j in range(0, len(path_files)):
             if rotate_degree != 0:
-                originalgas[j] = originalgas[j].rotate(total_rot_degree, resample=Image.Resampling.BICUBIC)
+                originalgas[j] = originalgas[j].rotate(rotate_degree, resample=Image.Resampling.BICUBIC)
             array_gas = np.asarray(originalgas[j])
             if np.ndim(array_gas) == 3:
                 # Slice image with 3 channels:only one channel is used to interferogram treatment
@@ -733,38 +737,50 @@ while True:
             # Creating Phase Maps arrays by subtracting the arguments of IFFT arrays
             phasemaps = (np.angle(ifftgas) - np.angle(ifftref))
             # Unwrap phase:
-            uwphasemap = np.unwrap(phasemaps)
+            uwphasemap = unwrap_phase(phasemaps)
 
             # Creating 2D array for fringes shifts and fringes widths
             frgs_shifts = np.zeros(np.shape(intref))
             frgs_widths = np.zeros(np.shape(intref))
 
             if values['-combofringe-'] == 'vertical':
+                #Determining fringes shifts and fringes widths
                 for l in range(0, nlmap):
-                    # Scanning fringes pattern to define min. shift
-                    frgs_ref = (intref0[l, begin_x:end_x])
-                    frgs_gas = (intgas0[l, begin_x:end_x])
+                    frgs_ref = (intref[l, :])
+                    frgs_gas = (intgas[l, :])
                     frgs_shifts[l], frgs_widths[l] = fringes_info(frgs_gas, frgs_ref)
-                # Intensity distribution
-                dist1 = gaussian_filter(intref, sigma=int(np.mean(frgs_widths)/2))
-                dist2 = gaussian_filter(intgas, sigma=int(np.mean(frgs_widths)/2))
 
             if values['-combofringe-'] == 'horizontal':
-                # Intensity distribution
-                dist1 = gaussian_filter(intref, sigma=int(np.mean(frgs_widths)/2))
-                dist2 = gaussian_filter(intgas, sigma=int(np.mean(frgs_widths)/2))
-                # fringes shift
-                for l in range(0, nrmap):
-                    frgs_ref = np.transpose(intref0[begin_y:end_y, l])
-                    frgs_gas = np.transpose(intgas0[begin_y:end_y, l])
-                    frgs_shifts[l], frgs_widths[l] = fringes_info(frgs_gas, frgs_ref)
-                frgs_shifts.append(np.transpose(frgs_shifts))
-                frgs_widths.append(np.transpose(frgs_widths))
+                frgs_shifts = np.transpose(frgs_shifts)
+                frgs_widths = np.transpose(frgs_widths)
+                # Determining fringes shifts and fringes widths
+                for r in range(0, nrmap):
+                    frgs_ref = np.transpose(intref[:,r])
+                    frgs_gas = np.transpose(intgas[:,r])
+                    frgs_shifts[r], frgs_widths[r] = fringes_info(frgs_gas, frgs_ref)
+
+                frgs_shifts = np.transpose(frgs_shifts)
+                frgs_widths = np.transpose(frgs_widths)
+
+            # Intensity distribution
+            '''
+            NOTE: During our algorithm tests we verify some computational artefacts. 
+            These artifacts are detected only in the multiplication of the intensity distributions. 
+            To correct this error we add a baseline line over data. The baseline has a value equal 
+            to 0.1% of the lesser intensity.  
+            '''
+            basedist = gaussian_filter(0.001*np.min(intref)*np.ones(np.shape(intref)), sigma=int(np.mean(frgs_widths) / 2))
+            dist1 = gaussian_filter(intref, sigma=int(np.mean(frgs_widths) / 2)) + basedist
+            dist2 = gaussian_filter(intgas, sigma=int(np.mean(frgs_widths) / 2)) + basedist
 
             frgs_shifts = gaussian_filter(frgs_shifts, sigma=sigma)
             frgs_widths = gaussian_filter(frgs_widths, sigma=sigma)
-            std_phasemap_i = ((np.pi * frgs_shifts) / (2*frgs_widths))*\
-                             np.sqrt((np.mean(dist1) * (dist1 + dist2)) / (2 * dist1 * dist2))
+            try:
+                std_phasemap_i = ((np.pi * frgs_shifts) / (2*frgs_widths))*\
+                                 np.sqrt((np.mean(dist1) * (dist1 + dist2)) / (2 * dist1 * dist2))
+            except:
+                std_phasemap_i = np.zeros(np.shape(intref))
+
             std_phasemap.append(std_phasemap_i)
 
             '''
@@ -834,7 +850,7 @@ while True:
                 norm_phasemap[k] = phasemap_symm[k] * np.max(abs(phase_abel[k])) / np.max(abs(phasemap_symm[k]))
             std_abelmap0 = np.sqrt(np.square(phase_abel-norm_phasemap))
 
-            #Suport Images - this images are used to verified each alhorithm processes
+            '''Suport Images - this images are used to verified each algorithm processes'''
             #plt.imsave('phaseabel.jpg', phase_abel)
             #plt.imsave('norm_phase.jpg', norm_phasemap)
             #plt.imsave('phasemap.jpg', phasemap_symm)
@@ -862,7 +878,7 @@ while True:
 
             #new matrix size for plot
             rangeh, rangev = np.shape(gas_dens_i)
-            gas_abelphasemap.append(phase_abel)
+            gas_abelphasemap.append(phase_abel[:, int(0.05 * vert_lim): int(0.95 * vert_lim)])
             gas_dens.append(gas_dens_i)
 
             '''
@@ -979,10 +995,9 @@ while True:
             abel_plot = ax1.imshow(matrix_plot, extent=[0, x_max, 0, y_max], cmap=newcmp)
             cb1 = fig.colorbar(abel_plot, cax=cax)
             if values['-checkstd-'] == False:
-                cb1.set_label(label='$Accumulatad\hspace{.5}Phase\hspace{.5} (rad)$', size=12, weight='bold')
+                cb1.set_label(label='$\Delta \phi \hspace{.5} (rad)$', size=12, weight='bold')
             else:
-                cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Acc.\hspace{.5}Phase\hspace{.5} (rad)$',\
-                              size=12, weight='bold')
+                cb1.set_label(label='$\sigma_{\Delta\phi}\hspace{.5} (rad)$', size=12, weight='bold')
 
         elif values['densradio'] == True:
             divider = make_axes_locatable(ax1)
@@ -995,11 +1010,9 @@ while True:
             ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
             ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
             if values['-checkstd-'] == False:
-                cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
-                              size=12, weight='bold')
+                cb1.set_label(label='$N\hspace{.5} (cm^{-3})$', size=12, weight='bold')
             else:
-                cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$',\
-                              size=12, weight='bold')
+                cb1.set_label(label='$\sigma_{N}\hspace{.5} (cm^{-3})$',size=12, weight='bold')
 
         else:
             divider = make_axes_locatable(ax1)
@@ -1010,14 +1023,12 @@ while True:
 
             abel_plot = ax1.imshow(matrix_plot, extent=[0, x_max, 0, y_max], cmap=newcmp)
             cb1 = fig.colorbar(abel_plot, cax=cax)
-            cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', size=12, weight='bold')
             ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
             ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
             if values['-checkstd-'] == False:
-                cb1.set_label(label='$Phase\hspace{.5}Map\hspace{.5} (rad)$', size=12, weight='bold')
+                cb1.set_label(label='$\Delta\phi_{r}\hspace{.5} (rad/ \mu m)$', size=12, weight='bold')
             else:
-                cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Phase\hspace{.5}Map\hspace{.5} (rad)$',\
-                              size=12, weight='bold')
+                cb1.set_label(label='$\sigma_{\Delta\phi_{r}}\hspace{.5} (rad/ \mu m)$', size=12, weight='bold')
 
         fig.tight_layout(pad=2)
         fig_canvas_agg = draw_figure(window['canvasabel'].TKCanvas, fig)
@@ -1051,7 +1062,7 @@ while True:
                 matrix_plot = std_abelmap_mean
         elif values['densradio'] == True:  # Plot gas density profile
             if values['-checkstd-'] == False:
-                matrix_plot = gas_dens_mean - np.ones(np.shape(gas_dens_mean)) * np.min(gas_dens_mean)
+                matrix_plot = gas_dens_mean
             else:
                 matrix_plot = std_dens_mean
 
@@ -1091,10 +1102,9 @@ while True:
                 abel_plot = ax1.imshow(matrix_plot, extent=[0, x_max, 0, y_max], cmap=newcmp)
                 cb1 = fig.colorbar(abel_plot, cax=cax)
                 if values['-checkstd-'] == False:
-                    cb1.set_label(label='$Accumulatad\hspace{.5}Phase\hspace{.5} (rad)$', size=12, weight='bold')
+                    cb1.set_label(label='$\Delta\phi\hspace{.5} (rad)$', size=12, weight='bold')
                 else:
-                    cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Acc.\hspace{.5}Phase\hspace{.5} (rad)$', \
-                                  size=12, weight='bold')
+                    cb1.set_label(label='$\sigma_{\Delta\phi}\hspace{.5} (rad)$', size=12, weight='bold')
 
             elif values['densradio'] == True:
                 divider = make_axes_locatable(ax1)
@@ -1107,11 +1117,9 @@ while True:
                 ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
                 ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
                 if values['-checkstd-'] == False:
-                    cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
-                                  size=12, weight='bold')
+                    cb1.set_label(label='$N\hspace{.5} (cm^{-3})$', size=12, weight='bold')
                 else:
-                    cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', \
-                                  size=12, weight='bold')
+                    cb1.set_label(label='$\sigma_{N}\hspace{.5} (cm^{-3})$', size=12, weight='bold')
 
             else:
                 divider = make_axes_locatable(ax1)
@@ -1119,17 +1127,14 @@ while True:
                 x_max = extentplot[1] * factor * 1e6
                 y_max = extentplot[0] * factor * 1e6
                 cax = divider.append_axes("right", size="5%", pad=0.05)
-
                 abel_plot = ax1.imshow(matrix_plot, extent=[0, x_max, 0, y_max], cmap=newcmp)
                 cb1 = fig.colorbar(abel_plot, cax=cax)
-                cb1.set_label(label='$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', size=12, weight='bold')
                 ax1.set_xlabel('$x\hspace{.5}(\mu m)$', fontsize=12)
                 ax1.set_ylabel('$y\hspace{.5}(\mu m)$', fontsize=12)
                 if values['-checkstd-'] == False:
-                    cb1.set_label(label='$Phase\hspace{.5}Map\hspace{.5} (rad)$', size=12, weight='bold')
+                    cb1.set_label(label='$\Delta\phi_{r}\hspace{.5} (rad/ \mu m)$', size=12, weight='bold')
                 else:
-                    cb1.set_label(label='$Standard\hspace{.5}dev.\hspace{.5}Phase\hspace{.5}Map\hspace{.5} (rad)$', \
-                                  size=12, weight='bold')
+                    cb1.set_label(label='$\sigma_{\Delta\phi_{r}}\hspace{.5} (rad/ \mu m)$', size=12, weight='bold')
 
             fig.tight_layout(pad=2)
             fig_canvas_agg = draw_figure(window['canvasabel'].TKCanvas, fig)
@@ -1195,12 +1200,6 @@ while True:
             # Creating plot parameters
             fig, ax1 = plt.subplots(figsize=(4.9, 4))
             ax1.plot(raxis_um, array_plot, label='$%d \hspace{.5}\mu m$' % h_prof, lw=2, color="blue")
-            if values['-checkstd-'] == True:
-                # ax1.fill_between(raxis_um, array_plot-array_std,array_plot+array_std,label='$\sigma_{dens.}$',
-                # alpha=0.2, color="blue" )
-                ax1.set_ylim(0., np.max(array_std + array_plot) * 1.05)
-                ax1.errorbar(raxis_um, array_plot, yerr=array_std, label='$\sigma_{dens.}$', alpha=0.2,
-                             color="blue")
 
             # Including new 1D density profile for another height from origin height position
             if values['-checkpos1-'] == True:
@@ -1234,13 +1233,20 @@ while True:
             ax1.set_xlabel('$r\hspace{.5}(\mu m)$', fontsize=12)
 
             if values['densradio'] == True:
-                ax1.set_ylabel('$Gas\hspace{.5}Density\hspace{.5} (cm^{-3})$', fontsize=12)
+                ax1.set_ylabel('$N\hspace{.5} (cm^{-3})$', fontsize=12)
+                if values['-checkstd-'] == True:
+                    ax1.set_ylim(0., np.max(array_std + array_plot) * 1.05)
+                    ax1.errorbar(raxis_um, array_plot, yerr=array_std, label='$\sigma_{N}$', alpha=0.2, color="blue")
 
-            elif values['abelradio'] == True:
-                ax1.set_ylabel('$Phase\hspace{.5} (rad)$', fontsize=12)
+            if values['abelradio'] == True:
+                ax1.set_ylabel('$\Delta\phi_{r}\hspace{.5} (rad/ \mu m)$', fontsize=12)
+                if values['-checkstd-'] == True:
+                    ax1.errorbar(raxis_um, array_plot, yerr=array_std, label='$N$', alpha=0.2, color="blue")
 
-            elif values['phaseradio'] == True:
-                ax1.set_ylabel('$Accumulated Phase\hspace{.5} (rad)$', fontsize=12)
+            if values['phaseradio'] == True:
+                ax1.set_ylabel('$\Delta\phi\hspace{.5} (rad)$', fontsize=12)
+                if values['-checkstd-'] == True:
+                    ax1.errorbar(raxis_um, array_plot, yerr=array_std, label='$\sigma_{\Delta\phi}$', alpha=0.2, color="blue")
 
             ax1.legend()
             ax1.grid(True)
