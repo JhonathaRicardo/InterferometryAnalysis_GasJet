@@ -16,15 +16,16 @@
 * [Installation](#installation)
 * [How to use it](#how-to-use-it)
   * [Main Screen](#main-screen)
-  * [Interferogram Image](#interferogram-image)
+  * [Interferogram Images](#interferogram-images)
   * [Options](#options)
   * [Gas-Jet Profile](#gas-jet-profile)
 * [How it works](#how-it-works)
-* [Reference](#reference)
+* [Example](#example)
 * [Authors](#authors)
 * [Acknowledgment](#acknowledgment)
- * [License](#license)
+* [License](#license)
 * [Citation](#citation)
+* [Reference](#reference)
 
 ## Introduction
   The development of diagnostic tools is very important for a better understanding of laser-plasma interactions [[1]](#reference). An accurate diagnostic is crucial, as instabilities in both target and laser pulses can result in low reproducibility of processes and impair the quality of the intended interaction [2](#reference). Among the various non-perturbing optical methods that can be used to diagnose a gaseous target [[3-6]](#reference), interferometry is a very accurate technique capable of quantifying very small optical path differences and, therefore, suitable for measuring density variations of gases [[7, 8]](#reference) and laser-induced plasmas [[1]](#reference). The main drawback of the technique is that returns and integrated phase along the light path, requiring deconvolution methods for retrieving the target density profile. The software denominated “Interferometry Analysis – Gas-Jet” and “Interferometry Analysis – LIP” were developed due to the need for a new diagnostic tool to aid in the characterization of supersonic gas jets, quickly and reliably. Both were developed by our research group as part of the work to implement a laser-plasma accelerator infrastructure at the Nuclear and Energy Research Institute (IPEN), in Brazil.
