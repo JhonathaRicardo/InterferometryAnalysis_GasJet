@@ -1,7 +1,6 @@
 # <h1 align = "center">Interferometry Analysis - Gas-Jet </h1>
 <p align="justify">
-  The interferometric technique is an important tool for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas. In Laser Wakefield Acceleration (LWFA) studies, knowing the density distribution of the gas target is crucial to understand the phenomena involved in the particle acceleration process.
-  This Python algorithm was developed to recover the accumulated phase across the neutral gas target as well as estimate its density distribution.
+  The Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understand laser plasmas interactions and processes. This software was developed in Python to developed to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
 </p>
 
 <p align="center">
@@ -28,26 +27,21 @@
 * [Citation](#citation)
 
 ## Introduction
-  In recent decades, the continuous development of compact particle accelerators based on wakefield laser acceleration (LWFA) has promoted contributions to fundamental and applied research [[1, 2]](#reference), including possible future use in proton therapy and hadron therapy [[3, 4]](#reference), and in the production of radioisotopes for nuclear medicine [[5, 6]](#reference). In this approach, ultrafast high-intensity laser pulses focused on a gas target to create a plasma wave with longitudinal electric fields able to accelerate electrons [[7, 8]](#reference). The advances in high-peak-power tabletop lasers in the last years and the high longitudinal electric fields (up to ∼1 TV/m) supported by plasma waves attracted attention to LWFA as a compact alternative for RF conventional accelerators [[9]](#reference).
-
-Many groups around the world have sought advances in the field of LWFA and other plasma acceleration schemes from institutions in North America, Europe, and Asia [[2]](#reference). In Latin America, our research group pioneered the implementation of a laser-plasma accelerator at Institute of Energy and Nuclear Research (IPEN) [[10]](#reference). Our main objective is to produce electron beams with energy up to tens of megaelectron volts per LWFA. By bremsstrahlung, electron beams with those energies are able to produce $\gamma$ radiation to induce a $^{100} Mo(\gamma , n) ^{99} Mo$ photonuclear reaction as a future application [[11]](#reference). 
-
-Currently, we are focusing efforts on several developments required for a LWFA installation, such as computational simulation support [[12–14]](#reference), a source of high-peak-power laser pulses [[15]](#reference), proper gaseous and plasma target creation [[16, 17]](#reference), and development and implementation of diagnostic tools to assist and monitor the experiments [[18, 19]](#reference). The development of diagnostic tools is very important for a better understanding of the laser-plasma interaction [[20]](#reference). Diagnostic efficiency is crucial, as instabilities in both targets and laser pulses can result in low reproducibility of LWFA processes and impair the quality of accelerated electron beams [[21]](#reference).
-Among the various non-perturbing optical methods that can be used to diagnose the gaseous target [[22-25]](#reference), interferometry is a very accurate technique capable of quantifying very small optical path differences and therefore suitable for measuring density variations in LWFA targets [[26, 27]](#reference). 
-
-The [Interferometry Analysis - Gas-Jet Profile](https://github.com/JhonathaRicardo/InterferometryAnalysis_GasJetProfile) software and [Interferometry Analysis - LIP Profile](https://github.com/JhonathaRicardo/InterferometryAnalysis_LIP) software were developed due to this need for a new diagnostic tool to aid in the characterization of the supersonic jet of gas, quickly and reliably. Both softwares were developed by our research group as part of the work to implementation of a laser-plasma accelerator at IPEN.
+  The development of diagnostic tools is very important for a better understanding of laser-plasma interactions [[1]](#reference). An accurate diagnostic is crucial, as instabilities in both target and laser pulses can result in low reproducibility of processes and impair the quality of the intended interaction [2](#reference). Among the various non-perturbing optical methods that can be used to diagnose a gaseous target [[3-6]](#reference), interferometry is a very accurate technique capable of quantifying very small optical path differences and, therefore, suitable for measuring density variations of gases [[7, 8]](#reference) and laser-induced plasmas [[1]](#reference). The main drawback of the technique is that returns and integrated phase along the light path, requiring deconvolution methods for retrieving the target density profile. The software denominated “Interferometry Analysis – Gas-Jet” and “Interferometry Analysis – LIP” were developed due to the need for a new diagnostic tool to aid in the characterization of supersonic gas jets, quickly and reliably. Both were developed by our research group as part of the work to implement a laser-plasma accelerator infrastructure at the Nuclear and Energy Research Institute (IPEN), in Brazil.
 
 ## Installation
-Interferometry Analysis - Gas-Jet software was developed in Python 3.11 and the use of this algorithm requires the installation of the following packages: [NumPy](https://numpy.org/) [[28]](#reference), [Scipy](https://scipy.org/) [[29]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[30]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[31]](#reference) to manipulate interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[32]](#reference) to plot results, and
-[PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the users template.
+The **Interferometry Analysis - Gas-Jet** software was developed in Python 3.11. The use of this algorithm requires the installation of the following packages: [NumPy](https://numpy.org/) [[28]](#reference), [Scipy](https://scipy.org/) [[29]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[30]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[31]](#reference) for the procrssing of interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[32]](#reference) to plot results, and
+[PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the user's template.
 
-The second way to use this software is through the executable file. The users can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
+TUsers also can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
 
 <code>   pyinstaller --onefile -w IntAnalysis_GasJet_v1.py                </code>
 
+Users who do not use Python IDEs can utilize the software through the executable file available for download.
+
 ## How to use it
-Interferometry Analysis - The Gas-Jet software has a graphical interface developed with PysimpleGUI. This interface assists users and facilitates their applications.
-In this section, we provide users with a simple review of the software's functions and how to use them.
+The “Interferometry Analysis – Gas-Jet” has a graphical interface to facilitate its use, and this section provide a simple review of the software's functions and how to employ them.
+
 ### Main Screen
 
 |<img src = '/Images/MainScreen1.png'> |
@@ -55,9 +49,12 @@ In this section, we provide users with a simple review of the software's functio
 | *Fig.1 - Software Main Screen* |
 
 ### Interferogram Image
-- ***[Interferogram (Gas-Jet)]*** Scaled gas-jet interferogram image.
+- ***[Interferogram (Gas-Jet)]*** interferogram image frame.
 
-- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of gas jet. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. If more than one file has been opened, each file will be analyzed individually and the average of all results will be presented to the user.
+- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of a gas jet. Image file extensions should preferably be .png or .snp.
+However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) could be used. The path to the opened file is shown in the text box immediately above. If
+more than one file has been opened, each file will be analyzed individually, and the average of all results will be presented to the user.
+
   > **Warning**   
   >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
