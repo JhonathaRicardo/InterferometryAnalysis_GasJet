@@ -72,36 +72,40 @@ more than one file has been opened, each file will be analyzed individually, and
 
 - ***[Clear]*** Button to clear input and output data.
 
+
 ### Options
-- ***[Select Analysis Area]*** From the parameters in this form, the user can select the interferogram area to apply the algorithm to determine the gas-jet density profile. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***).
-The user that intends to use the whole interferogram figure needs to uncheck the checkbox ***[Use select area]***.
+- ***[Select Analysis Area]*** Parameters to select the interferogram area to apply the algorithm. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***). The user that intends to use the whole interferogram needs to uncheck the checkbox  ***[Use select area]***.
 
-- ***[Experimental Parameteres]*** In this form, the user set the experimental parameters used to obtain the interferogram image. These parameters are:
-  - ***[Laser Wavelength]*** and ***[Laser bandwidth FHWM]*** in nm;
-  - ***[Gas type]*** and ***[Polarizability]*** in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
+- ***[Experimental Parameteres]*** Frame to set the experimental parameters used to obtain the interferogram image. These parameters are:
+  - ***[Laser Wavelength]*** ($\lamda$) and ***[Laser bandwidth FHWM]*** in nm;
+  - ***[Gas type]*** list box of some types of gases: $H_{2}$, $N_{2}$, $He$ and $Ar$.
+  - ***[Polarizability]*** ($\alpha$) in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
+    > **Note**
+    > The polarizability value is automatically filled in after selecting the gas type. If the user wants to use gases not yet listed, the gas polarizability value can be entered manually.
 
-- ***[Analysis Parameters]*** This form contains the parameters for analysis of the interferogram images:
-  - ***[Scaling Factor]*** of an interferogram image in pixels/micrometers;
-  - ***[Sigma - Gaussian filter]*** is a width of gaussian image filter. The initial width depends on the image dimension, but can changed by the user. 
-  - ***[Gaussian Filter Position]*** this parameter is different from Gaussian Blur. This parameter is set automatically by the algorithm and this position defines which frequency will be used to apply the Inverse Fourier Transform and build the phase map of the gas-jet.
-Both the above parameters are defined in pixels. 
+- ***[Analysis Parameters]*** Parameters frame to analyses of the interferogram images.
+  - ***[Scaling Factor]*** Interferogram image scale in micrometers/pixel.
+  - ***[Sigma - Gaussian filter]*** Pixel spread of the gaussian image filter. The initial Sigma depends on the image dimension, but can changed by the
+user. 
+  - ***[Gaussian Filter Position]*** This parameter is set automatically by the algorithm and this position defines which frequency will be used to apply
+the Inverse Fourier Transform and build the phase map of the gas-jet. Both the above parameters are defined in pixels. 
     > **Note** 
-    > The algorithm set the frequency that defines a positive phase map.  But, users can change the filter position.
-  - ***[Sigma - Gaussian Blur]*** is a multidimensional gaussian image filter. The standard deviation of the gaussian filter (Sigma) defined by the user is equal for all axes.
+    > The algorithm set the frequency that generate a positive phase map. But users can change the filter position.
   
-  - ***[Fringes Orientation]*** can be vertical or horizontal.
-  - ***[Axisymmetric]*** An important parameter to apply the Inverse Abel Transform is the axis of symmetry (or axisymmetric). The axisymmetric can be horizontal or vertical.
+  - ***[Fringes Orientation]*** Definition of the interferogram fringes orientation (vertical or horizontal).
+  - ***[Axisymmetric]*** Definition of the axis of symmetry (or axisymmetric) apply the Inverse Abel Transform. The axisymmetric can be horizontal or vertical.
+  - ***[Sigma - Gaussian Blur]*** Spread of the multidimensional gaussian image filter. The standard deviation of the gaussian filter ($\sigma$) defined by the user is equal for all axes..
 
 ### Gas-Jet Profile
-- ***[Stages]:*** The stages of the results obtained by the algorithm can be viewed by user.
-  - ***[Fourier Transform]*** This image is built through the Fourier Transform of gas-jet interferogram image. From this frequency map (*Fig. 2.A*), the software selects automatically the frequency that generates a positive phase map. The pixel position (red line) of the selected frequency is the ***[Gaussian Filter position]***.  
+- ***[Stages]:*** Stages frame allows the visualization of each step of the algorithm.
+  - ***[Fourier Transform]*** This image is the 2D Fourier Transform of the interferogram. From this frequency map (Fig. 2.A), the software automatically selects the frequency that generates a positive phase-shift map. The selected frequency is marked by a red line over a pixels line (or column) identifying the ***[Gaussian Filter position]***.  
   > **Note**   
-  >  Case the ***[Gaussian Filter position]*** is zero, the software will set the valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
-  - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency (*Fig. 2.B*).
+  >  If the ***[Gaussian Filter position]*** is equal to zero, the software will set the new valor automatically.  The user can change this ***[Gaussian Filter position]*** manually.
+  - ***[Gaussian Filter]*** This image represents the Gaussian filter map applied to generate the phase map using the selected frequency (Fig. 2.B).
 
     |<img src = '/Images/Stages1and2.png' width="80%"> |
     |:--:| 
-    | *Fig. 2 -  Example of: (A) 2D freguency domain obtained from Fourier Transform with selected frequency; (B) Gaussian filter applied on selected frequency.* |
+    | *Fig. 2. Example of: (A) 2D frequency domain obtained by the interferogram Fourier Transform with the selected frequency to be filtered; (B) Gaussian filter to be applied on the selected frequency.* |
 
     From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** checkbox.
   
