@@ -118,13 +118,13 @@ From the next three steps, users have the option of viewing the 2D maps or 1D cu
   
     | ![Phase map](/Images/Stage4.png) |
     |:--:| 
-    | *Fig. 4. Example of: (A) 2D radial phase map obtained from inverse Abel transform, and (B) 2D standard deviation map in $rad/\mu m$.* |  
+    | *Fig. 4. Example of: (A) 2D radial phase map obtained from inverse Abel transform, and (B) 2D standard deviation map in* $rad / \mu m$. |  
     
   - ***[Density Profile]*** Molecular density profile ($N$) of the gas jet in $cm^{−3}$ built from the radial phase-shift map ($\Delta\phi_r$) and ***[Experimental Parameters]*** defined by the user: ***[Polarizability]*** ($\alpha$) and ***[Laser Wavelength]*** ($\lambda$).
     
     | ![Gasjet_density](/Images/Stage5.png)|
     |:--:| 
-    | *Fig. 5. Example of: (A) 2D gas density map and (B) 2D standard deviation map; (C) 1D gas density curves and (D) standard deviation of one density curve. All density values are given in $cm^{-3}$.* |
+    | *Fig. 5. Example of: (A) 2D gas density map and (B) 2D standard deviation map; (C) 1D gas density curves and (D) standard deviation of one density curve. All density values are given in* $cm^{-3}$. |
 
 - ***[1D Profile]*** This button enables 1D frame (*Fig. 6*) with options for the user to visualize the curves of each select stage for different positions on the chosen symmetrical axis.
 - ***[2D Profile]*** This button enables the visualization of each ***[Stage]*** in 2D images.
