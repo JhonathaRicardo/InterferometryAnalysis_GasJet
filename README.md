@@ -46,7 +46,7 @@ The “Interferometry Analysis – Gas-Jet” has a graphical interface to facil
 
 |<img src = '/Images/MainScreen1.png'> |
 |:--:| 
-| *Fig.1 - Software Main Screen* |
+| *Fig.1. Software Main Screen* |
 
 ### Interferogram Image
 - ***[Interferogram (Gas-Jet)]*** interferogram image frame.
@@ -107,21 +107,21 @@ the Inverse Fourier Transform and build the phase map of the gas-jet. Both the a
     |:--:| 
     | *Fig. 2. Example of: (A) 2D frequency domain obtained by the interferogram Fourier Transform with the selected frequency to be filtered; (B) Gaussian filter to be applied on the selected frequency.* |
 
-    From the next three steps, users have the option of viewing the average values of the maps in 2D (using ***[2D Profile]*** button) or the 1D profile of the maps in different positions on a symmetrical axis (using ***[1D Profile]*** button). 2D standard deviation maps or 1D curves can be viewed using the ***[Standard Deviation]*** checkbox.
-  
-    - ***[Accumulated Phase]*** Accumulated phase map of the gas-jet.
+From the next three steps, users have the option of viewing the 2D maps or 1D curves with standard deviation using the ***[Standard Deviation]*** checkbox.
+ 
+  - ***[Acc. Phase-shift]*** Accumulated phase-shift ($\Delta\phi$) of the plasma (in rad) recovered from the interferograms.
   
     |<img src = '/Images/Stage3.png'>|
     |:--:| 
-    | *Fig. 3 - Example of: (A) 2D accumulated phase map  and (B) 2D standard deviation map; (C) 1D accumulated phase curves  and (D) standard deviation of one curve.*|   
+    | *Fig. 3. Example of: (A) 2D accumulated phase-shift map and (B) 2D standard deviation map; (C) 1D accumulated phase curves and (D) standard deviation of one curve. All phase values are given in rad.*|   
     
-    - ***[Abel Transform]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
+  - ***[Radial Phase-shift]*** Radial phase-shift ($\Delta\phi_r$) map in $rad/\mu m$ obtained after applying an Inverse Abel Transform to the Accumulated Phase-shift map ($\Delta\phi$).
   
     | ![Phase map](/Images/Stage4.png) |
     |:--:| 
-    | *Fig.4 - Example of: (A) 2D phase map obtained from inverse Abel transform, and (B) 2D standard deviation map.* |  
+    | *Fig. 4. Example of: (A) 2D radial phase map obtained from inverse Abel transform, and (B) 2D standard deviation map in $rad/\mu m$.* |  
     
-    - ***[Density Profile]*** Phase map obtained after applying Inverse Abel Transform at the Accumulated Phase map.
+  - ***[Density Profile]*** Molecular density profile ($N$) of the gas jet in $cm^{−3}$ built from the radial phase-shift map ($\Delta\phi_r$) and ***[Experimental Parameters]*** defined by the user: ***[Polarizability]*** ($\alpha$) and ***[Laser Wavelength]*** ($\lambda$).
     
     | ![Gasjet_density](/Images/Stage5.png)|
     |:--:| 
