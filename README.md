@@ -119,7 +119,7 @@ From the next three steps, users have the option of viewing the 2D maps or 1D cu
   
     | ![Phase map](/Images/Stage4.png) |
     |:--:| 
-    | *Fig. 4. Example of: (a) 2D radial phase-shift map and (b) 2D standard deviation map; (c) 1D radial phase-shift curves and (d) standard deviation of one curve. All phase values are given in* $rad / \mu m$. |  
+    | *Fig. 4. Example of: (a) 2D radial phase-shift map and (b) 2D standard deviation map; (c) and (d) accuracy between 1D radial phase-shift and normalized phase-shift curves. All phase values are given in* $rad / \mu m$. |  
     
   - ***[Density Profile]*** Molecular density profile ($N$) of the gas jet in $cm^{−3}$ built from the radial phase-shift map ($\Delta\phi_r$) and ***[Experimental Parameters]*** defined by the user: ***[Polarizability]*** ($\alpha$) and ***[Laser Wavelength]*** ($\lambda$).
     
@@ -136,9 +136,9 @@ From the next three steps, users have the option of viewing the 2D maps or 1D cu
 
 - ***[Save Plot]*** This button allows the user to save the visualized plot as an image file (*.png*, *.jpg*, *.bmp*, etc).
 - ***[Save Data]*** This button allows the user to save the 2D array that generated the visualized plot as a *.dat* or *.txt* file.
-- ***[Colormap dist.]*** With this list box the user can choose between three different color scalings: linear (*Fig 7.A*), quadratic (*Fig 7.B*), or cubic(*Fig 7.C*).
+- ***[Colormap dist.]*** With this list box the user can choose between three different color scalings: linear (*Fig 7.a*), quadratic (*Fig 7.a*), or cubic(*Fig 7.c*).
 
-|<img src = '/Images/Colormaps.png' width="60%"> |
+|<img src = '/Images/Colormaps.png' width="100%"> |
 |:--:| 
 | *Fig. 7. Examples with the colormaps distributions: (a) Linear distribution, (b) Quadratic distribution, (c) Cubic Distribution.* |
 
