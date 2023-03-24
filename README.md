@@ -77,7 +77,7 @@ more than one file has been opened, each file will be analyzed individually, and
 - ***[Select Analysis Area]*** Parameters to select the interferogram area to apply the algorithm. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***). The user that intends to use the whole interferogram needs to uncheck the checkbox  ***[Use select area]***.
 
 - ***[Experimental Parameteres]*** Frame to set the experimental parameters used to obtain the interferogram image. These parameters are:
-  - ***[Laser Wavelength]*** ($\lamda$) and ***[Laser bandwidth FHWM]*** in nm;
+  - ***[Laser Wavelength]*** ($\lambda$) and ***[Laser bandwidth FHWM]*** in nm;
   - ***[Gas type]*** list box of some types of gases: $H_{2}$, $N_{2}$, $He$ and $Ar$.
   - ***[Polarizability]*** ($\alpha$) in angstrom³. This parameter usually refers to the tendency of matter to acquire an electric dipole moment when subjected to an electric field.
     > **Note**
