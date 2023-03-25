@@ -49,26 +49,26 @@ The “Interferometry Analysis – Gas-Jet” has a graphical interface to facil
 | *Fig.1. Software Main Screen* |
 
 ### Interferogram Image
-- ***[Interferogram (Gas-Jet)]*** interferogram image frame.
+- ***[Interferogram (LIP)]*** interferogram image frame.
 
 - ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of a gas jet. Image file extensions should preferably be .png or .snp.
 However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) could be used. The path to the opened file is shown in the text box immediately above. If
 more than one file has been opened, each file will be analyzed individually, and the average of all results will be presented to the user.
   > **Warning**   
-  >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
+  >  Interferometry Analysis - LIP software only works with grayscale image files. 
   
 - ***[Rotate]*** The image rotation in degrees. Positive degrees promote counterclockwise rotation.  
 
 - ***[Original Size]*** Original dimensions of the image file (width,height). 
-  > **Note** The interferogram image shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the gas jet density profile are done with the original dimensions of the image file.
+  > **Note** The interferogram image shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the plasma density profile are done with the original dimensions of the image file.
 
 - ***[Interferogram (Ref.)]*** Scaled reference interferogram image.
 
-- ***[Open File]*** Open an undisturbed interferogram image file. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
+- ***[Open File]*** Open an undisturbed interferogram image file. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. Unlike interferogram LIP files, the algorithm allows the insertion of only one reference file.
   > **Warning**   
-  >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
+  >  Interferometry Analysis - LIP software only works with grayscale image files. 
 
-- ***[Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the molecular density distribution of the gas.
+- ***[Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the plasma.
 
 - ***[Clear]*** Button to clear input and output data.
 
