@@ -145,7 +145,7 @@ From the next three steps, users have the option of viewing the 2D maps or 1D cu
 ## How it works
 The detailed description of the algorithm will be presented in a future article. However, the summarized data processing by the software algorithm is described by the flowchart shown in *Fig. 8*:
 
-|<img src = '/Images/Flowchart.png'>|
+|<img src = '/Images/Flowchart_gasjet.png'>|
 |:--:| 
 | *Fig. 8. Scheme of the algorithm data processing.* |
 
