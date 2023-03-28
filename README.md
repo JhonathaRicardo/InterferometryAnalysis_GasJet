@@ -10,6 +10,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![version](https://img.shields.io/badge/version-v.1.0-green)
 ![status](https://img.shields.io/badge/status-under%20development-green)
+![DOI](https://zenodo.org/badge/601841375.svg)
 
 ## Summary
 * [Introduction](#introduction)
@@ -188,7 +189,7 @@ Interferogram Analysis - Gas-Jet Profile is licensed under the [MIT license](/LI
 Copyright (c) 2023 Jhonatha Ricardo dos Santos
 
 ## Citation
-You can find the DOI for the lastest version at Zenodo.
+You can find the DOI for the lastest version at [Zenodo](https://zenodo.org/badge/latestdoi/601841375).
 
 ## Reference
 - [1] A. V. F. Zuffi, J. R. dos Santos, E. P. Maldonado, N D. Vieira, and R. E. Samad, "Femtosecond laser-plasma dynamics study by a time-resolved Mach–Zehnder-like interferometer," Appl. Opt. 62, C128-C134 (2023) [DOI: 10.1364/AO.477395](https://doi.org/10.1364/AO.477395).
