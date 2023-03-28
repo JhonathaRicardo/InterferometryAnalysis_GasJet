@@ -9,7 +9,6 @@
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![version](https://img.shields.io/badge/version-v.1.0-green)
-![status](https://img.shields.io/badge/status-under%20development-green)
 ![DOI](https://zenodo.org/badge/601841375.svg)
 
 ## Summary
@@ -17,7 +16,7 @@
 * [Installation](#installation)
 * [How to use it](#how-to-use-it)
   * [Main Screen](#main-screen)
-  * [Interferogram Images](#interferogram-images)
+  * [Interferogram Image](#interferogram-image)
   * [Options](#options)
   * [Gas-Jet Profile](#gas-jet-profile)
 * [How it works](#how-it-works)
