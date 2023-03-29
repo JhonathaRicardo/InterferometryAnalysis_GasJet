@@ -607,7 +607,7 @@ while True:
             alpha_gas = float(get_value('-polargas-', values)) * 1e-30  # in m^3
             # Wavelength laser
             lambda0 = float(get_value('-lambda0-', values)) * 1e-9  # in meters
-            unc_lambda0 = float(get_value('-unclambda0-', values))*0.8493218 * 1e-9  # 1/e in meters
+            unc_lambda0 = float(get_value('-unclambda0-', values))*0.424661 * 1e-9  # 1/e in meters
         except:
             sg.popup_error(f"WARNING: Data fields must have numerical values! ")
             continue
