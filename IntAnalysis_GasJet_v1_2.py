@@ -174,8 +174,9 @@ def mean_maps(data):
     '''
     mean_data = data[0] / len(data)
     for i in range(1, len(data)):
-        mean_data = mean_data + data[i] / len(data)
+            mean_data = mean_data + data[i] / len(data)
     return mean_data
+
 def std_maps(data, mean_data):
     '''
     standard deviation of 2D Array maps
@@ -188,23 +189,23 @@ def std_maps(data, mean_data):
 
     return np.sqrt(desv / len(data))
 
-# CREATING FRINGES WIDTHS
-def fringes_width(data1,data2):
+# CREATING FRINGES WIDTH
+def fringes_width(data1):
     '''
     Calculate 2D array shifts and widths fringes distribution
     :param n: 2D array, 2D array of ref. image.
-    :return: fringes width
+    :return: mean fringe width
     '''
-    ypeaks2, _ = find_peaks(data2)
-    ypeaks1, _ = find_peaks(data1)
+    #array with fringes width
+    f_width = np.zeros(np.shape(data1))
+    nl, nr = np.shape(data1)
+    for l in range(0, nl):
+        line1 = (data1[l, :])
+        ypeaks1, _ = find_peaks(line1)
+        x = np.arange(nr)
+        f_width[l,:] = np.interp(x, np.arange(len(np.diff(ypeaks1))), np.diff(ypeaks1))
 
-    x = np.arange(len(data1))
-    dist1 = np.interp(x, np.arange(len(np.diff(ypeaks1))), np.diff(ypeaks1))
-    dist2 = np.interp(x, np.arange(len(np.diff(ypeaks2))), np.diff(ypeaks2))
-
-    dist = (dist1 + dist2)/2
-
-    return dist
+    return f_width
 '''
 ########################################################################################
 #Windows LAYOUTS
@@ -635,6 +636,7 @@ while True:
                 intref = intref0
                 intgas = intgas0
 
+            print(np.shape(intref),np.shape(intgas))
             # Apply Fast Fourier Transform on interferogram data arrays
             fftref = np.fft.fft2(intref)  # ref. interferogram
             fftgas = np.fft.fft2(intgas)  # gas interferogram
@@ -726,43 +728,41 @@ while True:
             # Unwrap phase:
             uwphasemap = unwrap_phase(phasemaps)
 
-            # Creating 2D array for displacement and fringes widths
+            '''
+            DEFINING STANDARD DEVIATION:
+            The standard deviation is calculated from fringes intensity distribution, fringes widths and 
+            fringes displacement.
+            '''
+            # Estimating displacement (vertical and horizontal) between interferograms
             disp_xy, _,_ = phase_cross_correlation(intgas,intref,upsample_factor=100)
-            frgs_widths = np.zeros(np.shape(intref))
 
             if values['-combofringe-'] == 'vertical':
                 disp = np.absolute(disp_xy[1])
-                # Determining fringes shifts and fringes widths
-                for l in range(0, nlmap):
-                    frgs_ref = (intref[l, :])
-                    frgs_gas = (intgas[l, :])
-                    frgs_widths[l] = (fringes_width(frgs_gas, frgs_ref))
+                # Creating 2D array for fringes width distribution
+                dist_fw = fringes_width(intref)
 
             if values['-combofringe-'] == 'horizontal':
                 disp = np.absolute(disp_xy[0])
-                frgs_widths = np.transpose(frgs_widths)
-                # Determining fringes shifts and fringes widths
-                for r in range(0, nrmap):
-                    frgs_ref = np.transpose(intref[:,r])
-                    frgs_gas = np.transpose(intgas[:,r])
-                    frgs_widths[r] = (fringes_width(frgs_gas, frgs_ref))
+                # Creating 2D array for fringes width distribution
+                dist_fw = np.transpose(fringes_width(np.transpose(intref)))
 
-                frgs_widths = np.transpose(frgs_widths)
-
-            # Intensity distribution
             '''
             NOTE: During our algorithm tests we verify some computational artefacts. 
             These artifacts are detected only in the multiplication of the intensity distributions. 
             To correct this error we add a baseline line over data. The baseline has a value equal 
             to 0.1% of the lesser intensity.  
             '''
-            basedist = 0.001*np.min(intref)*np.ones(np.shape(intref))
-            dist1 = intref + basedist
-            dist2 = intgas + basedist
+            # Intensity distribution
+            basedist = 0.001 * np.min(intref) * np.ones(np.shape(intref))
+            if np.min(basedist) == 0.0:
+                basedist = 0.001 * np.min(intgas) * np.ones(np.shape(intref))
+
+            distI1 = intref + basedist
+            distI2 = intgas + basedist
 
             try:
-                std_phasemap_i = ((np.pi * disp) / (2*frgs_widths))*\
-                                 np.sqrt((np.mean(dist1) * (dist1 + dist2)) / (2 * dist1 * dist2))
+                std_phasemap_i = ((np.pi * disp)/ (2*dist_fw))*\
+                                 np.sqrt((np.mean(distI1) * (distI1 + distI2)) / (2 * distI1 * distI2))
             except:
                 std_phasemap_i = np.zeros(np.shape(intref))
 
@@ -800,11 +800,13 @@ while True:
                 phasemap_corr = np.flip(phasemap_corr, 0)
                 std_phasemap_i = np.flip(std_phasemap_i, 0)
                 fliped_array = True
-                vert_lim = int(2 * (nrows - cx) + 1)
+                if j == 0:
+                    vert_lim = int(2 * (nrows - cx) + 1)
                 # If left-side of image is more width
             else:
                 fliped_array = False
-                vert_lim = int(2 * cx + 1)
+                if j == 0:
+                    vert_lim = int(2 * cx + 1)
 
             phasemap_symm = phasemap_corr[:, 0:vert_lim]
             std_phasemap_symm = std_phasemap_i[:, 0:vert_lim]
@@ -826,6 +828,8 @@ while True:
                 phasemap_symm = np.flip(phasemap_symm,0)
                 std_phasemap_symm = np.flip(std_phasemap_symm, 0)
                 std_phase0 = np.flip(std_phase0,0)
+
+            print(np.shape(phase_abel0))
 
             '''
             ############################################################################################
@@ -869,6 +873,8 @@ while True:
 
             #new matrix size for plot
             rangeh, rangev = np.shape(gas_dens_i)
+
+            print(np.shape(gas_dens_i))
 
             '''
             CALCULATION TOTAL STANDARD DEVIATION FROM:
@@ -920,11 +926,11 @@ while True:
             #INV. ABEL TRANSF. MAP
             gas_abelmap_mean = mean_maps(gas_abelphasemap)
             std_abelmap_mean = np.sqrt(np.square(mean_maps(std_abelmap)) + \
-                                        np.square(std_maps(gas_abelphasemap, std_abelmap_mean)))
+                                        np.square(std_maps(gas_abelphasemap, gas_abelmap_mean)))
             # PLASMA DENSITY
             gas_dens_mean = mean_maps(gas_dens)
             std_dens_mean = np.sqrt(np.square(mean_maps(std_gas_dens)) + \
-                                       np.square(std_maps(gas_dens, std_dens_mean)))
+                                       np.square(std_maps(gas_dens, gas_dens_mean)))
         else:
             try:
                 #PHASEMAP
