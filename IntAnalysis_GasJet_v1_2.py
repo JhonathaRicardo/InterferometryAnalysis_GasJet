@@ -1,7 +1,7 @@
 # Software: Interferometry Analysis - Gas-Jet (Version 1.0)
 # Authors: Jhonatha Ricardo dos Santos, Armando Zuffi, Ricardo Edgul Samad, Edison Puig Maldonado, Nilson Dias Vieira Junior
 # Python 3.11
-# Last update: 2023_04_03
+# Last update: 2023_04_04
 
 # LYBRARIES
 # The Python Standard Library
@@ -202,8 +202,10 @@ def fringes_width(data1):
     for l in range(0, nl):
         line1 = (data1[l, :])
         ypeaks1, _ = find_peaks(line1)
-        x = np.arange(nr)
-        f_width[l,:] = np.interp(x, np.arange(len(np.diff(ypeaks1))), np.diff(ypeaks1))
+        y = np.diff(ypeaks1)
+        x = np.linspace(0,nr,len(y))
+        x_interp = np.linspace(0,nr,nr)
+        f_width[l,:] = np.interp(x_interp, x, y)
 
     return f_width
 '''
@@ -636,7 +638,6 @@ while True:
                 intref = intref0
                 intgas = intgas0
 
-            print(np.shape(intref),np.shape(intgas))
             # Apply Fast Fourier Transform on interferogram data arrays
             fftref = np.fft.fft2(intref)  # ref. interferogram
             fftgas = np.fft.fft2(intgas)  # gas interferogram
@@ -829,8 +830,6 @@ while True:
                 std_phasemap_symm = np.flip(std_phasemap_symm, 0)
                 std_phase0 = np.flip(std_phase0,0)
 
-            print(np.shape(phase_abel0))
-
             '''
             ############################################################################################
             Calculating std from Abel Transform:
@@ -873,8 +872,6 @@ while True:
 
             #new matrix size for plot
             rangeh, rangev = np.shape(gas_dens_i)
-
-            print(np.shape(gas_dens_i))
 
             '''
             CALCULATION TOTAL STANDARD DEVIATION FROM:
@@ -1188,13 +1185,13 @@ while True:
         elif values['phaseradio'] == True:  # Plot phase map result
             matrix_plot = gas_phasemap_mean
             matrix_plot_std = std_phasemap_mean
-            headerfile = '\nx[µm] \t\t 𝚫𝝓[rad] \n'
+            headerfile = '\nx[um] \t\t acc. phase[rad] \n'
         elif values['abelradio'] == True:  # Plot gas density profile from IAT
             matrix_plot = gas_abelmap_mean
             matrix_plot_std = norm_phasemap
-            headerfile = '\nx[µm] \t\t 𝚫𝝓r[rad/µm] \n'
+            headerfile = '\nx[um] \t\t radial phase[rad/um] \n'
         elif values['densradio'] == True:  # Plot gas density profile
-            headerfile = '\nx[µm] \t\t N [𝒄𝒎^(−𝟑)] \n'
+            headerfile = '\nx[um] \t\t N [cm^-3] \n'
             matrix_plot = gas_dens_mean
             matrix_plot_std = std_dens_mean
 
@@ -1329,49 +1326,48 @@ while True:
                 file_data.write(headerfile)
                 # Plot1D
                 if h_prof >= 0.0 and values['abelradio'] == True:
-                    file_data.write('\t\t (%.0f µm) \t 𝚫𝝓r[rad/µm] \t ||𝚫𝝓||[rad/µm]$' % h_prof)
+                    file_data.write(' \t radial phase[rad/um] \t acc.phase[rad/um] \t (%.0f um)' % h_prof)
                     list_data = np.vstack((raxis_um, array_plot))
-                    list_data = np.vstack((raxis_um, array_std))
+                    list_data = np.vstack((list_data, array_std))
 
                 if h_prof >= 0.0 and values['abelradio'] == False:
-                    file_data.write('\t\t (%.0f µm)' % h_prof)
+                    file_data.write('\t\t (%.0f um)' % h_prof)
                     list_data = np.vstack((raxis_um, array_plot))
                     if values['-checkstd-'] == True:
-                        file_data.write('\t $\sigma$')
-                        list_data = np.vstack((raxis_um, array_std))
+                        file_data.write('\t std')
+                        list_data = np.vstack((list_data, array_std))
                     # verify additional height positions 1, 2 and 3
                     if values['-checkpos1-'] == True:
                         if values['-comboaxisymm-'] == 'vertical':
                             list_data = np.vstack((list_data, matrix_plot[pos1]))
                         else:
                             list_data = np.vstack((list_data, matrix_plot[:, pos1]))
-                        file_data.write('\t\t(%.0f µm)' % h_prof1)
+                        file_data.write('\t\t(%.0f um)' % h_prof1)
 
                     if values['-checkpos2-'] == True:
                         if values['-comboaxisymm-'] == 'vertical':
                             list_data = np.vstack((list_data, matrix_plot[pos2]))
                         else:
                             list_data = np.vstack((list_data, matrix_plot[:, pos2]))
-                        file_data.write('\t\t(%.0f µm)' % h_prof2)
+                        file_data.write('\t\t(%.0f um)' % h_prof2)
 
                     if values['-checkpos3-'] == True:
                         if values['-comboaxisymm-'] == 'vertical':
                             list_data = np.vstack((list_data, matrix_plot[pos3]))
                         else:
                             list_data = np.vstack((list_data, matrix_plot[:, pos3]))
-                        file_data.write('\t\t(%.0f µm)' % h_prof3)
+                        file_data.write('\t\t(%.0f um)' % h_prof3)
 
-                    file_data.write('\n')
-                    list_str = (np.transpose(list_data))
-                    np.savetxt(file_data, list_str, fmt='%.2e', delimiter='\t')
+                file_data.write('\n')
+                list_str = (np.transpose(list_data))
+                np.savetxt(file_data, list_str, fmt='%.2e', delimiter='\t')
+                file_data.close()
 
             else:
-                if values['-checkstd-'] == False:
-                    np.savetxt(file_data, matrix_plot, fmt='%.3e')
-                else:
-                    np.savetxt(file_data, matrix_plot_std, fmt='%.3e')
+                np.savetxt(file_data, matrix_plot, fmt='%.3e')
                 sg.popup(f"Saved: {save_filename_data}")
                 file_data.close()
+
         else:
             continue
 
