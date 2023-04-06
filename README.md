@@ -1,4 +1,4 @@
-# <h1 align = "center">Interferometry Analysis - Gas-Jet (v.1.0.0)</h1>
+# <h1 align = "center">Interferometry Analysis - Gas-Jet (v.1.2)</h1>
 <p align="justify">
   The Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understand laser plasmas interactions and processes. This software was developed in Python to developed to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
 </p>
@@ -8,7 +8,8 @@
 </p>
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![version](https://img.shields.io/badge/version-v.1.0-green)
+![version](https://img.shields.io/badge/version-v.1.2-green)
+![status](https://img.shields.io/badge/status-under%20development-yellow)
 ![DOI](https://zenodo.org/badge/601841375.svg)
 
 ## Summary
@@ -28,14 +29,14 @@
 * [Reference](#reference)
 
 ## Introduction
-  The development of diagnostic tools is very important for a better understanding of laser-plasma interactions [[1]](#reference). An accurate diagnostic is crucial, as instabilities in both target and laser pulses can result in low reproducibility of processes and impair the quality of the intended interaction [2](#reference). Among the various non-perturbing optical methods that can be used to diagnose a gaseous target [[3-6]](#reference), interferometry is a very accurate technique capable of quantifying very small optical path differences and, therefore, suitable for measuring density variations of gases [[7, 8]](#reference) and laser-induced plasmas [[1]](#reference). The main drawback of the technique is that returns and integrated phase along the light path, requiring deconvolution methods for retrieving the target density profile. The software denominated “Interferometry Analysis – Gas-Jet” and “Interferometry Analysis – LIP” were developed due to the need for a new diagnostic tool to aid in the characterization of supersonic gas jets, quickly and reliably. Both were developed by our research group as part of the work to implement a laser-plasma accelerator infrastructure at the Nuclear and Energy Research Institute (IPEN), in Brazil.
+  The development of diagnostic tools is very important for a better understanding of laser-plasma interactions [[1]](#reference). An accurate diagnostic is crucial, as instabilities in both target and laser pulses can result in low reproducibility of processes and impair the quality of the intended interaction [[2]](#reference). Among the various non-perturbing optical methods that can be used to diagnose a gaseous target [[3-6]](#reference), interferometry is a very accurate technique capable of quantifying very small optical path differences and, therefore, suitable for measuring density variations of gases [[7, 8]](#reference) and laser-induced plasmas [[1]](#reference). The main drawback of the technique is that returns and integrated phase along the light path, requiring deconvolution methods for retrieving the target density profile. The software denominated “Interferometry Analysis – Gas-Jet” and “Interferometry Analysis – LIP” were developed due to the need for a new diagnostic tool to aid in the characterization of supersonic gas jets, quickly and reliably. Both were developed by our research group as part of the work to implement a laser-plasma accelerator infrastructure at the Nuclear and Energy Research Institute (IPEN), in Brazil.
 
 ## Installation
 The *Interferometry Analysis - Gas-Jet* software was developed in Python 3.11. The use of this algorithm requires the installation of the following packages: [NumPy](https://numpy.org/) [[9]](#reference), [Scipy](https://scipy.org/) [[10]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[11]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[12]](#reference) and Scikit-image [[13]](#reference) for the procrssing of interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[14]](#reference) to plot results, and [PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the user's template.
 
 TUsers also can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
 
-<code>   pyinstaller --onefile -w IntAnalysis_GasJet_v1.py                </code>
+<code>   pyinstaller --onefile -w IntAnalysis_GasJet_v1.2.py                </code>
 
 Users who do not use Python IDEs can utilize the software through the executable file available for download [here](https://drive.google.com/file/d/1JITnF9IL0JvEU3qw6vpD7zWYGTEoRjp2/view?usp=sharing)
 
