@@ -38,7 +38,7 @@ TUsers also can create a single .exe file using the [pyinstaller](https://pyinst
 
 <code>   pyinstaller --onefile -w IntAnalysis_GasJet_v1.2.py                </code>
 
-Users who do not use Python IDEs can utilize the software through the executable file available for download [here](https://drive.google.com/file/d/1JITnF9IL0JvEU3qw6vpD7zWYGTEoRjp2/view?usp=sharing)
+Users who do not use Python IDEs can utilize the software through the executable file available for download [here](https://drive.google.com/file/d/1K_-3wm8TOzxROLyAc22AkRXlRvD3GjjI/view?usp=sharing)
 
 ## How to use it
 The “Interferometry Analysis – Gas-Jet” has a graphical interface to facilitate its use, and this section provide a simple review of the software's functions and how to employ them.
