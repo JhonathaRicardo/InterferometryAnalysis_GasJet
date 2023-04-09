@@ -69,7 +69,7 @@ more than one file has been opened, each file will be analyzed individually, and
   > **Warning**   
   >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
-- ***[Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the plasma.
+- ***[Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the gas.
 
 - ***[Clear]*** Button to clear input and output data.
 
