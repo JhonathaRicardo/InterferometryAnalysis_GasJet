@@ -181,7 +181,7 @@ Interferogram Analysis – Gas-Jet was developed to help with the analysis of th
 
 The authors thank all members of the ELL team, especially Prof. Dr. Donald Umstadter director of ELL.
 
-The author Jhonatha Ricardo dos Santos also acknowledges the FAPESP for doctoral fellowship 2017/13737-8. 
+The author Jhonatha Ricardo dos Santos also acknowledges the FAPESP for doctoral fellowship 2021/13737-8. 
 
 ## License
 Interferogram Analysis - Gas-Jet Profile is licensed under the [MIT license](/LICENSE).
