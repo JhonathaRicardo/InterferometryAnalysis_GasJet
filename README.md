@@ -45,6 +45,7 @@ Users who do not use Python IDEs can utilize the software through the executable
 The “Interferometry Analysis – Gas-Jet” has a graphical interface to facilitate its use, and this section provide a simple review of the software's functions and how to employ them.
 
 ### Main Screen
+The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferograms, Options, and LIP Profile. Each of these parts will be detailed below.
 
 |<img src = '/Images/MainScreen1.png'> |
 |:--:| 
