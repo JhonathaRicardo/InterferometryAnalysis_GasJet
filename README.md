@@ -104,7 +104,7 @@ The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferog
   
   - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency (Fig. 3.b).
 
-|<img src = '/Images/Figure3.PNG' width="40%">|
+|<img src = '/Images/Figure3.PNG' width="50%">|
 |:--:| 
 | *Fig. 3. (a) 2D frequency domain obtained by the interferogram Fourier Transform with the selected frequency to be filtered; (b) Gaussian filter to be applied on the selected frequency.* |
 
@@ -144,7 +144,7 @@ For the next three steps, users have the option of viewing the 2D maps or 1D cur
 ## How it works
 The detailed description of the algorithm will be presented in a future article. However, the summarized data processing by the software algorithm is described by the flowchart shown in *Fig. 8*:
 
-|<img src = '/Images/Flowchart_gasjet.png'>|
+|<img src = '/Images/Figure8.png' width="80%">|
 |:--:| 
 | *Fig. 8. Scheme of the algorithm data processing.* |
 
