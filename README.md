@@ -1,6 +1,6 @@
-# <h1 align = "center">Interferometry Analysis - Gas-Jet (v.1.2)</h1>
+# <h1 align = "center">Interferometry Analysis - Gas-Jet (v.4.0)</h1>
 <p align="justify">
-  Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understand laser plasmas interactions and processes. This software was developed in Python to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
+  Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understanding laser plasma interactions and processes. This software was developed in Python to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
 </p>
 
 <p align="center">
@@ -32,47 +32,44 @@
   The development of diagnostic tools is very important for a better understanding of laser-plasma interactions [[1]](#reference). An accurate diagnostic is crucial, as instabilities in both target and laser pulses can result in low reproducibility of processes and impair the quality of the intended interaction [[2]](#reference). Among the various non-perturbing optical methods that can be used to diagnose a gaseous target [[3-6]](#reference), interferometry is a very accurate technique capable of quantifying very small optical path differences and, therefore, suitable for measuring density variations of gases [[7, 8]](#reference) and laser-induced plasmas [[1]](#reference). The main drawback of the technique is that returns the integrated phase along the light path, requiring deconvolution methods for retrieving the target density profile. The software “Interferometry Analysis – Gas-Jet” was developed due to the need for a new diagnostic tool to aid in the characterization of supersonic gas jets, quickly and reliably. It was developed by our research group as part of the work to implement a laser-plasma accelerator infrastructure at the Nuclear and Energy Research Institute (IPEN), in Brazil.
 
 ## Installation
-The *Interferometry Analysis - Gas-Jet* software was developed in Python 3.11. The use of this algorithm requires the installation of the following packages: [NumPy](https://numpy.org/) [[9]](#reference), [Scipy](https://scipy.org/) [[10]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[11]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[12]](#reference) and Scikit-image [[13]](#reference) for the procrssing of interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[14]](#reference) to plot results, and [PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the user's template.
+The *Interferometry Analysis - Gas-Jet* software was developed in Python 3.11. The use of this algorithm requires the installation of the following packages: [NumPy](https://numpy.org/) [[9]](#reference), [Scipy](https://scipy.org/) [[10]](#reference) and [PyAbel](https://pyabel.readthedocs.io/en/latest/index.html) [[11]](#reference) for data processing, [Pillow](https://pypi.org/project/Pillow/) [[12]](#reference) and Scikit-image [[13]](#reference) for the processing of interferogram images, [Matplotlib](https://matplotlib.org/stable/index.html) [[14]](#reference) to plot results, and [PySimpleGui](https://www.pysimplegui.org/en/latest/) to create the user's template.
 
-Users also can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
+Users also can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package through the follow terminal command:
 
-<code>   pyinstaller --onefile -w IntAnalysis_GasJet_v1.2.py                </code>
+<code>   pyinstaller --onefile -w IntAnalysis_GasJet_v4.0.py                </code>
 
 Users who do not use Python IDEs can utilize the software through the executable file available for download [here](https://drive.google.com/file/d/1K_-3wm8TOzxROLyAc22AkRXlRvD3GjjI/view?usp=sharing)
 
 ## How to use it
-The “Interferometry Analysis – Gas-Jet” has a graphical interface to facilitate its use, and this section provide a simple review of the software's functions and how to employ them.
+The “Interferometry Analysis – Gas-Jet” has a graphical interface to facilitate its use, and this section provides a simple review of the software's functions and how to employ them.
 
 ### Main Screen
-
-|<img src = '/Images/MainScreen1.png'> |
+The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferograms, Options, and Gas Jet Profile. Each of these parts will be detailed below.
+|<img src = '/Images/Figure0.PNG'> |
 |:--:| 
 | *Fig.1. Software Main Screen* |
 
-### Interferogram Image
-- ***[Interferogram (Gas-Jet)]*** interferogram image frame.
+### Interferograms
+- ***1. [Interferogram (Gas-Jet)]*** interferogram frame.
 
-- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of a gas jet. Image file extensions should preferably be .png or .snp.
-However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) could be used. The path to the opened file is shown in the text box immediately above. If
-more than one file has been opened, each file will be analyzed individually, and the average of all results will be presented to the user.
-  > **Warning**   
-  >  Interferometry Analysis - Gas Jet software only works with grayscale image files. 
+  - ***[Open File(s)]*** Open interferogram(s) file(s) with the presence of a gaseous target. Image file extensions should preferably be *.png* or *.snp.* (Newport proprietary format) for Newport CCD. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to the opened file is shown in the text box immediately above. If more than one file has been opened, each one is analyzed individually, and the average of all results is presented to the user.
+    > **Warning**   
+    >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
   
-- ***[Rotate]*** The image rotation in degrees. Positive degrees promote counterclockwise rotation.  
+  - ***[Rotate]*** The image rotation in degrees. Positive degrees promote counterclockwise rotation.  
 
-- ***[Original Size]*** Original dimensions of the image file (width,height). 
-  > **Note** The interferogram image shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the  gas density profile are done with the original dimensions of the image file.
+  - ***[Original Size]*** Original dimensions of the image file (width, height). 
+    > **Note** The interferogram shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the molecular gas density profile are done with the original dimensions of the image file.
 
-- ***[Interferogram (Ref.)]*** Scaled reference interferogram image.
+- ***2. [Interferogram (Ref.)]*** Scaled reference interferogram.
 
-- ***[Open File]*** Open an undisturbed interferogram image file. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. Unlike interferogram LIP files, the algorithm allows the insertion of only one reference file.
-  > **Warning**   
-  >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
+  - ***[Open File]*** Open an undisturbed interferogram file. Image file extensions should preferably be .png or .snp. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to open the file is shown in the textbox above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
+    > **Warning**   
+    >  Interferometry Analysis - Gast_Jet software only works with grayscale image files. 
 
-- ***[Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the gas.
+- ***3. [Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the plasma.
 
-- ***[Clear]*** Button to clear input and output data.
-
+- ***4. [Clear]*** Button to clear input and output data.
 
 ### Options
 - ***[Select Analysis Area]*** Parameters to select the interferogram area to apply the algorithm. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***). The user that intends to use the whole interferogram needs to uncheck the checkbox  ***[Use select area]***.
