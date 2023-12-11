@@ -49,30 +49,28 @@ The “Interferometry Analysis – Gas-Jet” has a graphical interface to facil
 |:--:| 
 | *Fig.1. Software Main Screen* |
 
-### Interferogram Image
-- ***[Interferogram (Gas-Jet)]*** interferogram image frame.
+### Interferograms
+- ***1. [Interferogram (LIP)]*** interferogram frame.
 
-- ***[Open File(s)]*** Open interferogram image(s) file(s) with the presence of a gas jet. Image file extensions should preferably be .png or .snp.
-However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) could be used. The path to the opened file is shown in the text box immediately above. If
-more than one file has been opened, each file will be analyzed individually, and the average of all results will be presented to the user.
-  > **Warning**   
-  >  Interferometry Analysis - Gas Jet software only works with grayscale image files. 
+  - ***[Open File(s)]*** Open interferogram(s) file(s) with the presence of a laser-induced plasma. Image file extensions should preferably be *.png* or *.snp.* (Newport proprietary format) for Newport CCD. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to the opened file is shown in the text box immediately above. If more than one file has been opened, each one is analyzed individually, and the average of all results is presented to the user.
+    > **Warning**   
+    >  Interferometry Analysis - LIP software only works with grayscale image files. 
   
-- ***[Rotate]*** The image rotation in degrees. Positive degrees promote counterclockwise rotation.  
+  - ***[Rotate]*** The image rotation in degrees. Positive degrees promote counterclockwise rotation.  
 
-- ***[Original Size]*** Original dimensions of the image file (width,height). 
-  > **Note** The interferogram image shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the  gas density profile are done with the original dimensions of the image file.
+  - ***[Original Size]*** Original dimensions of the image file (width, height). 
+    > **Note** The interferogram shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the plasma density profile are done with the original dimensions of the image file.
 
-- ***[Interferogram (Ref.)]*** Scaled reference interferogram image.
+- ***2. [Interferogram (Ref.)]*** Scaled reference interferogram.
 
-- ***[Open File]*** Open an undisturbed interferogram image file. Image file extensions should preferably be .png or .snp. However, all image extensions (.gif, .jpg, .bmp, etc) could be used. The path to opened file is shown in text box above. Unlike interferogram LIP files, the algorithm allows the insertion of only one reference file.
-  > **Warning**   
-  >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
+  - ***[Open File]*** Open an undisturbed interferogram file. Image file extensions should preferably be .png or .snp. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to open the file is shown in the textbox above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
+    > **Warning**   
+    >  Interferometry Analysis - LIP software only works with grayscale image files. 
 
-- ***[Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the gas.
+- ***3. [Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the plasma.
 
-- ***[Clear]*** Button to clear input and output data.
-
+- ***4. [Clear]*** Button to clear input and output data.
+  > **Note:** The algorithm sets the frequency that generates a negative phase map. Because the refractive index of the plasma is less than 1. This is an intrinsic characteristic of plasmas, and it is considered in the calculations of the algorithm.
 
 ### Options
 - ***[Select Analysis Area]*** Parameters to select the interferogram area to apply the algorithm. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***). The user that intends to use the whole interferogram needs to uncheck the checkbox  ***[Use select area]***.
