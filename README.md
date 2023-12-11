@@ -1,6 +1,6 @@
-# <h1 align = "center">Interferometry Analysis - Gas-Jet (v.1.2)</h1>
+# <h1 align = "center">Interferometry Analysis - Gas-Jet (v.4.0)</h1>
 <p align="justify">
-  Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understand laser plasmas interactions and processes. This software was developed in Python to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
+  Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understanding laser plasma interactions and processes. This software was developed in Python to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
 </p>
 
 <p align="center">
@@ -50,27 +50,26 @@ The “Interferometry Analysis – Gas-Jet” has a graphical interface to facil
 | *Fig.1. Software Main Screen* |
 
 ### Interferograms
-- ***1. [Interferogram (LIP)]*** interferogram frame.
+- ***1. [Interferogram (Gas-Jet)]*** interferogram frame.
 
-  - ***[Open File(s)]*** Open interferogram(s) file(s) with the presence of a laser-induced plasma. Image file extensions should preferably be *.png* or *.snp.* (Newport proprietary format) for Newport CCD. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to the opened file is shown in the text box immediately above. If more than one file has been opened, each one is analyzed individually, and the average of all results is presented to the user.
+  - ***[Open File(s)]*** Open interferogram(s) file(s) with the presence of a gaseous target. Image file extensions should preferably be *.png* or *.snp.* (Newport proprietary format) for Newport CCD. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to the opened file is shown in the text box immediately above. If more than one file has been opened, each one is analyzed individually, and the average of all results is presented to the user.
     > **Warning**   
-    >  Interferometry Analysis - LIP software only works with grayscale image files. 
+    >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
   
   - ***[Rotate]*** The image rotation in degrees. Positive degrees promote counterclockwise rotation.  
 
   - ***[Original Size]*** Original dimensions of the image file (width, height). 
-    > **Note** The interferogram shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the plasma density profile are done with the original dimensions of the image file.
+    > **Note** The interferogram shown is scaled to screen size (428,342) for users' viewing only. However, all processes to determine the molecular gas density profile are done with the original dimensions of the image file.
 
 - ***2. [Interferogram (Ref.)]*** Scaled reference interferogram.
 
   - ***[Open File]*** Open an undisturbed interferogram file. Image file extensions should preferably be .png or .snp. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to open the file is shown in the textbox above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
     > **Warning**   
-    >  Interferometry Analysis - LIP software only works with grayscale image files. 
+    >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
-- ***3. [Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the plasma.
+- ***3. [Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the molecular density distribution of the plasma.
 
 - ***4. [Clear]*** Button to clear input and output data.
-  > **Note:** The algorithm sets the frequency that generates a negative phase map. Because the refractive index of the plasma is less than 1. This is an intrinsic characteristic of plasmas, and it is considered in the calculations of the algorithm.
 
 ### Options
 - ***[Select Analysis Area]*** Parameters to select the interferogram area to apply the algorithm. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***). The user that intends to use the whole interferogram needs to uncheck the checkbox  ***[Use select area]***.
