@@ -51,11 +51,11 @@ The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferog
 | *Fig.1. Software Main Screen* |
 
 ### Interferograms
-- ***1. [Interferogram (LIP)]*** interferogram frame.
+- ***1. [Interferogram (Gas-Jet)]*** interferogram frame.
 
-  - ***[Open File(s)]*** Open interferogram(s) file(s) with the presence of a laser-induced plasma. Image file extensions should preferably be *.png* or *.snp.* (Newport proprietary format) for Newport CCD. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to the opened file is shown in the text box immediately above. If more than one file has been opened, each one is analyzed individually, and the average of all results is presented to the user.
+  - ***[Open File(s)]*** Open interferogram(s) file(s) with the presence of a gaseous target. Image file extensions should preferably be *.png* or *.snp.* (Newport proprietary format) for Newport CCD. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to the opened file is shown in the text box immediately above. If more than one file has been opened, each one is analyzed individually, and the average of all results is presented to the user.
     > **Warning**   
-    >  Interferometry Analysis - LIP software only works with grayscale image files. 
+    >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
   
   - ***[Rotate]*** The image rotation in degrees. Positive degrees promote counterclockwise rotation.  
 
@@ -66,12 +66,12 @@ The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferog
 
   - ***[Open File]*** Open an undisturbed interferogram file. Image file extensions should preferably be .png or .snp. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to open the file is shown in the textbox above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
     > **Warning**   
-    >  Interferometry Analysis - LIP software only works with grayscale image files. 
+    >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
-- ***3. [Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the electron density distribution of the plasma.
+- ***3. [Analyse Data]*** From this command button, the software will apply data processing to generate the accumulated phase-shift map, the radial phase-shift map, and the map of the molecular density distribution of the gaseous target.
 
 - ***4. [Clear]*** Button to clear input and output data.
-  > **Note:** The algorithm sets the frequency that generates a negative phase map. Because the refractive index of the plasma is less than 1. This is an intrinsic characteristic of plasmas, and it is considered in the calculations of the algorithm.
+
 
 ### Options
 - ***[Select Analysis Area]*** Parameters to select the interferogram area to apply the algorithm. The selected area is defined by a rectangle with edges defined by X and Y coordinates (***[Y Coord]*** and ***[X Coord]***). The user that intends to use the whole interferogram needs to uncheck the checkbox  ***[Use select area]***.
