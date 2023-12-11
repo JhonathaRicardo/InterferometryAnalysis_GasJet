@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img src = '/Images/Intro_GasJet.jpg' width="80%" align="center">
+  <img src = '/Images/Figure0.PNG' width="80%" align="center">
 </p>
 
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -46,7 +46,7 @@ The “Interferometry Analysis – Gas-Jet” has a graphical interface to facil
 ### Main Screen
 The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferograms, Options, and LIP Profile. Each of these parts will be detailed below.
 
-|<img src = '/Images/MainScreen1.png'> |
+|<img src = '/Images/Figure1.PNG'> |
 |:--:| 
 | *Fig.1. Software Main Screen* |
 
