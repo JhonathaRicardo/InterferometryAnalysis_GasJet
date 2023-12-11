@@ -1,6 +1,6 @@
 # <h1 align = "center">Interferometry Analysis - Gas-Jet (v.1.2)</h1>
 <p align="justify">
-  Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understand laser plasmas interactions and processes. This software was developed in Python to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
+  Interferometric techniques are important tools for analysis and diagnosis in astronomy, spectroscopy, metrology, plasma physics, particle physics, and other areas, frequently applied to quantify changes in the refractive index of a material or a medium. For example, knowing the density distribution of a gas target is crucial to understanding laser plasma interactions and processes. This software was developed in Python to recover the accumulated optical phase across a neutral gas target, as well as estimate the target density distribution.
 </p>
 
 <p align="center">
