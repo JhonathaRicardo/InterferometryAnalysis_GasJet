@@ -148,7 +148,7 @@ A detailed description of the algorithm will be presented in a future article. H
 |:--:| 
 | *Fig. 8. Scheme of the algorithm data processing.* |
 
-In the scheme of the algorithm data processing (*Fig. 8*): *I* and *I<sup>0</sup>* are the intensity functions of the bi-dimensional fringes fields obtained from the gas and the reference interferograms, respectively. The hats denote the Fourier transform of the intensities, *N<sup>gas</sup>* is the gas jet density calculated from its refractive index, *n*, and polarizability, &alpha;, using the Lorentz-Lorenz relation [[14,15]](#reference).
+In the scheme of the algorithm data processing (*Fig. 8*): *I<sub>Target</sub>* and *I<sub>Reference</sub>* are the intensity functions of the bi-dimensional fringes fields obtained from the gas and the reference interferograms, respectively. The hats denote the Fourier transform of the intensities, *N<sup>gas</sup>* is the gas jet density calculated from its refractive index, *n*, and polarizability, &alpha;, using the Lorentz-Lorenz relation [[14,15]](#reference).
 
 ## Example
 In the Example folder of this repository, the user will find the two interferogram images shown in *Fig. 9*. These images were obtained using a Mach-Zehnder-like interferometer, as discussed in [[16]](#reference).
