@@ -89,7 +89,7 @@ The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferog
     > The polarizability value is automatically filled in after selecting the gas type. If the user wants to use gases not yet listed, the gas polarizability value can be entered manually.
 
 - ***7. [Analysis Parameters]*** Parameters frame to analyze the interferogram.
-  - ***[Filter Frequency]*** ((&nu;<sub>0</sub>) This parameter is set automatically by the algorithm and this position defines which frequency will be used to apply the Inverse Fourier Transform and build the phase map of the plasma. This parameter is given in pixels.
+  - ***[Filter Frequency]*** (&nu;<sub>0</sub>) This parameter is set automatically by the algorithm and this position defines which frequency will be used to apply the Inverse Fourier Transform and build the phase map of the plasma. This parameter is given in pixels.
   - ***[Filter Range]*** (&Delta;&nu;) frequency spread of the Gaussian frequency filter in pixel. The initial &Delta;&nu; depends on the image dimension but can changed by the user. 
     > **Note:** The algorithm sets the frequency that generates a negative phase map. Because the refractive index of the plasma is less than 1. This is an intrinsic characteristic of plasmas, and it is considered in the calculations of the algorithm.
   - ***[Gaussian Blur]*** (&sigma;<sub>blur</sub>) Spread of the bi-dimensional Gaussian image filter. The standard deviation of the Gaussian filter ($\sigma$) defined by the user is equal for all axes. The ***[Gaussian Blur]*** is used to improve the target symmetry.  
@@ -122,11 +122,11 @@ For the next three steps, users have the option of viewing the 2D maps or 1D cur
 |:--:| 
 |*Fig. 5. (a) 2D radial phase-shift map and (b) 2D standard deviation map; (c) and (d) accuracy between 1D radial phase-shift and normalized phase-shift curves. All radial phase values are given in rad/&mu;m.*|  
 
-  - ***[Density Profile]*** molecular density distribution ($N$) of the Gas-Jet in $cm^{−3}$ built from the radial phase-shift ($\Delta\phi_r$) and ***[Laser Wavelength]*** ($\lambda$).
+  - ***[Density Profile]*** molecular density distribution (*N*) of the Gas-Jet in *cm<sup>−3</sup>* built from the radial phase-shift (&Delta;&phi;<sup>r</sup>) and ***[Laser Wavelength]*** (&lambda;).
     
 |<img src='/Images/Figure6.PNG' width="80%">|
 |:--:| 
-|*Fig. 5. (a) 2D plasma density map and (b) 2D standard deviation map; (c) 1D plasma density curves and (d) standard deviation of one density curve. All density values are given in cm&oline;³ .*|
+|*Fig. 5. (a) 2D plasma density map and (b) 2D standard deviation map; (c) 1D plasma density curves and (d) standard deviation of one density curve. All density values are given in cm<sup>−3</sup>.*|
 
 - ***9. [1D Profile]*** This button enables a 1D frame (*Item 15 in Fig. 1*) with options for the user to visualize the curves of each selected stage for different positions on the chosen symmetry axis.
 - ***10. [2D Profile]*** This button enables the visualization of each ***[Stage]*** in 2D images.
@@ -148,7 +148,7 @@ A detailed description of the algorithm will be presented in a future article. H
 |:--:| 
 | *Fig. 8. Scheme of the algorithm data processing.* |
 
-In the scheme of the algorithm data processing (*Fig. 8*): *I* and *I<sup>0</sup>* are the intensity functions of the bi-dimensional fringes fields obtained from the gas and the reference interferograms, respectively. The hats denote the Fourier transform of the intensities, *N<sup>gas</sup>* is the gas jet density calculated from its refractive index, *n*, and polarizability, &alpha;, using the Lorentz-Lorenz relation [[14,15]](#reference).
+In the scheme of the algorithm data processing (*Fig. 8*): **I<sup>Target</sup>* and *I<sup>Reference</sup>* are the intensity functions of the bi-dimensional fringes fields obtained from the gas and the reference interferograms, respectively. The hats denote the Fourier transform of the intensities, and *I;<sub>S</sub><sub>conj.</sub>* is the complex conjugate of intensity with frequencies belonging to &nu;<sub>0</sub> ; *N<sup>gas</sup>* is the gas jet density calculated from its refractive index, *n*, and polarizability, &alpha;, using the Lorentz-Lorenz relation [[14,15]](#reference).
 
 ## Example
 In the Example folder of this repository, the user will find the two interferogram images shown in *Fig. 9*. These images were obtained using a Mach-Zehnder-like interferometer, as discussed in [[16]](#reference).
