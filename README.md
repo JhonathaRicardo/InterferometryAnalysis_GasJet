@@ -64,7 +64,7 @@ The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferog
 
 - ***2. [Interferogram (Ref.)]*** Scaled reference interferogram.
 
-  - ***[Open File]*** Open an undisturbed interferogram file. Image file extensions should preferably be .png or .snp. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to open the file is shown in the textbox above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
+  - ***[Open Ref.]*** Open an undisturbed interferogram file. Image file extensions should preferably be .png or .snp. However, all image extensions (*.gif*, *.jpg*, *.bmp*, etc) can be used. The path to open the file is shown in the textbox above. Unlike interferogram gas jet files, the algorithm allows the insertion of only one reference file.
     > **Warning**   
     >  Interferometry Analysis - Gas-Jet software only works with grayscale image files. 
 
