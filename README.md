@@ -99,14 +99,14 @@ The Software Main Screen (*Fig. 1*) can be divided into 3 main parts: Interferog
 
 ### Gas-Jet Profile
 - ***8. [Stages]:*** Stages frame allows the visualization of each result of the algorithm.
-  - ***[Fourier Transform]*** This image is built from the Fourier Transform of the plasma interferogram. From this frequency map (Fig. 3.a), the software selects automatically the frequency that generates a negative phase-shift map. The selected frequency is marked with a red line over a pixel line (or column) identifying the ***[Filter Frequency]*** (&nu;<sub>0</sub>). If the ***[Filter Frequency]***  is equal to zero, the software will set the new valor value automatically.   
+  - ***[Fourier Transform]*** This frequency map (Fig. 3.a) is built from the Fourier Transform of the plasma interferogram. Among the frequency positions highlighted in the 1D frequency graph (Fig. 3.b), the software automatically selects the frequency that generates a negative phase shift map. The selected frequency is marked with a red line over a pixel line (or column) identifying the ***[Filter Frequency]*** (&nu;<sub>0</sub>). If the ***[Filter Frequency]***  is equal to zero, the software will set the new valor value automatically.   
     > **Note:** The user can change this ***[Filter Frequency]*** manually.
   
-  - ***[Gaussian Filter]*** This image is the Gaussian filter map applied to generate the phase map using the selected frequency (Fig. 3.b).
+  - ***[Gaussian Filter]*** This image is the Gaussian filter map (Fig. 3.c) applied to generate the phase map. This filter is built from the selected frequency &nu;<sub>0</sub> and the range frequency &Delta;&nu;(Fig. 3.d).  
 
-|<img src = '/Images/Figure3.PNG' width="50%">|
+|<img src = '/Images/Figure3_A.PNG' width="80%">|
 |:--:| 
-| *Fig. 3. (a) 2D frequency domain obtained by the interferogram Fourier Transform with the selected frequency to be filtered; (b) Gaussian filter to be applied on the selected frequency.* |
+| *Fig. 3. (a) 2D and (b) 1D frequency domain obtained by the interferogram Fourier Transform with the selected frequency to be filtered; (c) Gaussian filter to be applied on the selected frequency; (d) 1D frequency domain with range frequency to apply the Gaussian filter.* |
 
 For the next three steps, users have the option of viewing the 2D maps or 1D curves with standard deviation using the ***[Standard Deviation]*** checkbox.
  
