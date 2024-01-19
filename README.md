@@ -36,7 +36,7 @@ The *Interferometry Analysis - Gas-Jet* software was developed in Python 3.11. T
 
 Users also can create a single .exe file using the [pyinstaller](https://pyinstaller.org/en/stable/) package trought the follow terminal command:
 
-<code>   pyinstaller --onefile -w IntAnalysis_GasJet_v4.0.py                </code>
+<code>   pyinstaller --onefile -w IntAnalysis_GasJet_v2.0.py                </code>
 
 Users who do not use Python IDEs can utilize the software through the executable file available for download [here](https://drive.google.com/file/d/1K_-3wm8TOzxROLyAc22AkRXlRvD3GjjI/view?usp=sharing)
 
