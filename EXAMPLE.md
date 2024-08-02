@@ -1,4 +1,4 @@
-# <h1 align = "center"> Using Interferometry Analysis Gas-Jet <br> Detailed Example </h1>
+# <h1 align = "center"> Using Interferometry Analysis Gas-Jet V.2.0<br> Detailed Example </h1>
 
 ## 1. Execute the software
 The software can be used in two ways:
